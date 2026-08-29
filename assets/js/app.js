@@ -83,7 +83,7 @@ const SECONDARY = ['RH-DUS-001', 'RH-THA-001', 'RH-T2D-001'];
 
 /* Build stamp — rendered in the footer so the running version is
    identifiable at a glance. Bump on every deploy. */
-const BUILD = '2026-08-29 · r7';
+const BUILD = '2026-08-29 · r8';
 
 /* ---------- translations ------------------------------- */
 /* The Sorani and English records are the source of truth; Kurmancî and
@@ -224,6 +224,8 @@ function viewHome() {
 
   return `
   <section class="hero">
+    <div class="hero-photo" aria-hidden="true"></div>
+    <div class="hero-tint" aria-hidden="true"></div>
     <div class="hero-bg">${burstSVG()}</div>
     <div class="wrap">
     <div class="hero-grid">
@@ -274,6 +276,23 @@ function viewHome() {
     </div>
   </section>
 
+  <section class="band band--tight">
+    <div class="wrap">
+      <a class="feature" href="#/conditions?cat=child">
+        <span class="feature-img"><img src="assets/img/feature-children.jpg" alt="" loading="lazy" width="612" height="408"></span>
+        <span class="feature-b">
+          <span class="kicker">${esc(catName('child'))}</span>
+          <span class="feature-t">${esc(T('featH'))}</span>
+          <span class="feature-d">${esc(T('featB'))}</span>
+          <span class="feature-l">
+            <span>${esc(TL[L].t.paracetamol.name)}</span>
+            <span>${esc(TL[L].t.ors.name)}</span>
+          </span>
+        </span>
+      </a>
+    </div>
+  </section>
+
   <section class="band">
     <div class="wrap">
       ${sectionHead(T('claimsH'), T('claimsSub'), '#/checks', T('claimsMore'))}
@@ -300,6 +319,9 @@ function viewHome() {
   <section class="band band--deep">
     <div class="wrap">
       ${sectionHead(T('stdH'), null, '#/standards', T('stdMore'))}
+      <div class="std-grid">
+      <div class="std-photo"><img src="assets/img/reviewers.jpg" alt="" loading="lazy" width="600" height="800"></div>
+      <div>
       <div class="pillars">
         <div class="pillar"><h3>${ICON.sig}${esc(T('p1H'))}</h3><p>${T('p1B')}</p></div>
         <div class="pillar"><h3>${ICON.scale}${esc(T('p2H'))}</h3><p>${T('p2B')}</p></div>
@@ -309,6 +331,8 @@ function viewHome() {
         <div class="stat-i"><b>${CONDITIONS.length + DRUGS.length + CLAIMS.length}</b><span>${esc(T('statEntries'))}</span></div>
         <div class="stat-i"><b>${nReviewers}</b><span>${esc(T('statReviewers'))}</span></div>
         <div class="stat-i"><b>${CORRECTIONS.length}</b><span>${esc(T('statCorr'))}</span></div>
+      </div>
+      </div>
       </div>
     </div>
   </section>`;

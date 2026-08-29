@@ -284,16 +284,27 @@ body[dir="ltr"] .rule-h .more::after { content: " ›"; }
    -------------------------------------------------------- */
 .hero {
   position: relative; overflow: hidden;
-  background:
-    radial-gradient(120% 90% at 78% 8%, rgba(8,144,130,.42) 0%, transparent 62%),
-    linear-gradient(158deg, #00584E 0%, #00423A 55%, #00302A 100%);
-  color: #fff;
+  background: #00302A; color: #fff;
   padding-block: 52px 0;
 }
-body[dir="ltr"] .hero {
+/* The photograph sits under a near-opaque brand wash: enough of it
+   reads through to give the panel warmth, not enough to cost the
+   headline any contrast. */
+.hero-photo {
+  position: absolute; inset: 0;
+  background: url("../img/hero-care.jpg") center 38% / cover no-repeat;
+  filter: saturate(.55);
+}
+.hero-tint {
+  position: absolute; inset: 0;
   background:
-    radial-gradient(120% 90% at 22% 8%, rgba(8,144,130,.42) 0%, transparent 62%),
-    linear-gradient(202deg, #00584E 0%, #00423A 55%, #00302A 100%);
+    radial-gradient(120% 90% at 78% 8%, rgba(8,144,130,.34) 0%, transparent 60%),
+    linear-gradient(158deg, rgba(0,88,78,.90) 0%, rgba(0,66,58,.945) 52%, rgba(0,44,38,.975) 100%);
+}
+body[dir="ltr"] .hero-tint {
+  background:
+    radial-gradient(120% 90% at 22% 8%, rgba(8,144,130,.34) 0%, transparent 60%),
+    linear-gradient(202deg, rgba(0,88,78,.90) 0%, rgba(0,66,58,.945) 52%, rgba(0,44,38,.975) 100%);
 }
 .hero-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .hero-burst {
@@ -787,3 +798,37 @@ body[dir="rtl"] .tool-res-h { font-family: var(--body); font-size: 13px; letter-
    Arabic-script text, so these values are isolated explicitly. */
 .tool-row dd { direction: ltr; unicode-bidi: isolate; }
 body[dir="rtl"] .tool-row dd { text-align: start; }
+
+/* ---------- 17  Photography ------------------------------
+   Three photographs, each placed where it carries meaning:
+   care in the hero, a clinician beside the review standards,
+   a newborn on the children's feature.
+   -------------------------------------------------------- */
+
+/* standards band gains a portrait of a working clinician —
+   the band is about who signs entries off */
+.std-grid { display: grid; gap: 34px; align-items: start; }
+@media (min-width: 940px) { .std-grid { grid-template-columns: 260px minmax(0,1fr); gap: 44px; } }
+.std-photo { border-radius: 5px; overflow: hidden; box-shadow: var(--lift-2); }
+.std-photo img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3 / 4; }
+@media (max-width: 939px) { .std-photo { max-width: 260px; } .std-photo img { aspect-ratio: 16 / 10; } }
+
+/* front-page feature card */
+.feature {
+  display: grid; gap: 0; align-items: stretch; text-decoration: none; color: inherit;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 5px;
+  overflow: hidden; box-shadow: var(--lift-1);
+}
+@media (min-width: 760px) { .feature { grid-template-columns: minmax(0,340px) minmax(0,1fr); } }
+.feature:hover { border-color: var(--brand); box-shadow: var(--lift-2); }
+.feature:hover .feature-t { text-decoration: underline; text-decoration-color: var(--line-2); }
+.feature-img { position: relative; min-height: 200px; background: var(--paper-3); }
+.feature-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.feature-b { padding: 26px 28px; align-self: center; }
+.feature-t { font-family: var(--display); font-weight: 800; font-size: 24px; line-height: 1.32; margin: 0 0 10px; }
+.feature-d { font-size: 16.5px; color: var(--ink-2); margin: 0 0 14px; max-width: 46ch; }
+.feature-l { display: flex; flex-wrap: wrap; gap: 8px 10px; }
+.feature-l span {
+  font-size: 13.5px; font-weight: 600; color: var(--brand-d);
+  background: var(--brand-xs); border: 1px solid var(--line); border-radius: 100px; padding: 4px 12px;
+}

@@ -56,6 +56,8 @@ ku: {
   bcastSub: "پرسیاری بینەران کە بوونەتە بابەتی پەخش، لێرەش بڵاو دەکرێنەوە.",
   bcastMore: "پرسیارێک بنێرە",
   drugsH: "دەرمانەکان", drugsMore: "هەموو دەرمانەکان",
+  featH: "تەندروستی منداڵان",
+  featB: "تا، سکچوون و ئەندازەی دەرمان — ئەو پرسیارانەی زۆرترین جار لێمان دەکرێن.",
 
   stdH: "چۆن ئەم بابەتانە دروست دەکەین",
   stdMore: "پێوەرەکانمان بە درێژی",
@@ -174,6 +176,8 @@ kmr: {
   bcastSub: "Pirsên temaşevanan ku bûne mijarên weşanê, li vir jî tên weşandin.",
   bcastMore: "Pirsekê bişîne",
   drugsH: "Derman", drugsMore: "Hemû derman",
+  featH: "Tenduristiya zarokan",
+  featB: "Ta, zikêşî û dozên dermanan — pirsên ku em herî zêde jê tên pirsîn.",
 
   stdH: "Em çawa van mijaran çêdikin",
   stdMore: "Pîvanên me bi dirêjahî",
@@ -292,6 +296,8 @@ ar: {
   bcastSub: "أسئلة المشاهدين التي صارت مواد بث، تُنشر هنا أيضاً.",
   bcastMore: "اطرح سؤالاً",
   drugsH: "الأدوية", drugsMore: "جميع الأدوية",
+  featH: "صحة الأطفال",
+  featB: "الحمى والإسهال وجرعات الدواء — أكثر ما نُسأل عنه.",
 
   stdH: "كيف نصنع هذه المواد",
   stdMore: "معاييرنا بالتفصيل",
@@ -410,6 +416,8 @@ en: {
   bcastSub: "Viewers' questions that became broadcast items, published here too.",
   bcastMore: "Ask a question",
   drugsH: "Medicines", drugsMore: "All medicines",
+  featH: "Children's health",
+  featB: "Fever, diarrhoea and medicine doses — the questions we are asked most.",
 
   stdH: "How these entries are made",
   stdMore: "Our standards in full",
