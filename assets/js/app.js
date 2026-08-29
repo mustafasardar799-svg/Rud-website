@@ -83,7 +83,7 @@ const SECONDARY = ['RH-DUS-001', 'RH-THA-001', 'RH-T2D-001'];
 
 /* Build stamp — rendered in the footer so the running version is
    identifiable at a glance. Bump on every deploy. */
-const BUILD = '2026-08-29 · r5';
+const BUILD = '2026-08-29 · r7';
 
 /* ---------- translations ------------------------------- */
 /* The Sorani and English records are the source of truth; Kurmancî and
@@ -670,6 +670,7 @@ const NAV = [
   ['#/', 'navHome', 'home'],
   ['#/conditions', 'navCond', 'conditions'],
   ['#/medicines', 'navDrug', 'medicines'],
+  ['#/tools', 'navTools', 'tools'],
   ['#/checks', 'navClaim', 'checks'],
   ['#/services', 'navPlace', 'services'],
   ['#/ask', 'navAsk', 'ask'],
@@ -751,10 +752,11 @@ function parseHash() {
   const map = {
     conditions: 'conditions', medicines: 'medicines', checks: 'checks',
     services: 'services', ask: 'ask', standards: 'standards',
-    corrections: 'corrections', search: 'search'
+    corrections: 'corrections', search: 'search', tools: 'tools'
   };
   if (seg[0] === 'c' && seg[1]) return { name: 'condition', params: { ...params, id: seg[1] } };
   if (seg[0] === 'm' && seg[1]) return { name: 'medicine', params: { ...params, id: seg[1] } };
+  if (seg[0] === 'tools' && seg[1]) return { name: 'tool', params: { ...params, id: seg[1] } };
   if (map[seg[0]]) return { name: map[seg[0]], params };
   return { name: 'notfound', params };
 }
@@ -763,7 +765,8 @@ const VIEWS = {
   home: viewHome, conditions: viewConditions, condition: viewCondition,
   medicines: viewDrugs, medicine: viewDrug, checks: viewClaims,
   services: viewPlaces, ask: viewAsk, standards: viewStandards,
-  corrections: viewCorrections, search: viewSearch, notfound: viewNotFound
+  corrections: viewCorrections, search: viewSearch, notfound: viewNotFound,
+  tools: viewTools, tool: viewTool
 };
 
 function render(keepScroll) {
@@ -785,6 +788,8 @@ function pageTitle() {
                  kmr: 'Rudaw Tenduristî', en: 'Rudaw Health' }[L];
   if (route.name === 'condition') { const c = condById(route.params.id); if (c) return `${c[L].name} — ${base}`; }
   if (route.name === 'medicine') { const m = drugById(route.params.id); if (m) return `${m[L].name} — ${base}`; }
+  if (route.name === 'tool') { const t = toolById(route.params.id); if (t) return `${TL[L].t[t.id].name} — ${base}`; }
+  if (route.name === 'tools') return `${TL[L].toolsH} — ${base}`;
   const k = { conditions: 'hCond', medicines: 'hDrug', checks: 'hClaim', services: 'hPlace',
               ask: 'hAsk', standards: 'hStd', corrections: 'hCorr', search: 'hSearch' }[route.name];
   return k ? `${T(k)} — ${base}` : base;
