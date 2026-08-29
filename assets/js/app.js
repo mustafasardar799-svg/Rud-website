@@ -15,6 +15,7 @@ const ICON = {
   scale:  I('<path d="M12 4.2v15.6M7 20h10"/><path d="M12 6.6 5 9m7-2.4L19 9"/><path d="M2.6 13.4a2.6 2.6 0 0 0 4.8 0L5 8.8Zm14 0a2.6 2.6 0 0 0 4.8 0L19 8.8Z"/>'),
   clock:  I('<circle cx="12" cy="12" r="8.4"/><path d="M12 7.4V12l3 1.8"/>'),
   chat:   I('<path d="M20 12.4a7.6 7.6 0 0 1-11.2 6.7L4 20.4l1.4-4.6A7.6 7.6 0 1 1 20 12.4Z"/>'),
+  pill:   I('<rect x="2.6" y="8.6" width="18.8" height="6.8" rx="3.4" transform="rotate(-45 12 12)"/><path d="m9.2 9.2 5.6 5.6"/>'),
 
   /* body areas */
   heart:  I('<path d="M12 20.3C7.6 17.4 4.5 14.2 4.5 10.8A4 4 0 0 1 12 8.3a4 4 0 0 1 7.5 2.5c0 3.4-3.1 6.6-7.5 9.5Z"/>'),
@@ -56,6 +57,25 @@ function firstLetter(name, lang) {
   return lang === 'kmr' || lang === 'en' ? s[0].toUpperCase() : s[0];
 }
 
+/* The masthead mark is an R inside a radiating burst. Drawn large and
+   faint it gives the hero visual weight without stock photography,
+   and it is the one graphic on the site that is already the brand's. */
+function burstSVG(n = 48) {
+  let out = '';
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2;
+    const r1 = 118 + (i % 3) * 12;
+    const r2 = r1 + 64 + (i % 5) * 19;
+    out += `<line x1="${(Math.cos(a) * r1).toFixed(1)}" y1="${(Math.sin(a) * r1).toFixed(1)}"` +
+           ` x2="${(Math.cos(a) * r2).toFixed(1)}" y2="${(Math.sin(a) * r2).toFixed(1)}"/>`;
+  }
+  return `<svg class="hero-burst" viewBox="-270 -270 540 540" fill="none" aria-hidden="true">${out}</svg>`;
+}
+
+const PULSE = `<svg class="pulse" viewBox="0 0 1200 52" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 34 H150 l14 -24 l11 38 l13 -34 l12 20 H420 l16 -28 l10 42 l14 -37 l11 23 H700 l15 -24 l11 37 l12 -33 l13 19 H980 l14 -22 l10 34 l13 -29 l11 18 H1200"
+    fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
+
 /* Editorially selected front-page entries — region-specific,
    seasonal, and the screening story we keep returning to. */
 const LEAD = 'RH-HEA-001';
@@ -63,7 +83,7 @@ const SECONDARY = ['RH-DUS-001', 'RH-THA-001', 'RH-T2D-001'];
 
 /* Build stamp — rendered in the footer so the running version is
    identifiable at a glance. Bump on every deploy. */
-const BUILD = '2026-08-29 · r4';
+const BUILD = '2026-08-29 · r5';
 
 /* ---------- translations ------------------------------- */
 /* The Sorani and English records are the source of truth; Kurmancî and
@@ -203,7 +223,9 @@ function viewHome() {
   const nReviewers = reviewers().length;
 
   return `
-  <section class="wrap hero">
+  <section class="hero">
+    <div class="hero-bg">${burstSVG()}</div>
+    <div class="wrap">
     <div class="hero-grid">
       <div>
         <div class="kicker">${esc(T('leadKicker'))}</div>
@@ -234,6 +256,8 @@ function viewHome() {
         </ol>
         <div class="rail-f">${esc(T('askedFoot'))}</div>
       </aside>
+    </div>
+    ${PULSE}
     </div>
   </section>
 
@@ -350,6 +374,7 @@ function viewCondition(p) {
       <span><a href="#/conditions?cat=${c.cat}">${esc(catName(c.cat))}</a></span>
     </nav>
     <header class="art-head">
+      <span class="art-mark">${ICON[CAT_ICON[c.cat]] || ICON.shield}</span>
       <div class="kicker">${esc(catName(c.cat))}</div>
       <h1>${esc(d.name)}</h1>
       <p class="art-stand">${esc(d.sum)}</p>
@@ -417,6 +442,7 @@ function viewDrug(p) {
   <div class="wrap">
     <nav class="crumbs" aria-label="breadcrumb"><a href="#/medicines">${esc(T('backDrug'))}</a></nav>
     <header class="art-head">
+      <span class="art-mark">${ICON.pill}</span>
       <div class="kicker">${esc(T('hDrug'))}</div>
       <h1>${esc(d.name)}</h1>
       <p class="art-stand">${esc(d.sum)}</p>
