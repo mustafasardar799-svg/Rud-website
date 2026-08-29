@@ -84,7 +84,7 @@ const SECONDARY = ['RH-DUS-001', 'RH-THA-001', 'RH-T2D-001'];
 
 /* Build stamp — rendered in the footer so the running version is
    identifiable at a glance. Bump on every deploy. */
-const BUILD = '2026-08-29 · r11';
+const BUILD = '2026-08-29 · r12';
 
 /* ---------- translations ------------------------------- */
 /* The Sorani and English records are the source of truth; Kurmancî and
@@ -121,11 +121,7 @@ let qCount = 1247;
 const T = k => UI[L][k];
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const li = a => a.map(x => `<li>${esc(x)}</li>`).join('');
-const evBar = (n, sm) =>
-  `<span class="ev${sm ? ' ev--sm' : ''}" role="img" aria-label="${T('sEv')} ${n}/5">` +
-  [1, 2, 3, 4, 5].map(i => `<i class="${i <= n ? 'on' : ''}"></i>`).join('') + '</span>';
 const catName = k => (CATS.find(c => c.k === k) || {})[L] || '';
-const tierName = n => TIER[n][L];
 const norm = s => String(s).toLowerCase();
 
 /* ---------- lookups ------------------------------------ */
@@ -165,9 +161,6 @@ function stamp(o) {
   return `<aside class="stamp">
     <div class="stamp-h">${ICON.shield}<span>${T('stampH')}</span></div>
     <div class="stamp-b">
-      <div class="srow"><span class="slab">${T('sEv')}</span>
-        <span class="sval">${evBar(o.tier, true)}</span></div>
-      <div class="tier-name stier">${esc(tierName(o.tier))}</div>
       <div class="srow"><span class="slab">${T('sRev')}</span>
         <span class="sval data">${esc(o.rev)}</span></div>
       <div class="srow"><span class="slab">${T('sBy')}</span>
@@ -195,7 +188,6 @@ function entryRow(href, title, sum, tier, rev) {
       <span class="entry-s">${esc(sum)}</span>
     </span>
     <span class="entry-side">
-      ${evBar(tier, true)}
       <span class="label data">${esc(rev)}</span>
     </span>
   </a>`;
@@ -210,7 +202,7 @@ function verdictCard(v) {
       <h3 class="vc-claim">${esc(v[L].claim)}</h3>
     </div>
     <p class="vc-body">${esc(v[L].body)}</p>
-    <div class="vc-foot"><span class="data">${esc(v.id)} · ${esc(v.rev)}</span>${evBar(v.tier, true)}</div>
+    <div class="vc-foot"><span class="data">${esc(v.id)} · ${esc(v.rev)}</span></div>
   </article>`;
 }
 
@@ -235,7 +227,6 @@ function viewHome() {
         <h1 class="lead-t"><a href="#/c/${lead.id}">${esc(lead[L].name)}</a></h1>
         <p class="lead-s">${esc(lead[L].sum)}</p>
         <div class="lead-m">
-          <span class="meta">${evBar(lead.tier, true)} <b>${esc(tierName(lead.tier))}</b></span>
           <span class="meta">${esc(T('sRev'))} <b class="data">${esc(lead.rev)}</b></span>
           <span class="meta">${esc(lead.by)}</span>
         </div>
@@ -318,7 +309,6 @@ function viewHome() {
       <div class="stat">
         <div class="stat-i"><b>${CONDITIONS.length + DRUGS.length + CLAIMS.length}</b><span>${esc(T('statEntries'))}</span></div>
         <div class="stat-i"><b>${nReviewers}</b><span>${esc(T('statReviewers'))}</span></div>
-        <div class="stat-i"><b>${CORRECTIONS.length}</b><span>${esc(T('statCorr'))}</span></div>
       </div>
     </div>
   </section>`;
@@ -508,21 +498,6 @@ function viewPlaces() {
   </div>`;
 }
 
-function viewCorrections() {
-  return `
-  <div class="wrap wrap--narrow">
-    <header class="page-h">
-      <h1>${esc(T('hCorr'))}</h1>
-      <p class="lede">${esc(T('dCorr'))}</p>
-    </header>
-    ${CORRECTIONS.map(c => `<article class="corr">
-      <div class="corr-d"><span class="data">${esc(c.d)}</span><span class="data">${esc(c.id)}</span></div>
-      <p class="corr-w"><b>${esc(T('corrWas'))}</b> ${esc(c[L].was)}</p>
-      <p class="corr-f"><b>${esc(T('corrNow'))}</b> ${esc(c[L].now)}</p>
-    </article>`).join('')}
-  </div>`;
-}
-
 function viewStandards() {
   const people = reviewers();
   return `
@@ -531,17 +506,6 @@ function viewStandards() {
       <h1>${esc(T('hStd'))}</h1>
       <p class="lede">${esc(T('dStd'))}</p>
     </header>
-
-    <section style="margin-bottom:44px">
-      <h2 style="font-size:21px;font-weight:800;margin-bottom:8px">${esc(T('stdTiersH'))}</h2>
-      <p class="lede" style="margin-bottom:18px">${esc(T('stdTiersD'))}</p>
-      <div class="tiers">
-        ${[5, 4, 3, 2, 1].map(n => `<div class="tier-row">
-          <span class="tier-n">${n}/5</span>${evBar(n)}
-          <span class="tier-l">${esc(TIER[n][L])}</span>
-        </div>`).join('')}
-      </div>
-    </section>
 
     <section style="margin-bottom:44px">
       <h2 style="font-size:21px;font-weight:800;margin-bottom:8px">${esc(T('stdWhoH'))}</h2>
@@ -568,11 +532,6 @@ function viewStandards() {
       </div>
     </section>
 
-    <section>
-      <h2 style="font-size:21px;font-weight:800;margin-bottom:8px">${esc(T('stdCorrH'))}</h2>
-      <p class="lede" style="margin-bottom:18px">${esc(T('stdCorrD'))}</p>
-      <a class="btn btn--ghost" href="#/corrections">${esc(T('hCorr'))}</a>
-    </section>
   </div>`;
 }
 
@@ -684,8 +643,7 @@ const NAV = [
   ['#/checks', 'navClaim', 'checks'],
   ['#/services', 'navPlace', 'services'],
   ['#/ask', 'navAsk', 'ask'],
-  ['#/standards', 'navStd', 'standards'],
-  ['#/corrections', 'navCorr', 'corrections']
+  ['#/standards', 'navStd', 'standards']
 ];
 
 function renderChrome() {
@@ -847,7 +805,7 @@ function parseHash() {
   const map = {
     conditions: 'conditions', medicines: 'medicines', checks: 'checks',
     services: 'services', ask: 'ask', standards: 'standards',
-    corrections: 'corrections', search: 'search', tools: 'tools'
+    search: 'search', tools: 'tools'
   };
   if (seg[0] === 'c' && seg[1]) return { name: 'condition', params: { ...params, id: seg[1] } };
   if (seg[0] === 'm' && seg[1]) return { name: 'medicine', params: { ...params, id: seg[1] } };
@@ -860,7 +818,7 @@ const VIEWS = {
   home: viewHome, conditions: viewConditions, condition: viewCondition,
   medicines: viewDrugs, medicine: viewDrug, checks: viewClaims,
   services: viewPlaces, ask: viewAsk, standards: viewStandards,
-  corrections: viewCorrections, search: viewSearch, notfound: viewNotFound,
+  search: viewSearch, notfound: viewNotFound,
   tools: viewTools, tool: viewTool
 };
 
@@ -887,7 +845,7 @@ function pageTitle() {
   if (route.name === 'tool') { const t = toolById(route.params.id); if (t) return `${TL[L].t[t.id].name} — ${base}`; }
   if (route.name === 'tools') return `${TL[L].toolsH} — ${base}`;
   const k = { conditions: 'hCond', medicines: 'hDrug', checks: 'hClaim', services: 'hPlace',
-              ask: 'hAsk', standards: 'hStd', corrections: 'hCorr', search: 'hSearch' }[route.name];
+              ask: 'hAsk', standards: 'hStd', search: 'hSearch' }[route.name];
   return k ? `${T(k)} — ${base}` : base;
 }
 

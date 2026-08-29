@@ -761,6 +761,10 @@ footer { background: var(--brand-dd); color: #A8D6CE; padding-block: 40px 30px; 
 }
 
 @media print {
+  /* Reveal-on-scroll never runs when printing, so anything not yet
+     seen would come out of the printer blank. People print these
+     pages to take to an appointment; nothing may be hidden. */
+  .rv, html.motion .rv { opacity: 1 !important; transform: none !important; transition: none !important; }
   .util, .notice, .nav, .searchbar, .toc, .rel, footer, .emerg, .btn { display: none !important; }
   body { font-size: 11pt; }
   .art-grid { display: block; }
