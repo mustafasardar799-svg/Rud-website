@@ -1,27 +1,38 @@
 /* ============================================================
-   Rudaw Health — interface strings (ku = Sorani, en = English)
-   Kurdish is the primary language; English is the parallel set.
+   Rudaw Health — interface strings
+
+     ku   کوردیی سۆرانی   Sorani Kurdish   Arabic script, RTL
+     kmr  Kurmancî         Kurmanji Kurdish Latin script,  LTR
+     ar   العربية          Arabic           Arabic script, RTL
+     en   English          English          Latin script,  LTR
+
+   Sorani is the primary language. Every key exists in all four.
    ============================================================ */
 
+const LANGS = ['ku', 'kmr', 'ar', 'en'];
+
 const UI = {
+
+/* ============================================================
+   کوردیی سۆرانی — Sorani
+   ============================================================ */
 ku: {
-  /* ---- chrome ---- */
-  htmlLang: "ckb", dir: "rtl", langBtn: "English",
+  htmlLang: "ckb", dir: "rtl", langName: "کوردی", langShort: "کوردی",
   brandName: "تەندروستی", brandSub: "پێش هەموو شتێک",
   utilEmerg: "فریاگوزاری", utilEmergNum: "١٢٢",
   noticeTag: "نموونەی پیشاندان",
   noticeBody: "ناوەڕۆکی پزیشکی لێرەدا نموونەیە و پێویستی بە پێداچوونەوەی کلینیکی هەیە پێش بڵاوکردنەوە.",
+  transNote: "",
   skip: "بازدان بۆ ناوەڕۆکی سەرەکی",
   searchPh: "نەخۆشی، دەرمان، یان نیشانەیەک بنووسە…",
   searchLabel: "گەڕان لە بابەتەکاندا",
+  langLabel: "زمان",
 
-  /* ---- navigation ---- */
   navHome: "سەرەتا", navCond: "نەخۆشییەکان", navDrug: "دەرمانەکان",
   navClaim: "ڕاست یان هەڵە", navPlace: "بۆ کوێ بچم",
   navAsk: "پرسیارێک بنێرە", navStd: "پێوەرەکانمان", navCorr: "هەڵەکانمان",
-  navLabel: "ڕێنیشاندەری سەرەکی",
+  navTools: "ئامرازەکان", navLabel: "ڕێنیشاندەری سەرەکی",
 
-  /* ---- emergency band ---- */
   emergH: "ئێستا بڕۆ بۆ فریاگوزاری ئەگەر:",
   emergList: [
     "ئازاری سنگ یان تەنگەنەفەسی",
@@ -31,7 +42,6 @@ ku: {
     "سستی و بەئاگا نەهاتنەوە"
   ],
 
-  /* ---- front page ---- */
   leadKicker: "بابەتی ئەم هەفتەیە",
   secKicker: "هەروەها لەم وەرزەدا",
   askedH: "زۆرترین پرسیاری ئەم هەفتەیە",
@@ -45,20 +55,20 @@ ku: {
   bcastH: "لە پەخشەوە",
   bcastSub: "پرسیاری بینەران کە بوونەتە بابەتی پەخش، لێرەش بڵاو دەکرێنەوە.",
   bcastMore: "پرسیارێک بنێرە",
-  drugsH: "دەرمانەکان",
-  drugsMore: "هەموو دەرمانەکان",
+  drugsH: "دەرمانەکان", drugsMore: "هەموو دەرمانەکان",
 
-  /* ---- standards band ---- */
   stdH: "چۆن ئەم بابەتانە دروست دەکەین",
   stdMore: "پێوەرەکانمان بە درێژی",
-  p1H: "دوو واژوو", p1B: "هیچ بابەتێک بڵاو ناکرێتەوە بەبێ دوو واژوو: <b>بەرپرسی ناوەڕۆک</b> و <b>پێداچوونەوەری پزیشکی</b>. ناوی پێداچوونەوەر لەسەر هەر بابەتێک دیارە.",
-  p2H: "ئاستی بەڵگە", p2B: "هەر بابەتێک ئاستی بەڵگەی خۆی پیشان دەدات، لە <b>بۆچوونی پسپۆڕ</b>ەوە تا <b>ڕێنمایی نێودەوڵەتی</b>. کاتێک بەڵگە لاواز بێت، دەیڵێین.",
-  p3H: "ڕێکەوتی پێداچوونەوە", p3B: "هەر بابەتێک ڕێکەوتی دوایین پێداچوونەوە و ڕێکەوتی پێداچوونەوەی داهاتووی هەیە. بابەتی کۆن بەبێ ئاماژە نامێنێتەوە.",
+  p1H: "دوو واژوو",
+  p1B: "هیچ بابەتێک بڵاو ناکرێتەوە بەبێ دوو واژوو: <b>بەرپرسی ناوەڕۆک</b> و <b>پێداچوونەوەری پزیشکی</b>. ناوی پێداچوونەوەر لەسەر هەر بابەتێک دیارە.",
+  p2H: "ئاستی بەڵگە",
+  p2B: "هەر بابەتێک ئاستی بەڵگەی خۆی پیشان دەدات، لە <b>بۆچوونی پسپۆڕ</b>ەوە تا <b>ڕێنمایی نێودەوڵەتی</b>. کاتێک بەڵگە لاواز بێت، دەیڵێین.",
+  p3H: "ڕێکەوتی پێداچوونەوە",
+  p3B: "هەر بابەتێک ڕێکەوتی دوایین پێداچوونەوە و ڕێکەوتی پێداچوونەوەی داهاتووی هەیە. بابەتی کۆن بەبێ ئاماژە نامێنێتەوە.",
   statEntries: "بابەتی پێداچوونەوەکراو",
   statReviewers: "پێداچوونەوەری پزیشکی",
   statCorr: "هەڵەی ڕاستکراوە",
 
-  /* ---- index pages ---- */
   hCond: "نەخۆشییەکان",
   dCond: "پێڕستی نەخۆشییە باوەکان. هەر یەکێکیان هەمان پێکهاتەی هەیە: ئەوە چییە، نیشانەکان، کەی ئێستا بڕۆ، چی دەکەیت، چی لە پزیشک بپرسیت.",
   hDrug: "دەرمانەکان",
@@ -70,30 +80,25 @@ ku: {
   hCorr: "هەڵەکانمان",
   dCorr: "هەر هەڵەیەک کە کردوومانە و چۆن ڕاستمان کردەوە. بە ڕێکەوت، بۆ هەمیشە.",
   hSearch: "ئەنجامی گەڕان",
-  allCats: "هەمووی",
-  alphaAll: "هەموو پیتەکان",
+  allCats: "هەمووی", alphaAll: "هەموو پیتەکان",
   countN: n => `${n} بابەت`,
   noRes: "هیچ ئەنجامێک نەدۆزرایەوە. وشەیەکی تر تاقی بکەرەوە، یان پرسیارەکەت بۆ ئێمە بنێرە.",
 
-  /* ---- article ---- */
   secWhat: "ئەمە چییە", secSym: "نیشانەکان", secDo: "چی دەتوانیت بکەیت",
   secFlag: "ئێستا بڕۆ بۆ فریاگوزاری", secAsk: "لە پزیشکەکەت بپرسە",
   drugDoes: "چی دەکات", drugNot: "چی ناکات", drugCare: "ئاگاداری",
   flagsFoot: "لەم حاڵەتانەدا پرسیار مەنێرە و چاوەڕێ مەکە — ڕاستەوخۆ بڕۆ.",
-  tocH: "لەم لاپەڕەیەدا",
-  relH: "بابەتی پەیوەندیدار",
+  tocH: "لەم لاپەڕەیەدا", relH: "بابەتی پەیوەندیدار",
   backCond: "هەموو نەخۆشییەکان", backDrug: "هەموو دەرمانەکان",
 
-  /* ---- review stamp ---- */
   stampH: "تۆماری پێداچوونەوە",
   sEv: "ئاستی بەڵگە", sRev: "دوایین پێداچوونەوە", sBy: "پێداچوونەوەری پزیشکی",
   sNext: "پێداچوونەوەی داهاتوو", sId: "ژمارەی بابەت",
   stampFoot: "ئەم بابەتە دوو واژووی وەرگرتووە: بەرپرسی ناوەڕۆک و پێداچوونەوەری پزیشکی.",
 
-  /* ---- verdicts ---- */
   vTrue: "ڕاست", vFalse: "هەڵە", vPart: "بەشێکی ڕاستە", vUnk: "نازانرێت",
+  corrWas: "ئەوەی وتمان:", corrNow: "ئەوەی ڕاستە:",
 
-  /* ---- ask ---- */
   hAsk: "پرسیارێک بنێرە",
   dAsk: "ئەم بەشە ئاراستەی ناوەڕۆکی ئێمە دیاری دەکات. ئەوەی ئێوە دەیپرسن، ئەوەیە کە دەیکەینە بابەت.",
   qLabel: "پرسیارەکەت", qHint: "بە زمانی خۆت بینووسە. پێویست ناکات وشەی پزیشکی بەکاربێنیت.",
@@ -109,11 +114,9 @@ ku: {
   trH2: "چی ناتوانین وەڵام بدەینەوە",
   trN: ["ئایا من ئەم نەخۆشیم هەیە — ناتوانین دەستنیشانی بکەین","چ دەرمانێک بخۆم و چەند — ئەمە کاری پزیشکی خۆتە","خوێندنەوەی ئەنجامی پشکنینی تایبەت بە تۆ","بڕیاری گۆڕینی دەرمانەکانت"],
   emH: "ئەگەر ئەمانەت هەیە، پرسیار مەنێرە — ئێستا بڕۆ",
-  waH: "لە واتسئاپ", waS: "دەنگ یان نووسین. لە کوردی، عەرەبی یان ئینگلیزی. زۆر بینەر پرسیارەکەیان بە دەنگ دەنێرن — ئەمە ئاساییە.",
-  hAns: "پرسیارە وەڵامدراوەکان",
-  ansOn: "لە پەخشدا وەڵام درایەوە",
+  waH: "لە واتسئاپ",
+  waS: "دەنگ یان نووسین. لە کوردی، عەرەبی یان ئینگلیزی. زۆر بینەر پرسیارەکەیان بە دەنگ دەنێرن — ئەمە ئاساییە.",
 
-  /* ---- standards page ---- */
   hStd: "پێوەرەکانمان",
   dStd: "ئەم بەشە ڕوون دەکاتەوە کە بابەتەکانمان چۆن دروست دەکرێن، کێ پێداچوونەوەیان بۆ دەکات، و کەی هەڵە ڕاست دەکەینەوە.",
   stdTiersH: "ئاستەکانی بەڵگە",
@@ -124,29 +127,266 @@ ku: {
   stdCorrD: "کاتێک هەڵە دەکەین، ڕاستی دەکەینەوە و بە ڕێکەوت بڵاوی دەکەینەوە. هەڵەکان ناسڕدرێنەوە.",
   stdLimitH: "سنوورەکانمان",
 
-  /* ---- footer ---- */
   footSlogan: "تەندروستی پێش هەموو شتێک",
   footNote: "ئەم ماڵپەڕە جێگای ڕاوێژی پزیشکی نییە. لە حاڵەتی فریاگوزاریدا پەیوەندی بە ١٢٢ بکە. هەموو بابەتێک دوو واژووی پێویستە پێش بڵاوکردنەوە — بەرپرسی ناوەڕۆک و پێداچوونەوەری پزیشکی."
 },
 
+/* ============================================================
+   Kurmancî — Kurmanji, Latin script
+   ============================================================ */
+kmr: {
+  htmlLang: "kmr", dir: "ltr", langName: "Kurmancî", langShort: "Kurmancî",
+  brandName: "Tenduristî", brandSub: "Beriya her tiştî",
+  utilEmerg: "Awarte", utilEmergNum: "122",
+  noticeTag: "MODEL",
+  noticeBody: "Naveroka bijîşkî ya li vir mînak e û beriya weşandinê pêdiviya wê bi nirxandina klînîkî heye.",
+  transNote: "Ev guhertoya Kurmancî hîn ji aliyê axêverekî zikmakî ve nehatiye nirxandin.",
+  skip: "Biçe naveroka sereke",
+  searchPh: "Nexweşî, derman an nîşanekê binivîse…",
+  searchLabel: "Di mijaran de bigere",
+  langLabel: "Ziman",
+
+  navHome: "Destpêk", navCond: "Nexweşî", navDrug: "Derman",
+  navClaim: "Rast an Şaş", navPlace: "Ez bo ku biçim",
+  navAsk: "Pirsekê bişîne", navStd: "Pîvanên me", navCorr: "Çewtiyên me",
+  navTools: "Amûr", navLabel: "Rêgeza sereke",
+
+  emergH: "Niha biçe awarteyê eger:",
+  emergList: [
+    "Êşa sînga an tengenefesî",
+    "Daketina rûyê, lawaziya aliyekî, an tevlihevbûna axaftinê",
+    "Xwînrijandineke zêde",
+    "Taya zarokekî ji 3 mehan biçûktir",
+    "Sistî an nehatina hişê xwe"
+  ],
+
+  leadKicker: "Mijara vê hefteyê",
+  secKicker: "Herwiha di vê demsalê de",
+  askedH: "Pirsên herî zêde vê hefteyê",
+  askedSub: "Ji pirsên temaşevanan — ev rêça mijarên me diyar dikin.",
+  askedFoot: "Pirsa te ne li vir e? Bişîne — her pirs tê xwendin.",
+  catsH: "Li gorî beşên laş",
+  catsMore: "Hemû nexweşî",
+  claimsH: "Biryarên me yên dawî",
+  claimsSub: "Îdîayên ku li herêma me belav dibin, bi çar biryaran — û «hîn nayê zanîn» yek ji wan e.",
+  claimsMore: "Hemû biryar",
+  bcastH: "Ji weşanê",
+  bcastSub: "Pirsên temaşevanan ku bûne mijarên weşanê, li vir jî tên weşandin.",
+  bcastMore: "Pirsekê bişîne",
+  drugsH: "Derman", drugsMore: "Hemû derman",
+
+  stdH: "Em çawa van mijaran çêdikin",
+  stdMore: "Pîvanên me bi dirêjahî",
+  p1H: "Du îmze",
+  p1B: "Ti mijar bêyî du îmzeyan nayê weşandin: <b>berpirsê naverokê</b> û <b>nirxandkarê bijîşkî</b>. Navê nirxandkar li ser her mijarê diyar e.",
+  p2H: "Asta belgeyê",
+  p2B: "Her mijar asta belgeya xwe nîşan dide, ji <b>ramana pisporî</b> heta <b>rênimaya navneteweyî</b>. Gava belge lawaz be, em wê dibêjin.",
+  p3H: "Dîroka nirxandinê",
+  p3B: "Her mijar dîroka nirxandina dawî û dîroka nirxandina bê bi xwe re dihewîne. Mijara kevn bêyî nîşankirin namîne.",
+  statEntries: "mijarên nirxandî",
+  statReviewers: "nirxandkarên bijîşkî",
+  statCorr: "çewtiyên weşandî",
+
+  hCond: "Nexweşî",
+  dCond: "Lîsteya nexweşiyên berbelav. Her yek bi heman avahiyê: ew çi ye, nîşane, kengî niha biçî, tu çi dikarî bikî, tu çi ji bijîşkê xwe bipirsî.",
+  hDrug: "Derman",
+  dDrug: "Derman û pêdiviyên xurekî bi rastgoyî. Çi dike, çi nake, bi çi re tevlihev nabe.",
+  hClaim: "Rast an Şaş",
+  dClaim: "Biryara me li ser wan îdîayên ku li herêma me belav dibin. Çar biryar hene — û «hîn nayê zanîn» yek ji wan e.",
+  hPlace: "Ez bo ku biçim",
+  dPlace: "Kîjan dezgeh kîjan xizmetê pêşkêş dike, û di kîjan demê de.",
+  hCorr: "Çewtiyên me",
+  dCorr: "Her çewtiya ku me kiriye û me çawa ew rast kiriye. Bi dîrok, bo hertimî.",
+  hSearch: "Encamên lêgerînê",
+  allCats: "Hemû", alphaAll: "Hemû tîp",
+  countN: n => `${n} mijar`,
+  noRes: "Ti encam nehat dîtin. Peyveke din biceribîne, an pirsa xwe ji me re bişîne.",
+
+  secWhat: "Ev çi ye", secSym: "Nîşane", secDo: "Tu çi dikarî bikî",
+  secFlag: "Niha biçe awarteyê", secAsk: "Ji bijîşkê xwe bipirse",
+  drugDoes: "Çi dike", drugNot: "Çi nake", drugCare: "Hay jê hebe",
+  flagsFoot: "Di van rewşan de pirsê neşîne û li bendê nemîne — rasterast biçe.",
+  tocH: "Di vê rûpelê de", relH: "Mijarên girêdayî",
+  backCond: "Hemû nexweşî", backDrug: "Hemû derman",
+
+  stampH: "Tomara nirxandinê",
+  sEv: "Asta belgeyê", sRev: "Nirxandina dawî", sBy: "Nirxandkarê bijîşkî",
+  sNext: "Nirxandina bê", sId: "Hejmara mijarê",
+  stampFoot: "Ev mijar du îmze wergirtine: berpirsê naverokê û nirxandkarê bijîşkî.",
+
+  vTrue: "RAST", vFalse: "ŞAŞ", vPart: "BEŞEK RAST", vUnk: "HÎN NAYÊ ZANÎN",
+  corrWas: "Me çi got:", corrNow: "Ya rast:",
+
+  hAsk: "Pirsekê bişîne",
+  dAsk: "Ev beş rêça naveroka me diyar dike. Ya ku hûn dipirsin, ew e ku em jê mijarê çêdikin.",
+  qLabel: "Pirsa te", qHint: "Bi zimanê xwe binivîse. Ne hewce ye peyvên bijîşkî bi kar bînî.",
+  qTopic: "Mijar", qCity: "Bajar (bijarte)", qName: "Nav (bijarte)",
+  qConsent: "Ez razî me ku pirsa min di weşanê de bê xwendin, bêyî navê min.",
+  qSend: "Bişîne", qErr: "Ji kerema xwe pirsa xwe binivîse.",
+  qOkH: "Pirsa te gihîşt",
+  qOkP1: "Pirsa te ket lîsteya vê hefteyê. Berpirsê naverokê her pirsê dixwîne.",
+  qOkP2: "Em bersivên kesane nadin û em nexweşiyê diyar nakin. Eger pirsa te berbelav be, ew dibe mijareke weşanê û li vir jî tê weşandin.",
+  qRef: "Hejmara pirsê", qAgain: "Pirseke din bişîne",
+  trH1: "Em dikarin çi bersiv bidin",
+  trY: ["Ev derman çi dike û çi nake","Gelo ev îdîa rast e","Kengî divê ez herim cem bijîşk","Ev test bi rastî çi nîşan dide","Ez çawa pêşî li vê nexweşiyê bigirim"],
+  trH2: "Em nikarin çi bersiv bidin",
+  trN: ["Gelo ev nexweşî bi min re heye — em nikarin diyar bikin","Ez kîjan dermanî bixwim û çiqas — ev karê bijîşkê te ye","Xwendina encamên testa te ya kesane","Biryara guhertina dermanên te"],
+  emH: "Eger yek ji van bi te re hebe, pirsê neşîne — niha biçe",
+  waH: "Li ser WhatsApp",
+  waS: "Deng an nivîs. Bi Kurdî, Erebî an Îngilîzî. Gelek temaşevan pirsa xwe wek dengî dişînin — ev normal e.",
+
+  hStd: "Pîvanên me",
+  dStd: "Ev beş rave dike ka mijarên me çawa tên çêkirin, kî wan dinirxîne, û em kengî çewtiyekê rast dikin.",
+  stdTiersH: "Astên belgeyê",
+  stdTiersD: "Her mijar li gorî belgeya herî bihêz a berdest tê polandin. Ev bi eşkereyî li ser her mijarê tê nîşandan.",
+  stdWhoH: "Kî dinirxîne",
+  stdWhoD: "Her mijar ji aliyê pisporekî wê warî ve tê nirxandin. Navê wan tê weşandin — ev berpirsyarî ye, ne xemilandin.",
+  stdCorrH: "Siyaseta rastkirinê",
+  stdCorrD: "Gava em şaş dikin, em wê rast dikin û bi dîroka wê diweşînin. Çewtî nayên jêbirin.",
+  stdLimitH: "Sînorên me",
+
+  footSlogan: "Tenduristî beriya her tiştî",
+  footNote: "Ev malper ne şûna şêwira bijîşkî ye. Di rewşa awarte de bi 122 re têkilî daynin. Her mijar beriya weşandinê pêdiviya wê bi du îmzeyan heye — berpirsê naverokê û nirxandkarê bijîşkî."
+},
+
+/* ============================================================
+   العربية — Arabic
+   ============================================================ */
+ar: {
+  htmlLang: "ar", dir: "rtl", langName: "العربية", langShort: "العربية",
+  brandName: "الصحة", brandSub: "قبل كل شيء",
+  utilEmerg: "الطوارئ", utilEmergNum: "١٢٢",
+  noticeTag: "نموذج أولي",
+  noticeBody: "المحتوى الطبي هنا نص تجريبي ويتطلب مراجعة سريرية قبل النشر.",
+  transNote: "لم تُراجَع هذه النسخة العربية بعد من قِبل متحدث أصلي.",
+  skip: "تخطَّ إلى المحتوى الرئيسي",
+  searchPh: "اكتب مرضاً أو دواءً أو عَرَضاً…",
+  searchLabel: "البحث في المواد",
+  langLabel: "اللغة",
+
+  navHome: "الرئيسية", navCond: "الأمراض", navDrug: "الأدوية",
+  navClaim: "صحيح أم خطأ", navPlace: "إلى أين أذهب",
+  navAsk: "اطرح سؤالاً", navStd: "معاييرنا", navCorr: "تصحيحاتنا",
+  navTools: "الأدوات", navLabel: "التنقل الرئيسي",
+
+  emergH: "اذهب إلى الطوارئ الآن إذا:",
+  emergList: [
+    "ألم في الصدر أو ضيق في التنفس",
+    "تدلي الوجه، أو ضعف في جانب واحد، أو تلعثم في الكلام",
+    "نزيف غزير",
+    "حمى عند رضيع دون ثلاثة أشهر",
+    "ارتخاء أو صعوبة في الإفاقة"
+  ],
+
+  leadKicker: "مادة هذا الأسبوع",
+  secKicker: "وأيضاً في هذا الموسم",
+  askedH: "الأكثر سؤالاً هذا الأسبوع",
+  askedSub: "من أسئلة المشاهدين — هذه تحدد اتجاه موادنا.",
+  askedFoot: "سؤالك ليس هنا؟ أرسله — كل سؤال يُقرأ.",
+  catsH: "حسب أجهزة الجسم",
+  catsMore: "جميع الأمراض",
+  claimsH: "أحدث أحكامنا",
+  claimsSub: "ادعاءات متداولة في منطقتنا، بأربعة أحكام — و«غير معروف بعد» أحدها.",
+  claimsMore: "جميع الأحكام",
+  bcastH: "من البث",
+  bcastSub: "أسئلة المشاهدين التي صارت مواد بث، تُنشر هنا أيضاً.",
+  bcastMore: "اطرح سؤالاً",
+  drugsH: "الأدوية", drugsMore: "جميع الأدوية",
+
+  stdH: "كيف نصنع هذه المواد",
+  stdMore: "معاييرنا بالتفصيل",
+  p1H: "توقيعان",
+  p1B: "لا تُنشر أي مادة دون توقيعين: <b>معدّ المحتوى</b> و<b>المراجع الطبي</b>. اسم المراجع ظاهر على كل مادة.",
+  p2H: "مستوى الدليل",
+  p2B: "كل مادة تُظهر قوة دليلها، من <b>رأي الخبراء</b> إلى <b>الدليل الإرشادي الدولي</b>. وحين يكون الدليل ضعيفاً، نقول ذلك.",
+  p3H: "تواريخ المراجعة",
+  p3B: "كل مادة تحمل تاريخ آخر مراجعة وتاريخ المراجعة القادمة. لا تبقى مادة قديمة دون إشارة.",
+  statEntries: "مادة مُراجَعة",
+  statReviewers: "مراجعاً طبياً",
+  statCorr: "تصحيحاً منشوراً",
+
+  hCond: "الأمراض",
+  dCond: "قائمة الأمراض الشائعة، كلها على القالب نفسه: ما هو، الأعراض، متى تذهب فوراً، ما يمكنك فعله، وما تسأل عنه طبيبك.",
+  hDrug: "الأدوية",
+  dDrug: "الأدوية والمكملات بصدق. ماذا تفعل، وماذا لا تفعل، ومع ماذا تتعارض.",
+  hClaim: "صحيح أم خطأ",
+  dClaim: "حكمنا على الادعاءات المتداولة في منطقتنا. أربعة أحكام — و«غير معروف بعد» أحدها.",
+  hPlace: "إلى أين أذهب",
+  dPlace: "أي مرفق يقدم أي خدمة، وفي أي وقت.",
+  hCorr: "تصحيحاتنا",
+  dCorr: "كل خطأ ارتكبناه وكيف صححناه. مؤرخ، وإلى الأبد.",
+  hSearch: "نتائج البحث",
+  allCats: "الكل", alphaAll: "كل الحروف",
+  countN: n => `${n} مادة`,
+  noRes: "لا توجد نتائج. جرّب كلمة أخرى، أو أرسل إلينا سؤالك.",
+
+  secWhat: "ما هو", secSym: "الأعراض", secDo: "ما يمكنك فعله",
+  secFlag: "اذهب إلى الطوارئ الآن", secAsk: "اسأل طبيبك",
+  drugDoes: "ماذا يفعل", drugNot: "ماذا لا يفعل", drugCare: "انتبه",
+  flagsFoot: "في هذه الحالات لا ترسل سؤالاً ولا تنتظر — اذهب فوراً.",
+  tocH: "في هذه الصفحة", relH: "مواد ذات صلة",
+  backCond: "جميع الأمراض", backDrug: "جميع الأدوية",
+
+  stampH: "سجل المراجعة",
+  sEv: "مستوى الدليل", sRev: "آخر مراجعة", sBy: "المراجع الطبي",
+  sNext: "المراجعة القادمة", sId: "رقم المادة",
+  stampFoot: "هذه المادة تحمل توقيعين: معدّ المحتوى والمراجع الطبي.",
+
+  vTrue: "صحيح", vFalse: "خطأ", vPart: "صحيح جزئياً", vUnk: "غير معروف بعد",
+  corrWas: "ما قلناه:", corrNow: "الصواب:",
+
+  hAsk: "اطرح سؤالاً",
+  dAsk: "هذا القسم يحدد أجندتنا التحريرية. ما تسألون عنه هو ما نصنعه.",
+  qLabel: "سؤالك", qHint: "اكتبه بكلماتك. لا حاجة لاستخدام مصطلحات طبية.",
+  qTopic: "الموضوع", qCity: "المدينة (اختياري)", qName: "الاسم (اختياري)",
+  qConsent: "أوافق على قراءة سؤالي في البث، دون ذكر اسمي.",
+  qSend: "إرسال", qErr: "الرجاء كتابة سؤالك.",
+  qOkH: "وصل سؤالك",
+  qOkP1: "دخل سؤالك في قائمة هذا الأسبوع. معدّ المحتوى يقرأ كل سؤال.",
+  qOkP2: "نحن لا نقدم إجابات فردية ولا نشخّص. إذا كان سؤالك شائعاً، يصبح مادة بث ويُنشر هنا أيضاً.",
+  qRef: "رقم السؤال", qAgain: "أرسل سؤالاً آخر",
+  trH1: "ما يمكننا الإجابة عنه",
+  trY: ["ماذا يفعل هذا الدواء وماذا لا يفعل","هل هذا الادعاء المتداول صحيح","متى ينبغي أن أراجع طبيباً","ماذا يُظهر هذا الفحص فعلاً","كيف أقي نفسي من هذا المرض"],
+  trH2: "ما لا يمكننا الإجابة عنه",
+  trN: ["هل أنا مصاب بهذا المرض — لا نستطيع التشخيص","أي دواء آخذ وبأي جرعة — هذا شأن طبيبك","قراءة نتائج فحوصك الشخصية","قرار تغيير أدويتك"],
+  emH: "إذا كان لديك أي من هذه، لا ترسل سؤالاً — اذهب الآن",
+  waH: "على واتساب",
+  waS: "صوتاً أو نصاً. بالكردية أو العربية أو الإنجليزية. كثير من المشاهدين يرسلون سؤالهم كرسالة صوتية — وهذا عادي.",
+
+  hStd: "معاييرنا",
+  dStd: "يوضح هذا القسم كيف تُصنع موادنا، ومن يراجعها، ومتى نصحح خطأً.",
+  stdTiersH: "مستويات الدليل",
+  stdTiersD: "تُصنّف كل مادة حسب أقوى دليل متاح لها. وهذا معروض بوضوح على المادة نفسها.",
+  stdWhoH: "من يراجع",
+  stdWhoD: "كل مادة يراجعها اختصاصي في ذلك المجال. ويُنشر اسمه — هذه مساءلة، لا زينة.",
+  stdCorrH: "سياسة التصحيح",
+  stdCorrD: "حين نخطئ، نصحح الخطأ وننشر التصحيح بتاريخه. ولا تُحذف التصحيحات.",
+  stdLimitH: "حدودنا",
+
+  footSlogan: "الصحة قبل كل شيء",
+  footNote: "هذا الموقع ليس بديلاً عن الاستشارة الطبية. في حالات الطوارئ اتصل بالرقم ١٢٢. كل مادة تتطلب توقيعين قبل النشر — معدّ المحتوى والمراجع الطبي."
+},
+
+/* ============================================================
+   English
+   ============================================================ */
 en: {
-  /* ---- chrome ---- */
-  htmlLang: "en", dir: "ltr", langBtn: "کوردی",
+  htmlLang: "en", dir: "ltr", langName: "English", langShort: "English",
   brandName: "Health", brandSub: "Before everything else",
   utilEmerg: "Emergency", utilEmergNum: "122",
   noticeTag: "PROTOTYPE",
   noticeBody: "Medical content here is sample text and requires clinical review before publication.",
+  transNote: "",
   skip: "Skip to main content",
   searchPh: "Type a condition, medicine or symptom…",
   searchLabel: "Search entries",
+  langLabel: "Language",
 
-  /* ---- navigation ---- */
   navHome: "Home", navCond: "Conditions", navDrug: "Medicines",
   navClaim: "True or False", navPlace: "Where to go",
   navAsk: "Ask a question", navStd: "Our standards", navCorr: "Corrections",
-  navLabel: "Main navigation",
+  navTools: "Tools", navLabel: "Main navigation",
 
-  /* ---- emergency band ---- */
   emergH: "Go to emergency now if:",
   emergList: [
     "Chest pain or breathlessness",
@@ -156,7 +396,6 @@ en: {
     "Floppiness or difficulty waking"
   ],
 
-  /* ---- front page ---- */
   leadKicker: "This week's entry",
   secKicker: "Also this season",
   askedH: "Most asked this week",
@@ -170,20 +409,20 @@ en: {
   bcastH: "From the broadcast",
   bcastSub: "Viewers' questions that became broadcast items, published here too.",
   bcastMore: "Ask a question",
-  drugsH: "Medicines",
-  drugsMore: "All medicines",
+  drugsH: "Medicines", drugsMore: "All medicines",
 
-  /* ---- standards band ---- */
   stdH: "How these entries are made",
   stdMore: "Our standards in full",
-  p1H: "Two signatures", p1B: "No entry is published without two signatures: the <b>content producer</b> and the <b>medical reviewer</b>. The reviewer is named on every entry.",
-  p2H: "Evidence level", p2B: "Every entry shows the strength of its evidence, from <b>expert opinion</b> to <b>international guideline</b>. Where the evidence is weak, we say so.",
-  p3H: "Review dates", p3B: "Every entry carries the date it was last reviewed and the date it is next due. Nothing goes stale without being marked.",
+  p1H: "Two signatures",
+  p1B: "No entry is published without two signatures: the <b>content producer</b> and the <b>medical reviewer</b>. The reviewer is named on every entry.",
+  p2H: "Evidence level",
+  p2B: "Every entry shows the strength of its evidence, from <b>expert opinion</b> to <b>international guideline</b>. Where the evidence is weak, we say so.",
+  p3H: "Review dates",
+  p3B: "Every entry carries the date it was last reviewed and the date it is next due. Nothing goes stale without being marked.",
   statEntries: "reviewed entries",
   statReviewers: "medical reviewers",
   statCorr: "published corrections",
 
-  /* ---- index pages ---- */
   hCond: "Conditions",
   dCond: "Common conditions, every one on the same template: what it is, symptoms, when to go now, what you can do, what to ask your doctor.",
   hDrug: "Medicines",
@@ -195,30 +434,25 @@ en: {
   hCorr: "Our corrections",
   dCorr: "Every mistake we have made and how we fixed it. Dated, permanent.",
   hSearch: "Search results",
-  allCats: "All",
-  alphaAll: "All letters",
+  allCats: "All", alphaAll: "All letters",
   countN: n => `${n} ${n === 1 ? "entry" : "entries"}`,
   noRes: "No results. Try another word, or send us your question.",
 
-  /* ---- article ---- */
   secWhat: "What it is", secSym: "Symptoms", secDo: "What you can do",
   secFlag: "Go to emergency now", secAsk: "Ask your doctor",
   drugDoes: "What it does", drugNot: "What it does not do", drugCare: "Take care",
   flagsFoot: "In these situations do not send a question and do not wait — go immediately.",
-  tocH: "On this page",
-  relH: "Related entries",
+  tocH: "On this page", relH: "Related entries",
   backCond: "All conditions", backDrug: "All medicines",
 
-  /* ---- review stamp ---- */
   stampH: "Review record",
   sEv: "Evidence level", sRev: "Last reviewed", sBy: "Medical reviewer",
   sNext: "Next review due", sId: "Entry ID",
   stampFoot: "This entry carries two signatures: the content producer and the medical reviewer.",
 
-  /* ---- verdicts ---- */
   vTrue: "TRUE", vFalse: "FALSE", vPart: "PARTLY TRUE", vUnk: "NOT YET KNOWN",
+  corrWas: "What we said:", corrNow: "What is correct:",
 
-  /* ---- ask ---- */
   hAsk: "Ask a question",
   dAsk: "This section sets our editorial agenda. What you ask is what we make.",
   qLabel: "Your question", qHint: "Write it in your own words. You do not need to use medical terms.",
@@ -234,11 +468,9 @@ en: {
   trH2: "What we cannot answer",
   trN: ["Whether you have a condition — we cannot diagnose","Which medicine to take and how much — that is for your own doctor","Reading your personal test results","Deciding to change your medication"],
   emH: "If you have any of these, do not send a question — go now",
-  waH: "On WhatsApp", waS: "Voice or text. In Kurdish, Arabic or English. Many viewers send their question as a voice note — that is fine.",
-  hAns: "Questions we have answered",
-  ansOn: "Answered on air",
+  waH: "On WhatsApp",
+  waS: "Voice or text. In Kurdish, Arabic or English. Many viewers send their question as a voice note — that is fine.",
 
-  /* ---- standards page ---- */
   hStd: "Our standards",
   dStd: "This section explains how our entries are made, who reviews them, and when we correct a mistake.",
   stdTiersH: "Levels of evidence",
@@ -249,7 +481,6 @@ en: {
   stdCorrD: "When we get something wrong, we fix it and publish the correction with its date. Corrections are not deleted.",
   stdLimitH: "Our limits",
 
-  /* ---- footer ---- */
   footSlogan: "Health before everything else",
   footNote: "This site is not a substitute for medical advice. In an emergency call 122. Every entry requires two signatures before publication — the content producer and the medical reviewer."
 }

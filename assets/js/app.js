@@ -35,9 +35,26 @@ const CAT_ICON = {
   gut: 'gut', kidney: 'kidney', blood: 'blood', bone: 'bone', mind: 'mind', env: 'env'
 };
 
-/* Sorani alphabet, in order, for the A–Z index */
-const ALPHA_KU = ['ئ','ا','ب','پ','ت','ج','چ','ح','خ','د','ر','ڕ','ز','ژ','س','ش','ع','غ','ف','ڤ','ق','ک','گ','ل','ڵ','م','ن','ه','و','ۆ','ی','ێ'];
-const ALPHA_EN = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+/* Alphabets for the A–Z index, one per language */
+const ALPHA = {
+  ku:  ['ئ','ا','ب','پ','ت','ج','چ','ح','خ','د','ر','ڕ','ز','ژ','س','ش','ع','غ','ف','ڤ','ق','ک','گ','ل','ڵ','م','ن','ه','و','ۆ','ی','ێ'],
+  ar:  ['ا','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','ه','و','ي'],
+  kmr: ['A','B','C','Ç','D','E','Ê','F','G','H','I','Î','J','K','L','M','N','O','P','Q','R','S','Ş','T','U','Û','V','W','X','Y','Z'],
+  en:  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+};
+
+/* The letter an entry files under. Arabic titles almost all begin with
+   the definite article ال, which would pile every entry under ا, so it
+   is stripped first — the way a printed Arabic index is ordered. The
+   hamza carriers أ إ آ all fold to ا. */
+function firstLetter(name, lang) {
+  let s = String(name).trim();
+  if (lang === 'ar') {
+    if (s.startsWith('ال') && s.length > 2) s = s.slice(2);
+    s = s.replace(/^[أإآٱ]/, 'ا');
+  }
+  return lang === 'kmr' || lang === 'en' ? s[0].toUpperCase() : s[0];
+}
 
 /* Editorially selected front-page entries — region-specific,
    seasonal, and the screening story we keep returning to. */
@@ -46,7 +63,33 @@ const SECONDARY = ['RH-DUS-001', 'RH-THA-001', 'RH-T2D-001'];
 
 /* Build stamp — rendered in the footer so the running version is
    identifiable at a glance. Bump on every deploy. */
-const BUILD = '2026-08-29 · r3';
+const BUILD = '2026-08-29 · r4';
+
+/* ---------- translations ------------------------------- */
+/* The Sorani and English records are the source of truth; Kurmancî and
+   Arabic are attached onto them by id so the base data is never edited. */
+function attachTranslations(code, TR) {
+  if (!TR) return;
+  CATS.forEach(c => { c[code] = c.k === 'all' ? UI[code].allCats : TR.cats[c.k]; });
+  Object.keys(TIER).forEach(n => { TIER[n][code] = TR.tier[n]; });
+  TOPICS.forEach(t => { if (TR.topics[t.k]) t[code] = TR.topics[t.k]; });
+  ASKED[code] = TR.asked;
+  CONDITIONS.forEach(c => { if (TR.cond[c.id]) c[code] = TR.cond[c.id]; });
+  DRUGS.forEach(d => { if (TR.drug[d.id]) d[code] = TR.drug[d.id]; });
+  CLAIMS.forEach(v => { if (TR.claim[v.id]) v[code] = TR.claim[v.id]; });
+  PLACES.forEach((p, i) => { if (TR.place[i]) p[code] = TR.place[i]; });
+  CORRECTIONS.forEach(c => { if (TR.corr[c.id]) c[code] = TR.corr[c.id]; });
+  ANSWERED.forEach((a, i) => {
+    const t = TR.answered[i];
+    if (t) { a[code] = { q: t.q, a: t.a }; a['seg_' + code] = t.seg; }
+  });
+}
+
+/* Normalise the broadcast segment names the base data stores as
+   `seg` / `segEn` into the same per-language shape as the rest. */
+ANSWERED.forEach(a => { a.seg_ku = a.seg; a.seg_en = a.segEn; });
+attachTranslations('kmr', typeof KMR !== 'undefined' ? KMR : null);
+attachTranslations('ar', typeof AR !== 'undefined' ? AR : null);
 
 /* ---------- state -------------------------------------- */
 let L = 'ku';
@@ -220,7 +263,7 @@ function viewHome() {
       <div class="grid grid--2">
         ${ANSWERED.map(a => `<article class="bcast">
           <div class="bcast-m">
-            <span class="seg">${esc(L === 'ku' ? a.seg : a.segEn)}</span>
+            <span class="seg">${esc(a['seg_' + L] || a.seg_en)}</span>
             <span class="label data">${esc(a.d)}</span>
           </div>
           <h3 class="bcast-q">${esc(a[L].q)}</h3>
@@ -252,12 +295,12 @@ function viewConditions(p) {
   const letter = p.letter || '';
   let list = CONDITIONS;
   if (cat !== 'all') list = list.filter(c => c.cat === cat);
-  if (letter) list = list.filter(c => c[L].name.trim()[0] === letter);
+  if (letter) list = list.filter(c => firstLetter(c[L].name, L) === letter);
 
-  const alpha = L === 'ku' ? ALPHA_KU : ALPHA_EN;
+  const alpha = ALPHA[L] || ALPHA.en;
   const present = new Set(CONDITIONS
     .filter(c => cat === 'all' || c.cat === cat)
-    .map(c => c[L].name.trim()[0].toUpperCase()));
+    .map(c => firstLetter(c[L].name, L)));
 
   return `
   <div class="wrap">
@@ -274,7 +317,7 @@ function viewConditions(p) {
     <div class="alpha">
       <button type="button" aria-pressed="${!letter}" data-nav="#/conditions?cat=${cat}">${esc(T('alphaAll'))}</button>
       ${alpha.map(a => {
-        const has = present.has(a.toUpperCase());
+        const has = present.has(a);
         return `<button type="button" ${has ? '' : 'disabled'} aria-pressed="${letter === a}"
           data-nav="#/conditions?cat=${cat}&letter=${encodeURIComponent(a)}">${a}</button>`;
       }).join('')}
@@ -438,8 +481,8 @@ function viewCorrections() {
     </header>
     ${CORRECTIONS.map(c => `<article class="corr">
       <div class="corr-d"><span class="data">${esc(c.d)}</span><span class="data">${esc(c.id)}</span></div>
-      <p class="corr-w"><b>${L === 'ku' ? 'ئەوەی وتمان:' : 'What we said:'}</b> ${esc(c[L].was)}</p>
-      <p class="corr-f"><b>${L === 'ku' ? 'ئەوەی ڕاستە:' : 'What is correct:'}</b> ${esc(c[L].now)}</p>
+      <p class="corr-w"><b>${esc(T('corrWas'))}</b> ${esc(c[L].was)}</p>
+      <p class="corr-f"><b>${esc(T('corrNow'))}</b> ${esc(c[L].now)}</p>
     </article>`).join('')}
   </div>`;
 }
@@ -615,11 +658,15 @@ function renderChrome() {
     <div class="util"><div class="wrap">
       <span class="util-em">${ICON.phone}<span>${esc(T('utilEmerg'))}</span><b>${esc(T('utilEmergNum'))}</b></span>
       <span class="util-sp"></span>
-      <button class="lang" type="button" id="lang">${esc(T('langBtn'))}</button>
+      <nav class="langs" aria-label="${esc(T('langLabel'))}">
+        ${LANGS.map(c => `<button type="button" class="lang" data-lang="${c}"
+          aria-pressed="${c === L}" lang="${UI[c].htmlLang}">${esc(UI[c].langShort)}</button>`).join('')}
+      </nav>
     </div></div>
 
     <div class="notice"><div class="wrap">
-      <b>${esc(T('noticeTag'))}</b><span>${esc(T('noticeBody'))}</span>
+      <b>${esc(T('noticeTag'))}</b>
+      <span>${esc(T('noticeBody'))}${T('transNote') ? ' ' + esc(T('transNote')) : ''}</span>
     </div></div>
 
     <header class="mast"><div class="wrap">
@@ -708,7 +755,8 @@ function render(keepScroll) {
 }
 
 function pageTitle() {
-  const base = L === 'ku' ? 'ڕووداو تەندروستی' : 'Rudaw Health';
+  const base = { ku: 'ڕووداو تەندروستی', ar: 'رووداو الصحة',
+                 kmr: 'Rudaw Tenduristî', en: 'Rudaw Health' }[L];
   if (route.name === 'condition') { const c = condById(route.params.id); if (c) return `${c[L].name} — ${base}`; }
   if (route.name === 'medicine') { const m = drugById(route.params.id); if (m) return `${m[L].name} — ${base}`; }
   const k = { conditions: 'hCond', medicines: 'hDrug', checks: 'hClaim', services: 'hPlace',
@@ -726,8 +774,8 @@ function setLang(next) {
 
 /* ---------- events ------------------------------------- */
 document.addEventListener('click', e => {
-  const lang = e.target.closest('#lang');
-  if (lang) { setLang(L === 'ku' ? 'en' : 'ku'); return; }
+  const lang = e.target.closest('[data-lang]');
+  if (lang) { if (lang.dataset.lang !== L) setLang(lang.dataset.lang); return; }
 
   const nav = e.target.closest('[data-nav]');
   if (nav) { location.hash = nav.dataset.nav; return; }
@@ -777,7 +825,7 @@ window.addEventListener('hashchange', () => render());
 
 /* ---------- boot --------------------------------------- */
 try { L = localStorage.getItem('rh-lang') || 'ku'; } catch (e) { L = 'ku'; }
-if (!UI[L]) L = 'ku';
+if (!LANGS.includes(L)) L = 'ku';
 document.body.dir = T('dir');
 document.documentElement.lang = T('htmlLang');
 render();

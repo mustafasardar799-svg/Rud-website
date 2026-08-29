@@ -196,11 +196,13 @@ body[dir="ltr"] .rule-h .more::after { content: " ›"; }
 .util-em svg { width: 15px; height: 15px; flex: none; }
 .util-em b { font-family: var(--mono); font-weight: 500; letter-spacing: .04em; }
 .util-sp { margin-inline-start: auto; }
+.langs { display: flex; gap: 4px; flex-wrap: wrap; }
 .lang {
-  background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.42);
-  border-radius: 2px; padding: 4px 13px; font-size: 13px; font-weight: 500;
+  background: transparent; color: #C7E6E0; border: 1px solid transparent;
+  border-radius: 2px; padding: 4px 11px; font-size: 13px; font-weight: 500;
 }
-.lang:hover { background: #fff; color: var(--brand-dd); border-color: #fff; }
+.lang:hover { background: rgba(255,255,255,.14); color: #fff; }
+.lang[aria-pressed="true"] { background: #fff; color: var(--brand-dd); font-weight: 600; }
 
 /* prototype notice — this is an editorial signal, keep it visible */
 .notice {
