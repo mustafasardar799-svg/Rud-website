@@ -22,6 +22,27 @@
      15  Print
    ============================================================ */
 
+/* ---------- 00  Brand typeface --------------------------
+   Rudaw, the channel's own face (Brand Central / M&C Saatchi
+   MENA). It is the only font here drawn for Kurdish rather than
+   adapted to it: ڕ ڵ ۆ ێ ڤ are designed letters, not borrowed
+   ones, and it also carries the Kurmancî diacritics and Latin,
+   so one face serves all four languages.
+
+   The file ships a single weight, so bold is synthesised. Noto
+   Sans Arabic follows in the stack to supply the eight characters
+   Rudaw omits — the degree sign, an ellipsis, and the Arabic
+   vowel marks — which would otherwise fall to a system font.
+   -------------------------------------------------------- */
+@font-face {
+  font-family: "Rudaw";
+  src: url("../fonts/rudaw-regular.woff2") format("woff2"),
+       url("../fonts/rudaw-regular.woff")  format("woff");
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ---------- 01  Tokens ---------------------------------- */
 :root {
   /* ink */
@@ -63,14 +84,11 @@
      Sans Arabic and Latin text (Kurmancî, English) in IBM Plex Sans,
      with no mixing inside a word.
 
-     Noto Sans Arabic is used rather than a Kufi face for two reasons:
-     Kufi is a display style and tires the eye over paragraphs, and Noto
-     covers the whole Arabic block — including the Kurdish letters
-     ڕ ڵ ۆ ێ ڤ, which many Arabic fonts omit. When a font lacks those,
-     the browser substitutes another face for just those letters and the
-     text breaks up mid-word. */
-  --display: "Noto Sans Arabic", "IBM Plex Sans", "Segoe UI", Tahoma, system-ui, sans-serif;
-  --body:    "Noto Sans Arabic", "IBM Plex Sans", "Segoe UI", Tahoma, system-ui, sans-serif;
+     Rudaw leads the stack; Noto Sans Arabic backs it for the few
+     characters it omits, and covers the whole Arabic block so no
+     Kurdish letter can fall through to a system font. */
+  --display: "Rudaw", "Noto Sans Arabic", "IBM Plex Sans", "Segoe UI", Tahoma, system-ui, sans-serif;
+  --body:    "Rudaw", "Noto Sans Arabic", "IBM Plex Sans", "Segoe UI", Tahoma, system-ui, sans-serif;
   --mono:    "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
   /* measure */
@@ -81,6 +99,17 @@
   --lift-1: 0 1px 2px rgba(13,31,28,.06), 0 2px 8px rgba(13,31,28,.04);
   --lift-2: 0 2px 4px rgba(13,31,28,.06), 0 8px 24px rgba(13,31,28,.07);
   --lift-3: 0 4px 12px rgba(13,31,28,.09), 0 20px 48px rgba(13,31,28,.10);
+}
+
+
+/* Rudaw's Latin circumflex accents are anchored too low: î ê û collide
+   with the letterform instead of sitting above it. That is invisible in
+   Sorani, Arabic and English, which use no accented Latin, but it makes
+   Kurmancî — where î ê û ş ç appear in almost every word — unreadable.
+   Kurmancî alone therefore takes a Latin face with correct anchors. */
+html[lang="kmr"] {
+  --display: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --body:    "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
 }
 
 /* ---------- 02  Reset & base ---------------------------- */
