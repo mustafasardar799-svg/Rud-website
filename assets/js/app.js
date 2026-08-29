@@ -83,7 +83,7 @@ const SECONDARY = ['RH-DUS-001', 'RH-THA-001', 'RH-T2D-001'];
 
 /* Build stamp — rendered in the footer so the running version is
    identifiable at a glance. Bump on every deploy. */
-const BUILD = '2026-08-29 · r8';
+const BUILD = '2026-08-29 · r9';
 
 /* ---------- translations ------------------------------- */
 /* The Sorani and English records are the source of truth; Kurmancî and
@@ -227,9 +227,9 @@ function viewHome() {
     <div class="hero-photo" aria-hidden="true"></div>
     <div class="hero-tint" aria-hidden="true"></div>
     <div class="hero-bg">${burstSVG()}</div>
+    ${PULSE}
     <div class="wrap">
-    <div class="hero-grid">
-      <div>
+      <div class="hero-lead">
         <div class="kicker">${esc(T('leadKicker'))}</div>
         <h1 class="lead-t"><a href="#/c/${lead.id}">${esc(lead[L].name)}</a></h1>
         <p class="lead-s">${esc(lead[L].sum)}</p>
@@ -239,7 +239,15 @@ function viewHome() {
           <span class="meta">${esc(lead.by)}</span>
         </div>
 
-        <div class="kicker" style="margin-top:38px">${esc(T('secKicker'))}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--tight">
+    <div class="wrap">
+    <div class="below-grid">
+      <div>
+        <div class="kicker">${esc(T('secKicker'))}</div>
         <div class="sec-list">
           ${secs.map((c, i) => `<a class="sec-item" href="#/c/${c.id}">
             <span class="sec-n">0${i + 2}</span>
@@ -259,7 +267,6 @@ function viewHome() {
         <div class="rail-f">${esc(T('askedFoot'))}</div>
       </aside>
     </div>
-    ${PULSE}
     </div>
   </section>
 
