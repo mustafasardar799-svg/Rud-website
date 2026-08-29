@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="ckb" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ڕووداو تەندروستی — Rudaw Health</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand:#089082;
+  --deep:#005D53;
+  --darkest:#0B2F2B;
+  --paper:#F4F8F7;
+  --surface:#FFFFFF;
+  --ink:#0E3530;
+  --alarm:#C1372B;
+  --alarm-soft:#FBEEEC;
+  --brand-soft:#E2F1EE;
+  --muted:#5F7873;
+  --line:#D9E6E2;
+  --display:"Noto Kufi Arabic", system-ui, sans-serif;
+  --body:"IBM Plex Sans Arabic", system-ui, sans-serif;
+  --data:"IBM Plex Mono","IBM Plex Sans Arabic",ui-monospace,monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);
+  font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased;}
+:focus-visible{outline:2.5px solid var(--brand);outline-offset:3px;border-radius:2px;}
+.wrap{max-width:980px;margin:0 auto;padding:0 22px;}
+
+/* ---------- prototype notice ---------- */
+.notice{background:var(--darkest);color:#8FBFB6;font-family:var(--data);
+  font-size:11px;letter-spacing:.02em;padding:8px 0;line-height:1.5;}
+.notice .wrap{display:flex;gap:12px;align-items:baseline;}
+.notice b{color:#fff;font-weight:500;white-space:nowrap;}
+
+/* ---------- masthead ---------- */
+.mast{background:var(--brand);}
+.mast .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:13px;}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;}
+.mark{width:40px;height:40px;flex:none;}
+.brand-t{font-family:var(--display);font-weight:800;font-size:19px;line-height:1.15;letter-spacing:-.01em;display:block;}
+.brand-s{font-family:var(--body);font-weight:400;font-size:12px;color:#C7E6E0;letter-spacing:.01em;display:block;}
+.lang{font-family:var(--data);font-size:11px;letter-spacing:.06em;background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.45);border-radius:2px;padding:6px 12px;cursor:pointer;color:#fff;}
+.lang:hover{background:#fff;color:var(--brand);}
+
+/* ---------- hero ---------- */
+.hero{background:linear-gradient(160deg,var(--deep) 0%,var(--darkest) 88%);
+  color:#fff;padding-block:56px 0;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;inset-inline-start:-14%;top:-46%;
+  width:66%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,rgba(8,144,130,.55) 0%,transparent 68%);pointer-events:none;}
+.hero .wrap{position:relative;z-index:2;}
+.eyebrow{font-family:var(--data);font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:#6FC9BC;margin-bottom:14px;}
+.hero h1{font-family:var(--display);font-weight:800;
+  font-size:clamp(27px,5.2vw,43px);line-height:1.32;margin:0 0 10px;letter-spacing:-.015em;}
+.hero p.sub{color:#B4D9D2;margin:0 0 26px;max-width:54ch;font-size:15px;}
+.searchbox input{width:100%;font-family:var(--body);font-size:18px;color:var(--ink);
+  background:#fff;border:none;border-radius:3px;padding:18px 20px;
+  box-shadow:0 3px 22px rgba(0,0,0,.22);}
+.searchbox input::placeholder{color:#8FA5A0;}
+.searchbox input:focus{outline:none;box-shadow:0 0 0 4px rgba(111,201,188,.5);}
+.asked{margin-top:20px;}
+.asked-h{font-family:var(--data);font-size:10.5px;letter-spacing:.09em;
+  text-transform:uppercase;color:#6FC9BC;margin-bottom:10px;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{font-family:var(--body);font-size:13.5px;background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.28);border-radius:100px;padding:6px 14px;cursor:pointer;color:#DCEFEB;}
+.chip:hover{background:#fff;color:var(--deep);border-color:#fff;}
+.pulse{display:block;width:100%;height:44px;margin-top:34px;}
+
+/* ---------- tabs ---------- */
+.tabs{border-bottom:1px solid var(--line);background:var(--surface);position:sticky;top:0;z-index:20;}
+.tabs .wrap{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;}
+.tabs .wrap::-webkit-scrollbar{display:none;}
+.tab{font-family:var(--body);font-size:14px;font-weight:500;white-space:nowrap;
+  background:none;border:none;border-bottom:2.5px solid transparent;
+  padding:14px 15px;cursor:pointer;color:var(--muted);}
+.tab:hover{color:var(--ink);}
+.tab[aria-selected="true"]{color:var(--brand);border-bottom-color:var(--brand);}
+
+/* ---------- panels ---------- */
+main{padding-block:34px 78px;min-height:50vh;}
+.panel{display:none;}
+.panel.on{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+.sect-h{font-family:var(--display);font-weight:700;font-size:19px;margin:0 0 6px;}
+.sect-d{color:var(--muted);font-size:14.5px;margin:0 0 22px;max-width:62ch;}
+
+.list{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:4px;overflow:hidden;}
+.entry{background:var(--surface);border:none;width:100%;text-align:start;cursor:pointer;
+  padding:15px 18px;display:flex;align-items:center;gap:14px;font-family:var(--body);color:inherit;}
+.entry:hover{background:var(--brand-soft);}
+.entry-main{flex:1;min-width:0;}
+.entry-t{font-weight:600;font-size:15.5px;line-height:1.4;display:block;}
+.entry-s{color:var(--muted);font-size:13px;line-height:1.5;margin-top:2px;display:block;}
+.entry-meta{font-family:var(--data);font-size:10px;color:var(--muted);white-space:nowrap;letter-spacing:.04em;}
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:4px;
+  padding:30px 22px;text-align:center;color:var(--muted);font-size:14.5px;}
+
+.cats{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px;}
+.cat{font-family:var(--body);font-size:12.5px;background:var(--surface);
+  border:1px solid var(--line);border-radius:100px;padding:5px 13px;cursor:pointer;color:var(--muted);}
+.cat:hover{border-color:var(--brand);color:var(--brand);}
+.cat[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:500;}
+.count{font-family:var(--data);font-size:10.5px;color:var(--muted);letter-spacing:.05em;margin-bottom:14px;}
+
+/* ---------- question line ---------- */
+.hero-cta{margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.18);
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.hero-cta button{font-family:var(--body);font-size:14px;font-weight:600;cursor:pointer;
+  background:#fff;color:var(--deep);border:none;border-radius:3px;padding:10px 18px;}
+.hero-cta button:hover{background:#D8F0EB;}
+.hero-cta span{font-size:13.5px;color:#B4D9D2;}
+
+.ask-grid{display:grid;grid-template-columns:1fr 260px;gap:32px;align-items:start;}
+@media (max-width:780px){.ask-grid{grid-template-columns:1fr;gap:22px;}}
+.qform{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:20px;}
+.qlabel{font-family:var(--body);font-weight:600;font-size:14px;display:block;margin-bottom:6px;}
+.qhint{font-size:12.5px;color:var(--muted);margin-bottom:8px;}
+.qform textarea,.qform input,.qform select{width:100%;font-family:var(--body);font-size:15px;
+  color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:3px;padding:11px 13px;margin-bottom:16px;}
+.qform textarea{min-height:110px;resize:vertical;line-height:1.65;}
+.qform textarea:focus,.qform input:focus,.qform select:focus{outline:none;border-color:var(--brand);
+  box-shadow:0 0 0 3px var(--brand-soft);background:#fff;}
+.qrow{display:flex;gap:12px;}
+.qrow>div{flex:1;min-width:0;}
+.qcheck{display:flex;gap:10px;align-items:flex-start;margin-bottom:16px;font-size:13.5px;line-height:1.6;}
+.qcheck input{width:auto;margin:4px 0 0;flex:none;}
+.qsubmit{font-family:var(--body);font-size:15px;font-weight:600;background:var(--brand);
+  color:#fff;border:none;border-radius:3px;padding:12px 24px;cursor:pointer;}
+.qsubmit:hover{background:var(--deep);}
+.qsubmit:disabled{background:#A9C4BF;cursor:not-allowed;}
+.qerr{color:var(--alarm);font-size:13px;margin-top:10px;}
+.qok{background:var(--brand-soft);border:1px solid #9FCFC6;border-radius:4px;padding:22px;}
+.qok-h{font-family:var(--display);font-weight:800;font-size:17px;color:var(--deep);margin-bottom:8px;}
+.qok p{font-size:14.5px;margin:0 0 10px;}
+.qref{font-family:var(--data);font-size:13px;background:#fff;border:1px dashed var(--brand);
+  border-radius:3px;padding:9px 13px;display:inline-block;color:var(--deep);letter-spacing:.05em;}
+.triage{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:18px;margin-bottom:14px;}
+.triage h4{font-family:var(--display);font-weight:700;font-size:13.5px;margin:0 0 8px;color:var(--deep);}
+.triage ul{margin:0 0 14px;padding-inline-start:18px;}
+.triage li{font-size:13.5px;margin-bottom:5px;color:var(--muted);}
+.triage ul:last-child{margin-bottom:0;}
+.wa{background:var(--deep);color:#fff;border-radius:4px;padding:16px 18px;}
+.wa-h{font-family:var(--display);font-weight:700;font-size:13.5px;margin-bottom:6px;}
+.wa-n{font-family:var(--data);font-size:15px;letter-spacing:.04em;}
+.wa-s{font-size:12.5px;color:#A8D6CE;margin-top:6px;line-height:1.6;}
+.ans{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:15px 17px;margin-bottom:11px;}
+.ans-q{font-weight:600;font-size:15px;line-height:1.5;margin-bottom:6px;}
+.ans-a{font-size:14px;color:var(--muted);margin-bottom:9px;}
+.ans-f{font-family:var(--data);font-size:10px;color:var(--brand);letter-spacing:.05em;
+  padding-top:9px;border-top:1px solid var(--line);}
+.ev{display:inline-flex;gap:2.5px;align-items:center;vertical-align:middle;}
+.ev i{width:7px;height:13px;background:var(--line);border-radius:1px;display:block;}
+.ev i.f{background:var(--brand);}
+
+/* ---------- article ---------- */
+.back{background:none;border:none;font-family:var(--data);font-size:11.5px;
+  letter-spacing:.05em;color:var(--brand);cursor:pointer;padding:0;margin-bottom:20px;}
+.art-head{border-bottom:2.5px solid var(--brand);padding-bottom:16px;margin-bottom:22px;}
+.art-kicker{font-family:var(--data);font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--brand);margin-bottom:8px;}
+.art-head h2{font-family:var(--display);font-weight:800;
+  font-size:clamp(23px,4.4vw,32px);line-height:1.32;margin:0;letter-spacing:-.015em;}
+.art-head .lede{color:var(--muted);font-size:15.5px;margin:10px 0 0;}
+.art-grid{display:grid;grid-template-columns:1fr 220px;gap:34px;align-items:start;}
+@media (max-width:760px){.art-grid{grid-template-columns:1fr;gap:24px;}}
+.art-body h3{font-family:var(--display);font-weight:700;font-size:16px;
+  margin:26px 0 8px;padding-bottom:5px;border-bottom:1px solid var(--line);}
+.art-body h3:first-child{margin-top:0;}
+.art-body p{margin:0 0 12px;font-size:15.5px;}
+.art-body ul{margin:0 0 12px;padding-inline-start:20px;}
+.art-body li{margin-bottom:6px;font-size:15.5px;}
+
+.flags{background:var(--alarm-soft);border:1px solid #F0CCC7;
+  border-inline-start:4px solid var(--alarm);border-radius:3px;padding:16px 18px;margin:22px 0;}
+.flags-h{font-family:var(--display);font-weight:800;font-size:15px;color:var(--alarm);
+  display:flex;align-items:center;gap:8px;margin-bottom:9px;}
+.flags ul{margin:0;padding-inline-start:19px;}
+.flags li{font-size:15px;margin-bottom:5px;color:#6B1D16;}
+.ask{background:var(--brand-soft);border-radius:3px;padding:16px 18px;margin:22px 0 0;}
+.ask-h{font-family:var(--display);font-weight:700;font-size:14.5px;color:var(--deep);margin-bottom:8px;}
+.ask ul{margin:0;padding-inline-start:19px;}
+.ask li{font-size:14.5px;margin-bottom:5px;}
+
+/* ---------- SIGNATURE: review stamp ---------- */
+.stamp{background:var(--surface);border:1.5px solid var(--deep);
+  box-shadow:0 0 0 1.5px var(--surface),0 0 0 3px var(--deep);
+  border-radius:2px;padding:15px 15px 13px;font-family:var(--data);
+  font-size:11px;line-height:1.65;transform:rotate(-1.1deg);position:sticky;top:74px;}
+@media (max-width:760px){.stamp{position:static;transform:rotate(-.7deg);margin-bottom:6px;}}
+.stamp-h{font-family:var(--display);font-weight:800;font-size:11px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--deep);border-bottom:1.5px solid var(--deep);
+  padding-bottom:7px;margin-bottom:11px;}
+.srow{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:3.5px 0;}
+.slab{color:var(--muted);letter-spacing:.05em;font-size:9.5px;text-transform:uppercase;}
+.sval{color:var(--ink);font-weight:500;text-align:end;}
+.stamp hr{border:none;border-top:1px dashed var(--line);margin:9px 0;}
+.tier-name{font-family:var(--body);font-size:11.5px;color:var(--brand);font-weight:600;margin-top:4px;text-align:end;}
+
+/* ---------- verdicts ---------- */
+.verdicts{display:grid;gap:12px;}
+.vc{background:var(--surface);border:1px solid var(--line);border-radius:4px;overflow:hidden;}
+.vc-top{display:flex;gap:14px;padding:15px 17px;align-items:flex-start;}
+.vbadge{font-family:var(--display);font-weight:800;font-size:11px;letter-spacing:.06em;
+  padding:5px 11px;border-radius:2px;white-space:nowrap;flex:none;margin-top:2px;color:#fff;}
+.v-false{background:var(--alarm);}
+.v-true{background:var(--brand);}
+.v-part{background:#B07A0C;}
+.v-unk{background:#4A5F6B;}
+.vc-claim{font-weight:600;font-size:15px;line-height:1.5;}
+.vc-body{padding:0 17px 15px;font-size:14.5px;color:var(--muted);}
+.vc-foot{border-top:1px solid var(--line);padding:9px 17px;font-family:var(--data);
+  font-size:10px;color:var(--muted);letter-spacing:.04em;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+
+.corr{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:16px 18px;margin-bottom:11px;}
+.corr-d{font-family:var(--data);font-size:10.5px;color:var(--muted);letter-spacing:.05em;margin-bottom:6px;}
+.corr-w{font-size:14.5px;margin:0 0 8px;}
+.corr-f{font-size:14.5px;margin:0;padding-inline-start:13px;border-inline-start:2.5px solid var(--brand);color:var(--ink);}
+.corr-f b{color:var(--brand);font-weight:600;}
+
+.dir{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:16px 18px;margin-bottom:11px;}
+.dir-t{font-weight:600;font-size:15.5px;margin-bottom:3px;}
+.dir-m{font-family:var(--data);font-size:11px;color:var(--muted);letter-spacing:.03em;}
+.dir-n{font-size:14px;color:var(--muted);margin-top:7px;}
+
+/* ---------- footer ---------- */
+footer{background:var(--brand);color:#fff;padding-block:26px;}
+.foot-top{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.foot-top img{width:34px;height:34px;}
+.foot-slogan{font-family:var(--display);font-weight:700;font-size:15px;}
+.foot-links{display:flex;flex-wrap:wrap;gap:10px 26px;font-family:var(--data);
+  font-size:11px;letter-spacing:.05em;color:#C7E6E0;padding-top:15px;border-top:1px solid rgba(255,255,255,.22);}
+.foot-note{font-family:var(--body);font-size:12px;color:#A8D6CE;margin-top:14px;}
+
+/* ---------- Kurdish typography corrections ----------
+   IBM Plex Mono has no Arabic coverage, and letter-spacing damages
+   Arabic letter joining. In RTL mode every element that carries Kurdish
+   text uses the Arabic body face at a legible size. Latin-only data
+   (dates, IDs, reference numbers) keeps the mono record styling. */
+body[dir="rtl"] .notice{font-family:var(--body);font-size:12.5px;letter-spacing:0;line-height:1.7;}
+body[dir="rtl"] .notice b{font-family:var(--body);}
+body[dir="rtl"] .eyebrow{font-family:var(--body);font-size:13.5px;letter-spacing:0;text-transform:none;}
+body[dir="rtl"] .asked-h{font-family:var(--body);font-size:13.5px;letter-spacing:0;text-transform:none;}
+body[dir="rtl"] .art-kicker{font-family:var(--body);font-size:13.5px;letter-spacing:0;text-transform:none;}
+body[dir="rtl"] .back{font-family:var(--body);font-size:14px;letter-spacing:0;}
+body[dir="rtl"] .slab{font-family:var(--body);font-size:11.5px;letter-spacing:0;text-transform:none;}
+body[dir="rtl"] .dir-m{font-family:var(--body);font-size:13.5px;letter-spacing:0;}
+body[dir="rtl"] .ans-f{font-family:var(--body);font-size:12.5px;letter-spacing:0;}
+body[dir="rtl"] .qref{font-family:var(--body);font-size:14px;letter-spacing:0;}
+body[dir="rtl"] .corr-d{font-size:11.5px;}
+body[dir="rtl"] .vc-foot{font-size:11px;}
+body[dir="rtl"] .count{font-size:11.5px;}
+body[dir="rtl"] .foot-links{font-size:11.5px;}
+body[dir="rtl"] .stamp{font-size:11.5px;}
+body[dir="rtl"] .stamp-h{letter-spacing:0;}
+/* the language button shows Kurdish text while the page is in English */
+.lang{font-family:var(--data);}
+body[dir="ltr"] .lang{font-family:var(--body);font-size:12.5px;letter-spacing:0;}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}.stamp{transform:none;}}
+</style>
+</head>
+<body dir="rtl">
+
+<div class="notice"><div class="wrap">
+  <b data-t="noticeTag">نموونەی پیشاندان</b>
+  <span data-t="noticeBody">ناوەڕۆکی پزیشکی لێرەدا نموونەیە و پێویستی بە پێداچوونەوەی کلینیکی هەیە پێش بڵاوکردنەوە.</span>
+</div></div>
+
+<header class="mast"><div class="wrap">
+  <a class="brand" href="#" onclick="go('conditions');return false;">
+    <img class="mark" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgCAYAAACLz2ctAAAKrElEQVR42u2dfbCVRR3HP7dLNM4tkJQCxagURlOmVEaMECGdZJJqtFJLC7VBJ2PAmlJJ8yWqsZwRi/4op0DNYkpGizK0FxVBeYmuRCC9MJnXMUyYmxQQJtzTH/ucudcz5zzP7vPsnvO8fL8zZ7iX3bP77O7n/vbl2f1tV61WQ5I6pdeoCiQBKAlASRKAkgCUJAEoCUBJEoCSAJQkASgJQEkSgJIAlFrqGqAfqCV8LlNVCcAQmguMsog3S1UlAEPoXst4D6iqBGAzTQYmZPj+Rst4m1XVg+rShlTuAuYMrZOU6YwEXrKpc2EnAKcCa1r0AFkAqQlAdcFxujCC5ImYsp8sLGQBQ8i2oA9nmKnKAsoCttR3LOOdkyGP3Qnhzwi56gL46TbksTohfK2Qq/YYcHpgWNckhK8TcpoF2xS4HzgiRdqnAptiwk9G64CVBzD0ZCEu7WHAIWFX3S64rkct4rw9QL6CTwAC8F6LODcHyPc84HhhJwDBbJ+K0ycC5Hk/sB3z+k8qKIALsV9UjtNtDnEvdoj7nEWcXwi9YgJ4B/C16OcNHtJ7p8WEoob9ViuApyzirBZ6xQPwB8CCIb+fBlyZMc0twAHLuFdYxuu1iLNL6EVLDQVZhvkxcEGLsMOBPRnTt6mEHdjtF/wg8LOkehd6xbGAy2LgA7s9eElaaRHnOMu0/iisymMBvwx8ybYsbbCCXR7S6sW8MZFybgEXOMBXHyNm0dct4lzpoVy/FXbFsIArgA87fufsjA2cVBm248BawGcUgG3UbODnrmXKkN8ngbs9pB9XqcOBV4ResWbBtQwQjgFe8JiXDYAvAqM1Ay7HLLjeaFsd4m8bAtNOx7zekxB+g0Uab4qeudlHKiCAAJOA+ZZx39FgyVws6JMJ4c8Lm2oCCLAEs/CcRi4eCcY0/N4LTIws2DJhU70xYDPtBXpSdK9PWsZ9JJr1XiFMBGAr3QZ8vo2zZEkANh3vbROEGgN2Sk+nAOpONb0A9G7NsdsKBcaXn1xwCEDvOhX4omXcXjW/xoChNAmz2VTjQAHYVHsx70SHB86nJvjUBTfqjZj1u9dGgPwo8LjwH4JPAA7Vnxp+/1gE4lWB8juawUNFgk9dcOJ72cnA79U0soAhtMIiziZgP9DdJOxENZksYEjr16hHebUbjfr3T2jSlUuygLGaneI7MyPo5vHqs7TbgT+r+WQBXbQHGBEg3ZuBW9SUAtB39+uqicBf1aTqglvpD4HT/4u6ZQEYp3cxeC5iPvCvQFawpmZVF+yiscB12J/3SNJGYIrnZ5zBoHfTGoML2s0qr3Gxuxs4CAxEP7+Mcd/xX+GXz80IU6JJRdr7Ony/7bgaWBywvJdT4XMmedyOtQFzU1G9u56D/bneEGPA0JZqaWRJPy4A86l7om66C+NQ8pcxcacVuC1+CPQJwHxrC3DuEOu4qCF8d8Hb45iqTaKKviP6RsJ7HejuQLleEoASMTPd0BoZTX4EoNSxPYSLBaDUKQtY160CUBroYN7Xlr1yh4kv73+kfRhHSIdj3p7U35xcqj94AdgOnYVxatSoT2E217q6552Cn0t51AU76LsYp+OzoxlhkTQuJuwR3F0OnyILmE5jMTeIr8RcX/U77LfR112iXdIkrBdYBTxM8g3lnVDSlayfAz7gkN5hAjCdzgOOBT4bE2cHsB7js28jdqfhTok+10e/3wB8tUCzZlegnhOA6XSkRZzjos8lGfIJ3UADnuvU9SD+Ws3w0mlMm8rwTM7qKG7nzkLgJMf0dpYZwJAW8HVtKsPenNXpdszxgJ4G63lMirT2UHKFBLC7JACmeRU30VPeM8sOYMgu+FCbyjC6xO3zlABMr/+14fn3Ud5F2ko4UgrZBWe90GUrsHnIZxtuV275Uic2I3yIiigkgP0J4X3A49Eyw1rcPd2XVXOwu0BbACboPsxBm1XAuqir3KeuMFZjO2TlSwngLop9SKgTeqFqBdb2oDCz+X8XaLwpAEumEzA7eJr5p7bRVwSglKWO3jzk56NT5He9KlfKosbNC+erKy43gLMI66ByICM8D5DOE9j3BWA+dSbwYNTQNcwyz405toBg7kZx1eXAKAHYec3ALMzWgXsMeH+TeKGsYLen+HNS5N0vADv7bDWMp3ybLex5sYKtALyHdO/HVwnA/HRlSQrhBN11HfBgTFiaPZKzgLcIwM7I1dvV9gDP0OMYP+nMx9wUz/CsAGyfrgb+E3W/Rzp+96gAz7M6+vdAg1UeaGGxkw5WfQ9zos/Wyh+I/r24jADmwUXvVMzqf9bdv3k7HSdZqBOeEXowh3N8rfjfjXF7IQnAWD2NeU/qS0+g3Tbqgh3kK6N/0r4jn1KJJiE+NqOOE3wCMK0uyvjdLrKfM5EqPgt2zWwpxq2ZJAvoRbaHbfoii+cDvjXEu0yTKmQBbazgscDfAuTVVaF2HUWYyyALbwGJqZi5ESQ+4LuqCehV2eQ5GbOL5lARHrYTFnA08OKQ31cAH/WY/o7IirYsc4nhOxFzoL8w5e3Uq7iDmG1LPitnJPY3DJURwmm09hg7nXx6k+3YZoRhniFYSIWut2qiBQmAPQ7cLgsYRi8Dwx3iv4H8+RQMPbGr6+/A22QB/coFvstKCB+Ya2xt9Na8TcbKAKBtV74SuKukXfAWYHkAi6ku2EKTogao4sQjC1i5qI+iW8AlAeC7BfhGyXuD3PwxFtkC9mN3bta1smsNs+tO31j5LPDTaKZroxmYk4SF6AmKCqDtQ58D/MpDuuuBc2nfOd2PYPwrpgXnoajsuR+GFK0LvsgBvnsd4ZsRE3Y6sKkN5dsQle++JmHrHNKZVZQxcJEs4IM094gQouttpjMIf2tRLUCZtkYTtVyqKBawFhi+ZRZxbOBbw6ALkcbPBIvvJ403XS+u6cozfEUAcDzua1bjU+RzaUL4K5bpTEsZVte3EsJHULIjCXkG8CbMqyMXLcJsZvU9ofmCh/LYvK3Y6SmOAPSg/Y7xd+PuoOgMy3jf9FCeyR7rZkZZAMz7JORW4NpA4z5b62ebdtJ2sH3A6y3SuQO7Nb9SvNnJ+xjwOsxySpLSHrA/2yLOUsu0zkoIt3VytNihbmQB26T7MTewN9McjO+9rLPsVjrKcty1BJjnyWolNcoO4HgKsu2+yBawrvOBnzT5//Ue4Esa39kO+me1oR6WRxBPKAN8RbKAdX0b+IzncVBcBfRhv6xjU5FdDn8U86Of+zFvgH5NCVW0V3HzgGs8wrc5Ifwmz89v66x8QWT1u4AjygpfES2gTx1G8lKPC+Q2Fem6OaL0qvJFNfs9pzcOOIl4t8LThZwABLsF6N84pvk85s7juBvczxRy6oJtu8uZmDtJfKfdJeyqbQEXWsZ7THjIAnbK+mWxVLKAsoAt9ZBlvDuFhixgJ63feNy3dYG512RXQhyf7udkAQskl/W3vpR52Gy5erewqyaA78NcgZqkLK47plrE0VJMhceAy6JJQNzWqUUZ0j/NIo7uNqn4LLjxD3A5cIGnWeoe7G7s1Ey4ohawUQPAhREQp5PdedEIISULWIRZtiygLGBH1aMqEIAhZHM1wm78XFumLliSZAElAShJAlASgJIkACUBKEkCUBKAkiQAJQEoSQJQEoCSJAAlAShJAlDKhf4PbeZPzhbqrCIAAAAASUVORK5CYII=" alt="Rudaw">
+    <span>
+      <span class="brand-t" data-t="brandName">تەندروستی</span>
+      <span class="brand-s" data-t="brandSub">پێش هەموو شتێک</span>
+    </span>
+  </a>
+  <button class="lang" onclick="flip()" id="langBtn">EN</button>
+</div></header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow" data-t="heroEyebrow">پێش ئەوەی کاردانەوە بکەیت — بیپشکنە</div>
+    <h1 data-t="heroTitle">چی دەتەوێت بزانیت؟</h1>
+    <p class="sub" data-t="heroSub">وەڵامی سادە و پشتبەستوو بە بەڵگە، بە زمانی کوردی. هەر بابەتێک ڕێکەوتی دوایین پێداچوونەوە و ئاستی بەڵگەی خۆی پیشان دەدات.</p>
+    <div class="searchbox">
+      <input id="q" type="search" oninput="render()" placeholder="نەخۆشی، دەرمان، یان نیشانەیەک بنووسە…" aria-label="Search">
+    </div>
+    <div class="asked">
+      <div class="asked-h" data-t="askedH">زۆرترین پرسیاری ئەم هەفتەیە</div>
+      <div class="chips" id="chips"></div>
+    </div>
+    <div class="hero-cta">
+      <button onclick="go('ask')" data-t="ctaBtn">پرسیارێک بنێرە</button>
+      <span data-t="ctaNote">هەموو پرسیارێک دەخوێنرێتەوە. باشترینەکان لە پەخشدا وەڵام دەدرێنەوە.</span>
+    </div>
+  </div>
+  <svg class="pulse" viewBox="0 0 1200 44" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 30 H150 l14 -22 l11 34 l13 -30 l12 18 H420 l16 -25 l10 38 l14 -33 l11 20 H700 l15 -21 l11 33 l12 -29 l13 17 H980 l14 -20 l10 30 l13 -26 l11 16 H1200"
+      fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2" stroke-linejoin="round"/>
+  </svg>
+</section>
+
+<nav class="tabs"><div class="wrap" role="tablist">
+  <button class="tab" role="tab" aria-selected="true"  onclick="go('conditions')"  data-t="tabCond">نەخۆشییەکان</button>
+  <button class="tab" role="tab" aria-selected="false" onclick="go('drugs')"       data-t="tabDrug">دەرمانەکان</button>
+  <button class="tab" role="tab" aria-selected="false" onclick="go('claims')"      data-t="tabClaim">ڕاست یان هەڵە</button>
+  <button class="tab" role="tab" aria-selected="false" onclick="go('places')"      data-t="tabPlace">بۆ کوێ بچم</button>
+  <button class="tab" role="tab" aria-selected="false" onclick="go('ask')" data-t="tabAsk">پرسیارێک بنێرە</button>
+  <button class="tab" role="tab" aria-selected="false" onclick="go('corrections')" data-t="tabCorr">هەڵەکانمان</button>
+</div></nav>
+
+<main><div class="wrap">
+  <div class="panel on" id="p-conditions"></div>
+  <div class="panel" id="p-drugs"></div>
+  <div class="panel" id="p-claims"></div>
+  <div class="panel" id="p-places"></div>
+  <div class="panel" id="p-ask"></div>
+  <div class="panel" id="p-corrections"></div>
+  <div class="panel" id="p-article"></div>
+</div></main>
+
+<footer><div class="wrap">
+  <div class="foot-top">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgCAYAAACLz2ctAAAKrElEQVR42u2dfbCVRR3HP7dLNM4tkJQCxagURlOmVEaMECGdZJJqtFJLC7VBJ2PAmlJJ8yWqsZwRi/4op0DNYkpGizK0FxVBeYmuRCC9MJnXMUyYmxQQJtzTH/ucudcz5zzP7vPsnvO8fL8zZ7iX3bP77O7n/vbl2f1tV61WQ5I6pdeoCiQBKAlASRKAkgCUJAEoCUBJEoCSAJQkASgJQEkSgJIAlFrqGqAfqCV8LlNVCcAQmguMsog3S1UlAEPoXst4D6iqBGAzTQYmZPj+Rst4m1XVg+rShlTuAuYMrZOU6YwEXrKpc2EnAKcCa1r0AFkAqQlAdcFxujCC5ImYsp8sLGQBQ8i2oA9nmKnKAsoCttR3LOOdkyGP3Qnhzwi56gL46TbksTohfK2Qq/YYcHpgWNckhK8TcpoF2xS4HzgiRdqnAptiwk9G64CVBzD0ZCEu7WHAIWFX3S64rkct4rw9QL6CTwAC8F6LODcHyPc84HhhJwDBbJ+K0ycC5Hk/sB3z+k8qKIALsV9UjtNtDnEvdoj7nEWcXwi9YgJ4B/C16OcNHtJ7p8WEoob9ViuApyzirBZ6xQPwB8CCIb+fBlyZMc0twAHLuFdYxuu1iLNL6EVLDQVZhvkxcEGLsMOBPRnTt6mEHdjtF/wg8LOkehd6xbGAy2LgA7s9eElaaRHnOMu0/iisymMBvwx8ybYsbbCCXR7S6sW8MZFybgEXOMBXHyNm0dct4lzpoVy/FXbFsIArgA87fufsjA2cVBm248BawGcUgG3UbODnrmXKkN8ngbs9pB9XqcOBV4ResWbBtQwQjgFe8JiXDYAvAqM1Ay7HLLjeaFsd4m8bAtNOx7zekxB+g0Uab4qeudlHKiCAAJOA+ZZx39FgyVws6JMJ4c8Lm2oCCLAEs/CcRi4eCcY0/N4LTIws2DJhU70xYDPtBXpSdK9PWsZ9JJr1XiFMBGAr3QZ8vo2zZEkANh3vbROEGgN2Sk+nAOpONb0A9G7NsdsKBcaXn1xwCEDvOhX4omXcXjW/xoChNAmz2VTjQAHYVHsx70SHB86nJvjUBTfqjZj1u9dGgPwo8LjwH4JPAA7Vnxp+/1gE4lWB8juawUNFgk9dcOJ72cnA79U0soAhtMIiziZgP9DdJOxENZksYEjr16hHebUbjfr3T2jSlUuygLGaneI7MyPo5vHqs7TbgT+r+WQBXbQHGBEg3ZuBW9SUAtB39+uqicBf1aTqglvpD4HT/4u6ZQEYp3cxeC5iPvCvQFawpmZVF+yiscB12J/3SNJGYIrnZ5zBoHfTGoML2s0qr3Gxuxs4CAxEP7+Mcd/xX+GXz80IU6JJRdr7Ony/7bgaWBywvJdT4XMmedyOtQFzU1G9u56D/bneEGPA0JZqaWRJPy4A86l7om66C+NQ8pcxcacVuC1+CPQJwHxrC3DuEOu4qCF8d8Hb45iqTaKKviP6RsJ7HejuQLleEoASMTPd0BoZTX4EoNSxPYSLBaDUKQtY160CUBroYN7Xlr1yh4kv73+kfRhHSIdj3p7U35xcqj94AdgOnYVxatSoT2E217q6552Cn0t51AU76LsYp+OzoxlhkTQuJuwR3F0OnyILmE5jMTeIr8RcX/U77LfR112iXdIkrBdYBTxM8g3lnVDSlayfAz7gkN5hAjCdzgOOBT4bE2cHsB7js28jdqfhTok+10e/3wB8tUCzZlegnhOA6XSkRZzjos8lGfIJ3UADnuvU9SD+Ws3w0mlMm8rwTM7qKG7nzkLgJMf0dpYZwJAW8HVtKsPenNXpdszxgJ4G63lMirT2UHKFBLC7JACmeRU30VPeM8sOYMgu+FCbyjC6xO3zlABMr/+14fn3Ud5F2ko4UgrZBWe90GUrsHnIZxtuV275Uic2I3yIiigkgP0J4X3A49Eyw1rcPd2XVXOwu0BbACboPsxBm1XAuqir3KeuMFZjO2TlSwngLop9SKgTeqFqBdb2oDCz+X8XaLwpAEumEzA7eJr5p7bRVwSglKWO3jzk56NT5He9KlfKosbNC+erKy43gLMI66ByICM8D5DOE9j3BWA+dSbwYNTQNcwyz405toBg7kZx1eXAKAHYec3ALMzWgXsMeH+TeKGsYLen+HNS5N0vADv7bDWMp3ybLex5sYKtALyHdO/HVwnA/HRlSQrhBN11HfBgTFiaPZKzgLcIwM7I1dvV9gDP0OMYP+nMx9wUz/CsAGyfrgb+E3W/Rzp+96gAz7M6+vdAg1UeaGGxkw5WfQ9zos/Wyh+I/r24jADmwUXvVMzqf9bdv3k7HSdZqBOeEXowh3N8rfjfjXF7IQnAWD2NeU/qS0+g3Tbqgh3kK6N/0r4jn1KJJiE+NqOOE3wCMK0uyvjdLrKfM5EqPgt2zWwpxq2ZJAvoRbaHbfoii+cDvjXEu0yTKmQBbazgscDfAuTVVaF2HUWYyyALbwGJqZi5ESQ+4LuqCehV2eQ5GbOL5lARHrYTFnA08OKQ31cAH/WY/o7IirYsc4nhOxFzoL8w5e3Uq7iDmG1LPitnJPY3DJURwmm09hg7nXx6k+3YZoRhniFYSIWut2qiBQmAPQ7cLgsYRi8Dwx3iv4H8+RQMPbGr6+/A22QB/coFvstKCB+Ya2xt9Na8TcbKAKBtV74SuKukXfAWYHkAi6ku2EKTogao4sQjC1i5qI+iW8AlAeC7BfhGyXuD3PwxFtkC9mN3bta1smsNs+tO31j5LPDTaKZroxmYk4SF6AmKCqDtQ58D/MpDuuuBc2nfOd2PYPwrpgXnoajsuR+GFK0LvsgBvnsd4ZsRE3Y6sKkN5dsQle++JmHrHNKZVZQxcJEs4IM094gQouttpjMIf2tRLUCZtkYTtVyqKBawFhi+ZRZxbOBbw6ALkcbPBIvvJ403XS+u6cozfEUAcDzua1bjU+RzaUL4K5bpTEsZVte3EsJHULIjCXkG8CbMqyMXLcJsZvU9ofmCh/LYvK3Y6SmOAPSg/Y7xd+PuoOgMy3jf9FCeyR7rZkZZAMz7JORW4NpA4z5b62ebdtJ2sH3A6y3SuQO7Nb9SvNnJ+xjwOsxySpLSHrA/2yLOUsu0zkoIt3VytNihbmQB26T7MTewN9McjO+9rLPsVjrKcty1BJjnyWolNcoO4HgKsu2+yBawrvOBnzT5//Ue4Esa39kO+me1oR6WRxBPKAN8RbKAdX0b+IzncVBcBfRhv6xjU5FdDn8U86Of+zFvgH5NCVW0V3HzgGs8wrc5Ifwmz89v66x8QWT1u4AjygpfES2gTx1G8lKPC+Q2Fem6OaL0qvJFNfs9pzcOOIl4t8LThZwABLsF6N84pvk85s7juBvczxRy6oJtu8uZmDtJfKfdJeyqbQEXWsZ7THjIAnbK+mWxVLKAsoAt9ZBlvDuFhixgJ63feNy3dYG512RXQhyf7udkAQskl/W3vpR52Gy5erewqyaA78NcgZqkLK47plrE0VJMhceAy6JJQNzWqUUZ0j/NIo7uNqn4LLjxD3A5cIGnWeoe7G7s1Ey4ohawUQPAhREQp5PdedEIISULWIRZtiygLGBH1aMqEIAhZHM1wm78XFumLliSZAElAShJAlASgJIkACUBKEkCUBKAkiQAJQEoSQJQEoCSJAAlAShJAlDKhf4PbeZPzhbqrCIAAAAASUVORK5CYII=" alt="Rudaw">
+    <span class="foot-slogan" data-t="footSlogan">تەندروستی پێش هەموو شتێک</span>
+  </div>
+  <div class="foot-links">
+    <span>+964 750 811 00 01</span>
+    <span>PORTAL@RUDAW.NET</span>
+    <span>WWW.RUDAW.NET</span>
+    <span>RUDAW HEALTH</span>
+    <span>RUDAW MEDIA NETWORK</span>
+  </div>
+  <div class="foot-note" data-t="footNote">هەموو بابەتێک دوو واژووی پێویستە پێش بڵاوکردنەوە — بەرپرسی ناوەڕۆک و پێداچوونەوەری پزیشکی.</div>
+</div></footer>
+
+<script>
+let L='ku';
+const UI={
+ ku:{noticeTag:"نموونەی پیشاندان",noticeBody:"ناوەڕۆکی پزیشکی لێرەدا نموونەیە و پێویستی بە پێداچوونەوەی کلینیکی هەیە پێش بڵاوکردنەوە.",
+  brandName:"تەندروستی",brandSub:"پێش هەموو شتێک",
+  heroEyebrow:"پێش ئەوەی کاردانەوە بکەیت — بیپشکنە",heroTitle:"چی دەتەوێت بزانیت؟",
+  heroSub:"وەڵامی سادە و پشتبەستوو بە بەڵگە، بە زمانی کوردی. هەر بابەتێک ڕێکەوتی دوایین پێداچوونەوە و ئاستی بەڵگەی خۆی پیشان دەدات.",
+  askedH:"زۆرترین پرسیاری ئەم هەفتەیە",
+  tabCond:"نەخۆشییەکان",tabDrug:"دەرمانەکان",tabClaim:"ڕاست یان هەڵە",tabPlace:"بۆ کوێ بچم",tabCorr:"هەڵەکانمان",
+  footSlogan:"تەندروستی پێش هەموو شتێک",
+  footNote:"هەموو بابەتێک دوو واژووی پێویستە پێش بڵاوکردنەوە — بەرپرسی ناوەڕۆک و پێداچوونەوەری پزیشکی.",
+  ph:"نەخۆشی، دەرمان، یان نیشانەیەک بنووسە…",
+  hCond:"نەخۆشییەکان",dCond:"پێڕستی نەخۆشییە باوەکان. هەر یەکێکیان هەمان پێکهاتەی هەیە: ئەوە چییە، نیشانەکان، کەی ئێستا بڕۆ، چی دەکەیت، چی لە پزیشک بپرسیت.",
+  hDrug:"دەرمانەکان",dDrug:"دەرمان و پێداویستی خۆراکی بە ڕاستگۆیی. چی دەکات، چی ناکات، لەگەڵ چی تێکەڵ نابێت.",
+  hClaim:"ڕاست یان هەڵە",dClaim:"بڕیارمان لەسەر ئەو بانگەشانەی لە ناوچەکەماندا بڵاو دەبنەوە. چوار بڕیار هەیە — و «نازانرێت» یەکێکیانە.",
+  hPlace:"بۆ کوێ بچم",dPlace:"کام دەزگا چ خزمەتگوزارییەک پێشکەش دەکات، لە چ کاتێکدا.",
+  hCorr:"هەڵەکانمان",dCorr:"هەر هەڵەیەک کە کردوومانە و چۆن ڕاستمان کردەوە. بە ڕێکەوت، بۆ هەمیشە.",
+  back:"‹ گەڕانەوە",noRes:"هیچ ئەنجامێک نەدۆزرایەوە. وشەیەکی تر تاقی بکەرەوە، یان پرسیارەکەت بۆ ئێمە بنێرە.",
+  secWhat:"ئەمە چییە",secSym:"نیشانەکان",secDo:"چی دەتوانیت بکەیت",secFlag:"ئێستا بڕۆ بۆ فریاگوزاری",secAsk:"لە پزیشکەکەت بپرسە",
+  stampH:"تۆماری پێداچوونەوە",sEv:"ئاستی بەڵگە",sRev:"پێداچوونەوە",sBy:"لەلایەن",sNext:"دواتر",sId:"ژمارە",
+  drugDoes:"چی دەکات",drugNot:"چی ناکات",drugCare:"ئاگاداری",
+  vTrue:"ڕاست",vFalse:"هەڵە",vPart:"بەشێکی ڕاستە",vUnk:"نازانرێت",
+  tabAsk:"پرسیارێک بنێرە",ctaBtn:"پرسیارێک بنێرە",
+  ctaNote:"هەموو پرسیارێک دەخوێنرێتەوە. باشترینەکان لە پەخشدا وەڵام دەدرێنەوە.",
+  hAsk:"پرسیارێک بنێرە",
+  dAsk:"ئەم بەشە ئاراستەی ناوەڕۆکی ئێمە دیاری دەکات. ئەوەی ئێوە دەیپرسن، ئەوەیە کە دەیکەینە بابەت.",
+  qLabel:"پرسیارەکەت",qHint:"بە زمانی خۆت بینووسە. پێویست ناکات وشەی پزیشکی بەکاربێنیت.",
+  qTopic:"بابەت",qCity:"شار (ئارەزوومەندانە)",qName:"ناو (ئارەزوومەندانە)",
+  qConsent:"ڕازیم پرسیارەکەم لە پەخشدا بخوێنرێتەوە، بەبێ ناوم.",
+  qSend:"بینێرە",qErr:"تکایە پرسیارەکەت بنووسە.",
+  qOkH:"پرسیارەکەت گەیشت",
+  qOkP1:"پرسیارەکەت چووە ناو پێڕستی ئەم هەفتەیەوە. بەرپرسی ناوەڕۆک هەموو پرسیارێک دەخوێنێتەوە.",
+  qOkP2:"ئێمە بە تایبەتی وەڵامی تاکەکەسی نادەینەوە و دەستنیشانکردنی نەخۆشی ناکەین. ئەگەر پرسیارەکەت باو بێت، دەبێتە بابەتێکی پەخش و لێرەش بڵاو دەکرێتەوە.",
+  qRef:"ژمارەی پرسیار",qAgain:"پرسیارێکی تر بنێرە",
+  trH1:"چی دەتوانین وەڵام بدەینەوە",
+  trY:["ئەم دەرمانە چی دەکات و چی ناکات","ئایا ئەم بانگەشەیە ڕاستە","کەی پێویستە بچمە لای پزیشک","ئەم پشکنینە چی پیشان دەدات","چۆن ڕێگری لەم نەخۆشییە بکەم"],
+  trH2:"چی ناتوانین وەڵام بدەینەوە",
+  trN:["ئایا من ئەم نەخۆشیم هەیە — ناتوانین دەستنیشانی بکەین","چ دەرمانێک بخۆم و چەند — ئەمە کاری پزیشکی خۆتە","خوێندنەوەی ئەنجامی پشکنینی تایبەت بە تۆ","بڕیاری گۆڕینی دەرمانەکانت"],
+  emH:"ئەگەر ئەمانەت هەیە، پرسیار مەنێرە — ئێستا بڕۆ",
+  emL:["ئازاری سنگ یان تەنگەنەفەسی","شۆڕبوونەوەی ڕوو، لاوازی لایەک، یان تێکچوونی قسەکردن","خوێنبەربوونی زۆر","تای منداڵێکی کەمتر لە ٣ مانگ","سستی و بەئاگا نەهاتنەوە"],
+  waH:"لە واتسئاپ",waS:"دەنگ یان نووسین. لە کوردی، عەرەبی یان ئینگلیزی.",
+  hAns:"پرسیارە وەڵامدراوەکان",
+  ansOn:"لە پەخشدا وەڵام درایەوە",
+  corrWas:"ئەوەی وتمان:",corrNow:"ئەوەی ڕاستە:"},
+ en:{noticeTag:"PROTOTYPE",noticeBody:"Medical content here is sample text and requires clinical review before publication.",
+  brandName:"Health",brandSub:"Before everything else",
+  heroEyebrow:"Check it before you act on it",heroTitle:"What do you need to know?",
+  heroSub:"Plain-language, evidence-based answers in Kurdish. Every entry shows when it was last reviewed and how strong the evidence is.",
+  askedH:"Most asked this week",
+  tabCond:"Conditions",tabDrug:"Medicines",tabClaim:"True or False",tabPlace:"Where to go",tabCorr:"Our corrections",
+  footSlogan:"Health before everything else",
+  footNote:"Every entry requires two signatures before publication — the content producer and the medical reviewer.",
+  ph:"Type a condition, medicine or symptom…",
+  hCond:"Conditions",dCond:"Common conditions, every one on the same template: what it is, symptoms, when to go now, what you can do, what to ask your doctor.",
+  hDrug:"Medicines",dDrug:"Medicines and supplements, honestly. What it does, what it does not do, what it interacts with.",
+  hClaim:"True or False",dClaim:"Our verdict on claims circulating in the region. Four verdicts — and \"not yet known\" is one of them.",
+  hPlace:"Where to go",dPlace:"Which facility provides which service, and when.",
+  hCorr:"Our corrections",dCorr:"Every mistake we have made and how we fixed it. Dated, permanent.",
+  back:"‹ Back",noRes:"No results. Try another word, or send us your question.",
+  secWhat:"What it is",secSym:"Symptoms",secDo:"What you can do",secFlag:"Go to emergency now",secAsk:"Ask your doctor",
+  stampH:"Review record",sEv:"Evidence",sRev:"Reviewed",sBy:"By",sNext:"Next due",sId:"ID",
+  drugDoes:"What it does",drugNot:"What it does not do",drugCare:"Take care",
+  vTrue:"TRUE",vFalse:"FALSE",vPart:"PARTLY TRUE",vUnk:"NOT YET KNOWN",
+  tabAsk:"Ask a question",ctaBtn:"Ask a question",
+  ctaNote:"Every question is read. The best ones are answered on air.",
+  hAsk:"Ask a question",
+  dAsk:"This section sets our editorial agenda. What you ask is what we make.",
+  qLabel:"Your question",qHint:"Write it in your own words. You do not need to use medical terms.",
+  qTopic:"Topic",qCity:"City (optional)",qName:"Name (optional)",
+  qConsent:"I agree my question may be read on air, without my name.",
+  qSend:"Send",qErr:"Please write your question.",
+  qOkH:"Your question has arrived",
+  qOkP1:"Your question has gone into this week's list. The content producer reads every question.",
+  qOkP2:"We do not give individual answers and we do not diagnose. If your question is a common one, it becomes a broadcast item and is published here too.",
+  qRef:"Question reference",qAgain:"Send another question",
+  trH1:"What we can answer",
+  trY:["What this medicine does and does not do","Whether a claim going around is true","When you should see a doctor","What this test actually shows","How to prevent this condition"],
+  trH2:"What we cannot answer",
+  trN:["Whether you have a condition — we cannot diagnose","Which medicine to take and how much — that is for your own doctor","Reading your personal test results","Deciding to change your medication"],
+  emH:"If you have any of these, do not send a question — go now",
+  emL:["Chest pain or breathlessness","A drooping face, one-sided weakness, or slurred speech","Heavy bleeding","Fever in a baby under 3 months","Floppiness or difficulty waking"],
+  waH:"On WhatsApp",waS:"Voice or text. In Kurdish, Arabic or English.",
+  hAns:"Questions we have answered",
+  ansOn:"Answered on air",
+  corrWas:"What we said:",corrNow:"What is correct:"}
+};
+const t=k=>UI[L][k];
+
+const TIER={5:{ku:"ڕێنمایی نێودەوڵەتی",en:"International guideline"},
+ 4:{ku:"پێداچوونەوەی سیستەماتیک",en:"Systematic review"},
+ 3:{ku:"تاقیکردنەوەی گەورە",en:"Large trial"},
+ 2:{ku:"لێکۆڵینەوەی چاودێری",en:"Observational study"},
+ 1:{ku:"بۆچوونی پسپۆڕ",en:"Expert opinion"}};
+
+const CATS=[
+ {k:"all",ku:"هەمووی",en:"All"},
+ {k:"heart",ku:"دڵ و خوێنبەر",en:"Heart & circulation"},
+ {k:"brain",ku:"مێشک و دەمار",en:"Brain & nerves"},
+ {k:"meta",ku:"خۆراک و مێتابۆلیزم",en:"Metabolic"},
+ {k:"child",ku:"منداڵان",en:"Children"},
+ {k:"lung",ku:"سی و هەناسە",en:"Lungs & breathing"},
+ {k:"gut",ku:"گەدە و ڕیخۆڵە",en:"Digestion"},
+ {k:"kidney",ku:"گورچیلە و میزەڕۆ",en:"Kidney & urinary"},
+ {k:"blood",ku:"خوێن",en:"Blood"},
+ {k:"bone",ku:"ئێسک و جومگە",en:"Bones & joints"},
+ {k:"mind",ku:"دەروون",en:"Mental health"},
+ {k:"env",ku:"ژینگە و وەرزەکان",en:"Environment & season"}];
+
+const CONDITIONS=[
+{id:"RH-HTN-001",cat:"heart",tier:5,rev:"2026-06",next:"2027-06",by:"Dr. S. Ahmed, Cardiology",
+ ku:{name:"پەستانی خوێنی بەرز",sum:"زۆرجار هیچ نیشانەیەکی نییە — بۆیە پێویستە بپێورێت.",
+  what:"پەستانی خوێن ئەو هێزەیە کە خوێن لە دیوارەی خوێنبەرەکان دەیدات. کاتێک بۆ ماوەیەکی درێژ بەرز دەمێنێتەوە، بە هێواشی زیان بە دڵ، مێشک، گورچیلە و چاو دەگەیەنێت. زۆربەی خەڵک هەستی پێ ناکەن.",
+  sym:["زۆرجار هیچ نیشانەیەک نییە","هەندێک جار سەرئێشەی بەیانیان","سەرگێژە یان گوێزرنگ","ماندووبوونی زۆر"],
+  flags:["سەرئێشەیەکی زۆر توند و لەناکاو","کێشە لە بینین یان قسەکردن","ئازاری سنگ یان تەنگەنەفەسی","لاوازبوونی لایەکی جەستە"],
+  do:["پەستانی خوێنت بپێورە — نەک تەنها کاتێک ناخۆش دەبیت","خوێ کەم بکەرەوە: نان، پەنیر، تورشی و خواردنی ئامادەکراو زۆرترین سەرچاوەن","ڕۆژانە پیاسە بکە","جگەرە و نارگیلە ڕابگرە","دەرمانەکەت بەردەوام بخۆ، تەنانەت کاتێک باش دەبیت"],
+  ask:["پەستانی خوێنم چەندە و ئامانجەکەم چییە؟","ئایا پێویستە گورچیلەم بپشکنرێت؟","ئەم دەرمانە چ کاریگەرییەکی لاوەکی هەیە؟"]},
+ en:{name:"High blood pressure",sum:"Usually causes no symptoms at all — which is why it has to be measured.",
+  what:"Blood pressure is the force of blood against the artery walls. When it stays high over years it slowly damages the heart, brain, kidneys and eyes. Most people feel nothing at all.",
+  sym:["Usually no symptoms","Sometimes early-morning headache","Dizziness or ringing in the ears","Unusual tiredness"],
+  flags:["A sudden, very severe headache","Trouble seeing or speaking","Chest pain or breathlessness","Weakness on one side of the body"],
+  do:["Measure it — not only when you feel unwell","Cut salt: bread, cheese, pickles and prepared food are the biggest sources","Walk every day","Stop cigarettes and shisha","Keep taking your medicine, including when you feel well"],
+  ask:["What is my number and what is my target?","Should my kidneys be checked?","What side effects does this medicine have?"]}},
+
+{id:"RH-MI-001",cat:"heart",tier:5,rev:"2026-07",next:"2027-07",by:"Dr. S. Ahmed, Cardiology",
+ ku:{name:"جەڵتەی دڵ",sum:"ئازاری سنگ کە نەڕۆیشت — چاوەڕێ مەکە، فریاگوزاری بانگ بکە.",
+  what:"جەڵتەی دڵ کاتێک ڕوودەدات کە خوێنبەرێکی دڵ دادەخرێت و بەشێک لە ماسولکەی دڵ خوێنی پێ ناگات. هەرچەندە زووتر چارەسەر بکرێت، کەمتر زیان دەمێنێتەوە.",
+  sym:["پەستان یان قورسایی لە ناوەڕاستی سنگ","بڵاوبوونەوەی ئازار بۆ باڵ، شان، ملوانکە یان چەناگە","ئارەقەی سارد","تەنگەنەفەسی","دڵتێکهاتن — بەتایبەت لەلای ژنان و شەکرەداران"],
+  flags:["ئازاری سنگ کە زیاتر لە ١٥ خولەک دەمێنێتەوە","ئازاری سنگ لەگەڵ ئارەقەی سارد یان تەنگەنەفەسی","هەست بە مەرگ یان ترسی لەناکاو لەگەڵ پەستانی سنگ","لەهۆشخۆچوون"],
+  do:["فریاگوزاری بانگ بکە — بە ئۆتۆمبێلی خۆت مەڕۆ ئەگەر دەکرێت","دانیشە و بجووڵێ مەکە","ئەگەر پزیشک پێشتر وتوویەتی، ئەسپرین بخۆ — نەک ئەگەر نەیوتووە","کاتی دەستپێکردنی ئازارەکە تۆمار بکە"],
+  ask:["کام خوێنبەر داخرابوو؟","کام دەرمان بۆ هەمیشە پێویستە؟","کەی دەتوانم بگەڕێمەوە بۆ کار و جووڵە؟"]},
+ en:{name:"Heart attack",sum:"Chest pain that does not go away — do not wait, call emergency.",
+  what:"A heart attack happens when an artery supplying the heart becomes blocked and part of the heart muscle loses its blood supply. The sooner it is treated, the less damage remains.",
+  sym:["Pressure or heaviness in the centre of the chest","Pain spreading to arm, shoulder, neck or jaw","Cold sweat","Breathlessness","Nausea — particularly in women and people with diabetes"],
+  flags:["Chest pain lasting more than 15 minutes","Chest pain with cold sweat or breathlessness","A sudden sense of dread with chest pressure","Fainting"],
+  do:["Call emergency — do not drive yourself if it can be avoided","Sit down and stay still","Take aspirin only if a doctor has told you to before","Note the time the pain started"],
+  ask:["Which artery was blocked?","Which medicines do I need permanently?","When can I return to work and activity?"]}},
+
+{id:"RH-STR-001",cat:"brain",tier:5,rev:"2026-07",next:"2027-07",by:"Dr. L. Hussein, Neurology",
+ ku:{name:"جەڵتەی مێشک",sum:"هەر خولەکێک گرنگە. زوو بڕۆ.",
+  what:"جەڵتەی مێشک کاتێک ڕوودەدات کە خوێن ناگاتە بەشێکی مێشک. خانەکانی مێشک بە خولەک دەمرن. چارەسەری کاریگەر هەیە، بەڵام تەنها لە کاتژمێرەکانی یەکەمدا کاردەکات.",
+  sym:["لاوازبوون یان بێهەستی لە دەم، دەست یان قاچ — زۆرجار تەنها لە لایەکدا","قسەکردنی تێکچوو یان تێنەگەیشتن","کێشە لە بینین","لەدەستدانی هاوسەنگی"],
+  flags:["ڕووی لایەک شۆڕ بێتەوە","دەستێک بەرز نەبێتەوە","قسەکردن تێکبچێت","هەر یەکێک لەمانە — یەکسەر پەیوەندی بە فریاگوزاری بکە"],
+  do:["چاوەڕێی باشبوونەوە مەکە — نیشانەکان لەوانەیە بڕۆن و بگەڕێنەوە","هیچ خواردن و خواردنەوەیەکی مەدەرێ","کاتی دەستپێکردنی نیشانەکان تۆمار بکە — پزیشک پێویستی پێیەتی"],
+  ask:["چ جۆرە جەڵتەیەک بوو؟","بۆ ڕێگریکردن لە دووبارەبوونەوە چی بکەم؟","پێویستم بە چارەسەری فیزیایی هەیە؟"]},
+ en:{name:"Stroke",sum:"Every minute counts. Go immediately.",
+  what:"A stroke happens when blood stops reaching part of the brain. Brain cells die by the minute. Effective treatment exists, but it only works in the first hours.",
+  sym:["Weakness or numbness in face, arm or leg — usually on one side","Slurred speech or not understanding others","Trouble seeing","Loss of balance"],
+  flags:["One side of the face droops","One arm cannot be raised","Speech is slurred","Any of these — call emergency immediately"],
+  do:["Do not wait to see if it passes — symptoms can come and go","Do not give food or drink","Note the time symptoms started — the doctor needs it"],
+  ask:["Which type of stroke was it?","What do I do to prevent another one?","Do I need physiotherapy?"]}},
+
+{id:"RH-MIG-001",cat:"brain",tier:4,rev:"2026-05",next:"2027-05",by:"Dr. L. Hussein, Neurology",
+ ku:{name:"شەقیقە",sum:"سەرئێشەیەکی ڕاستەقینەی دەمارییە — نەک لاوازی یان بەرگەنەگرتن.",
+  what:"شەقیقە سەرئێشەیەکی لێدەرە کە زۆرجار لە لایەکی سەردایە و بە ڕۆشنایی و دەنگ خراپتر دەبێت. هۆکارەکەی گۆڕانی چالاکی دەمار و خوێنبەرەکانی مێشکە، نەک «فشاری دەروونی» بەتەنها.",
+  sym:["ئازاری لێدەر لە لایەکی سەر","بێزاری لە ڕۆشنایی و دەنگ","دڵتێکهاتن یان ڕشانەوە","هەندێک جار نیشانەی بینین پێش ئازارەکە"],
+  flags:["توندترین سەرئێشەی ژیانت، کە لەناکاو دەستیپێکرد","سەرئێشە لەگەڵ تا و هەڵنەگەڕانی مل","سەرئێشە لەگەڵ لاوازی یان تێکچوونی قسەکردن","سەرئێشەی نوێ لە تەمەنی سەرووی ٥٠ ساڵ"],
+  do:["دەفتەرێکی سەرئێشە بنووسە — کەی، چەند، پێش چی","خەوی ڕێکوپێک و کاتی خواردنی ڕێکوپێک زۆر یارمەتیدەرن","لە کاتی هێرشدا لە ژوورێکی تاریک و بێدەنگ پشوو بدە","دەرمانی ئازارشکێن زۆر و بەردەوام مەخۆ — خۆی دەبێتە هۆی سەرئێشە"],
+  ask:["ئایا ئەمە شەقیقەیە یان جۆرێکی تری سەرئێشە؟","دەرمانی ڕێگریکەر بۆ من گونجاوە؟","چەند جار لە مانگێکدا دەتوانم ئازارشکێن بخۆم؟"]},
+ en:{name:"Migraine",sum:"A real neurological headache — not weakness or low tolerance.",
+  what:"Migraine is a throbbing headache, often on one side of the head, made worse by light and sound. It is caused by changes in nerve and blood vessel activity in the brain, not simply by stress.",
+  sym:["Throbbing pain on one side of the head","Discomfort with light and sound","Nausea or vomiting","Sometimes visual symptoms before the pain"],
+  flags:["The worst headache of your life, coming on suddenly","Headache with fever and a stiff neck","Headache with weakness or slurred speech","A new headache after age 50"],
+  do:["Keep a headache diary — when, how long, what preceded it","Regular sleep and regular meal times help a great deal","Rest in a dark, quiet room during an attack","Do not take painkillers frequently and continuously — overuse itself causes headache"],
+  ask:["Is this migraine or another type of headache?","Would preventive medication suit me?","How many days a month can I safely take painkillers?"]}},
+
+{id:"RH-T2D-001",cat:"meta",tier:5,rev:"2026-05",next:"2027-05",by:"Dr. R. Kareem, Endocrinology",
+ ku:{name:"شەکرەی جۆری دوو",sum:"دەکرێت بەڕێوە ببرێت. چارەسەری خێرا نییە.",
+  what:"لە شەکرەی جۆری دوودا جەستە ئیتر باش وەڵامی ئەنسولین ناداتەوە، بۆیە شەکری خوێن بەرز دەبێتەوە. بە ساڵان زیان بە خوێنبەرە بچووکەکان دەگەیەنێت — چاو، گورچیلە، دەمار.",
+  sym:["تینوێتی زۆر","زۆر چوونە دەستاوخانە، بەتایبەت بە شەو","ماندووبوون","بینینی تەم","برینی کە خاو دەبێتەوە"],
+  flags:["ئارەقەی سارد لەگەڵ لەرزین و شێواوی — لەوانەیە شەکر زۆر نزم بێت","تەنگەنەفەسی لەگەڵ بۆنی میوەی دەم","برینێکی پێ کە خاو نابێتەوە یان ڕەنگی گۆڕاوە"],
+  do:["پێیەکانت ڕۆژانە بپشکنە","چاوت ساڵانە بپشکنە","ئەندازەی برنج و نان کەم بکەرەوە — ئەندازە گرنگترە لە جۆر","چایی بێ شەکر بخۆرەوە: ئەمە گەورەترین گۆڕانکارییە لە خواردنی ڕۆژانەدا"],
+  ask:["ڕێژەی HbA1c ـم چەندە؟","کەی پێویستە چاوم بپشکنرێت؟","ئەگەر دەرمانەکەم لەبیر کرد چی بکەم؟"]},
+ en:{name:"Type 2 diabetes",sum:"It can be managed. There is no quick cure.",
+  what:"In type 2 diabetes the body stops responding well to insulin, so blood sugar rises. Over years it damages small blood vessels — eyes, kidneys, nerves.",
+  sym:["Excessive thirst","Passing urine often, especially at night","Tiredness","Blurred vision","Wounds that heal slowly"],
+  flags:["Cold sweat with shaking and confusion — sugar may be too low","Breathlessness with a fruity smell on the breath","A foot wound that will not heal or has changed colour"],
+  do:["Check your feet every day","Have your eyes checked every year","Reduce portions of rice and bread — portion size matters more than type","Drink tea without sugar: this is the single biggest change in the daily diet here"],
+  ask:["What is my HbA1c?","When should my eyes be checked?","What do I do if I miss a dose?"]}},
+
+{id:"RH-THY-001",cat:"meta",tier:4,rev:"2026-04",next:"2027-04",by:"Dr. R. Kareem, Endocrinology",
+ ku:{name:"کەمکاری گورچیلەی گەروو",sum:"ماندووبوونی درێژخایەن کە هۆکارەکەی نازانرێت — پشکنینێکی سادەی خوێن هەیە.",
+  what:"گورچیلەی گەروو (تایرۆید) هۆرمۆنێک دەردەکات کە خێرایی کارکردنی جەستە ڕێک دەخات. کاتێک کەم دەرچێت، هەموو شتێک هێواش دەبێتەوە — وزە، دڵ، ڕیخۆڵە، بیرکردنەوە.",
+  sym:["ماندووبوونی بەردەوام","هەستکردن بە سەرما","پێستی وشک و کەوتنی قژ","بەندبوونی زگ","هێواشی بیرکردنەوە و بیرچوونەوە"],
+  flags:["ئاوسانی ڕوو و زمان لەگەڵ هێواشی زۆری هەناسە","لێدانی دڵی زۆر هێواش لەگەڵ سستی","شێواوی و بەئاگا نەهاتنەوە"],
+  do:["پشکنینی TSH بکە — پشکنینێکی سادەی خوێنە","دەرمانەکە بە بەتاڵی گەدە و لە هەمان کاتی ڕۆژدا بخۆ","حەدید و کالسیۆم بە یەکەوە لەگەڵ دەرمانی تایرۆید مەخۆ","دەرمانەکە بەخۆت ڕامەگرە کاتێک باش دەبیت"],
+  ask:["ئاستی TSH ـم چەندە؟","کەی پێویستە دووبارە بپشکنرێم؟","ئایا کاریگەری لەسەر دووگیانی هەیە؟"]},
+ en:{name:"Underactive thyroid",sum:"Long-standing tiredness with no obvious cause — there is a simple blood test.",
+  what:"The thyroid gland releases a hormone that sets the body's running speed. When too little is released, everything slows — energy, heart, bowel, thinking.",
+  sym:["Persistent tiredness","Feeling cold","Dry skin and hair loss","Constipation","Slowed thinking and forgetfulness"],
+  flags:["Swelling of the face and tongue with very slow breathing","A very slow pulse with extreme weakness","Confusion or difficulty waking"],
+  do:["Ask for a TSH test — it is a simple blood test","Take the medicine on an empty stomach at the same time each day","Do not take iron or calcium at the same time as thyroid medicine","Do not stop the medicine yourself when you feel better"],
+  ask:["What is my TSH level?","When should I be retested?","Does this affect pregnancy?"]}},
+
+{id:"RH-FEV-001",cat:"child",tier:4,rev:"2026-04",next:"2027-04",by:"Dr. N. Salih, Paediatrics",
+ ku:{name:"تای منداڵان",sum:"تا نەخۆشی نییە — نیشانەیە. گرنگ ئەوەیە منداڵەکە چۆنە، نەک ژمارەکە.",
+  what:"تا وەڵامدانەوەی ئاساییە بۆ هەوکردن. زۆربەی تاکان لە منداڵاندا لە ڤایرۆسەوەن و بە خۆیان دەڕۆن. پلەی گەرمی بەتەنها ناڵێت چەند مەترسیدارە.",
+  sym:["گەرمی جەستە لە سەرووی ٣٨°س","سوورە","بێحەزی بۆ خواردن","خەوی زۆر یان بێزاری"],
+  flags:["منداڵی کەمتر لە ٣ مانگ لەگەڵ هەر تایەک","لەڕەنگکەوتن، یان سوورەیەک کە بە پەنجە نامێنێتەوە","کێشە لە هەناسەدان","نەگرتنی هیچ شلەیەک، یان پیسکردنی زۆر کەم","سستی و بەئاگا نەهاتنەوە"],
+  do:["شلە زۆر بدەرێ — گرنگترین شتە","بە پێی کێش پاراسیتامۆل بدەرێ، نەک بە پێی تەمەن","بە ئاوی سارد یان سپیرتۆ سارد مەکەرەوە","بەرگی سووکی لەبەر بکە"],
+  ask:["کێشی منداڵەکەم چەندە و ئەندازەی دەرمان چەندە؟","کەی پێویستە بگەڕێمەوە؟","ئایا پێویستی بە ئانتی‌بایۆتیک هەیە — بۆچی؟"]},
+ en:{name:"Fever in children",sum:"Fever is not an illness — it is a sign. How the child looks matters more than the number.",
+  what:"Fever is a normal response to infection. Most fevers in children come from viruses and pass on their own. The temperature alone does not tell you how serious it is.",
+  sym:["Temperature above 38°C","Flushed skin","Not wanting to eat","Sleepiness or irritability"],
+  flags:["Any fever in a baby under 3 months","Pale skin, or a rash that does not fade when pressed","Difficulty breathing","Not keeping fluids down, or very little urine","Floppiness or difficulty waking"],
+  do:["Give plenty of fluids — this matters most","Dose paracetamol by weight, not by age","Do not cool with cold water or alcohol","Dress the child lightly"],
+  ask:["What is my child's weight and what is the correct dose?","When should I come back?","Does this need an antibiotic — and why?"]}},
+
+{id:"RH-DIA-001",cat:"child",tier:5,rev:"2026-06",next:"2027-06",by:"Dr. N. Salih, Paediatrics",
+ ku:{name:"سکچوونی منداڵان",sum:"مەترسییەکە ئاوبڕانەوەیە، نەک سکچوونەکە خۆی.",
+  what:"زۆربەی سکچوونەکان لە ڤایرۆس یان خواردنی پیسەوەن و لە چەند ڕۆژێکدا دەڕۆن. ئەوەی منداڵ لەمەترسیدا دەخات لەدەستدانی ئاو و خوێیە، نەک ژمارەی چوونە دەرەوە.",
+  sym:["چوونە دەرەوەی شل و زۆرجار","ئازاری زگ","تای سووک","دڵتێکهاتن"],
+  flags:["نەبوونی فرمێسک لە کاتی گریاندا","چاوی چووەژوورەوە یان ناوقاپی سەری چووەژوورەوە لە ساوایاندا","پیسکردنی زۆر کەم یان بەتاڵی بۆ ماوەی ٦ کاتژمێر","خوێن لە چوونە دەرەوەدا","سستی و وەڵامنەدانەوە"],
+  do:["ئاوی خوێ و شەکری تایبەت (ORS) بدەرێ — گرنگترین چارەسەرە","شیردانی دایک بەردەوام بێت","خواردنی ئاسایی بەردەوام بێت کاتێک منداڵ حەزی لێیە","ئانتی‌بایۆتیک و دەرمانی ڕاگرتنی سکچوون خۆبەخۆ مەدەرێ"],
+  ask:["چەند ORS بدەم و چۆن؟","کەی پێویستە بێمەوە؟","ئایا پێویستی بە پشکنینی چوونە دەرەوە هەیە؟"]},
+ en:{name:"Diarrhoea in children",sum:"The danger is dehydration, not the diarrhoea itself.",
+  what:"Most diarrhoea comes from a virus or contaminated food and settles within a few days. What puts a child at risk is loss of water and salts — not the number of stools.",
+  sym:["Frequent loose stools","Abdominal pain","Mild fever","Nausea"],
+  flags:["No tears when crying","Sunken eyes, or a sunken soft spot in infants","Very little or no urine for 6 hours","Blood in the stool","Floppiness or not responding"],
+  do:["Give oral rehydration solution (ORS) — this is the key treatment","Continue breastfeeding","Continue normal food when the child wants it","Do not give antibiotics or anti-diarrhoeal medicines on your own"],
+  ask:["How much ORS, and how do I give it?","When should I come back?","Does the stool need testing?"]}},
+
+{id:"RH-AST-001",cat:"lung",tier:5,rev:"2026-06",next:"2027-06",by:"Dr. H. Omar, Respiratory",
+ ku:{name:"ڕەبۆ",sum:"دوو جۆر دەرمان هەیە — یەکێکیان ڕۆژانەیە تەنانەت کاتێک باشیت.",
+  what:"لە ڕەبۆدا ڕێڕەوی هەوا هەوکردوو و هەستیارە، بۆیە تەنگ دەبنەوە. هەوکردنەکە بەردەوامە تەنانەت لە ڕۆژە باشەکاندا — لەبەر ئەوە دەرمانی ڕۆژانە پێویستە.",
+  sym:["تەنگەنەفەسی","کۆکەی شەوانە یان لە کاتی وەرزشدا","دەنگی فیکە لە سنگدا","پەستان لە سنگدا"],
+  flags:["نەتوانیت ڕستەیەکی تەواو بڵێیت لە یەک هەناسەدا","لێوی شین یان ناخنی شین","دەرمانی خێرا کاری نەکرد لە ٢٠ خولەکدا","بێدەنگی سنگ لەگەڵ تەنگەنەفەسی توند"],
+  do:["دەرمانی ڕۆژانە (ڕاگر) بەردەوام بەکاربێنە، تەنانەت کاتێک باشیت","تەکنیکی بەکارهێنانی جەکەرەکە پیشانی پزیشک بدە — زۆربەی خەڵک هەڵە بەکاری دەهێنن","دووری بکەوە لە دووکەڵی جگەرە، نارگیلە، و سووتانی زبڵ","لە وەرزی تۆزەوەردا پەنجەرە دابخە"],
+  ask:["کام دەرمانم ڕاگرە و کامیان بۆ کاتی هێرشە؟","تەکنیکی جەکەرەکەم دروستە؟","پلانی نووسراوی هێرشم هەیە؟"]},
+ en:{name:"Asthma",sum:"There are two kinds of inhaler — one is daily, even on good days.",
+  what:"In asthma the airways are inflamed and sensitive, so they narrow. The inflammation continues even on good days — which is why a daily preventer is needed.",
+  sym:["Breathlessness","Coughing at night or during exercise","Wheezing in the chest","Chest tightness"],
+  flags:["Unable to complete a sentence in one breath","Blue lips or fingernails","The reliever inhaler has not worked within 20 minutes","A silent chest with severe breathlessness"],
+  do:["Use the daily preventer continuously, even when you feel well","Show your inhaler technique to your doctor — most people use it incorrectly","Stay away from cigarette smoke, shisha, and burning rubbish","Keep windows closed during dust season"],
+  ask:["Which inhaler is my preventer and which is for attacks?","Is my inhaler technique correct?","Do I have a written action plan?"]}},
+
+{id:"RH-URI-001",cat:"lung",tier:4,rev:"2026-05",next:"2027-05",by:"Dr. H. Omar, Respiratory",
+ ku:{name:"هەڵامەت و ئەنفلۆنزا",sum:"ڤایرۆسن. ئانتی‌بایۆتیک هیچیان چارەسەر ناکات.",
+  what:"هەڵامەت و ئەنفلۆنزا هەردووکیان لە ڤایرۆسەوەن. ئەنفلۆنزا زۆر خراپتر و لەناکاوتر دەستپێدەکات. هەردووکیان بە خۆیان دەڕۆن، بەڵام ئەنفلۆنزا لەلای هەندێک کەس مەترسیدارە.",
+  sym:["ئازاری گەروو و لووتی ڕۆیشتوو","کۆکە","تا و ئازاری جەستە — زیاتر لە ئەنفلۆنزادا","ماندووبوون"],
+  flags:["تەنگەنەفەسی یان خێرایی هەناسە","تا کە دوای باشبوونەوە دووبارە دەگەڕێتەوە","ئازاری سنگ لە کاتی هەناسەداندا","تا زیاتر لە ٥ ڕۆژ بەردەوام بێت"],
+  do:["شلە و پشوو — ئەمە بەڕاستی چارەسەرەکەیە","پاراسیتامۆل بۆ تا و ئازار","ئانتی‌بایۆتیک داوا مەکە — کاری نییە و زیانی هەیە","دەستەکانت بشۆ بۆ ئەوەی بۆ خەڵکی تر نەیبەیت"],
+  ask:["ئایا ئەمە ڤایرۆسە یان بەکتریا — چۆن دەزانیت؟","کەی پێویستە بگەڕێمەوە؟","ئایا کوتانی ئەنفلۆنزا بۆ من گونجاوە؟"]},
+ en:{name:"Colds and flu",sum:"These are viruses. Antibiotics treat neither.",
+  what:"Colds and flu are both viral. Flu comes on much faster and feels much worse. Both settle on their own, but flu is dangerous for some people.",
+  sym:["Sore throat and runny nose","Cough","Fever and body aches — more so with flu","Tiredness"],
+  flags:["Breathlessness or fast breathing","Fever that returns after you had improved","Chest pain when breathing","Fever lasting more than 5 days"],
+  do:["Fluids and rest — this genuinely is the treatment","Paracetamol for fever and aches","Do not ask for antibiotics — they do not work and they carry harm","Wash your hands so you do not pass it on"],
+  ask:["Is this viral or bacterial — how can you tell?","When should I come back?","Would the flu vaccine suit me?"]}},
+
+{id:"RH-GRD-001",cat:"gut",tier:4,rev:"2026-04",next:"2027-04",by:"Dr. A. Jalal, Gastroenterology",
+ ku:{name:"سووتانی سنگ و تروشەی گەدە",sum:"باوە و زۆرجار چارەسەری هەیە — بەڵام هەمیشە دەرمان چارەسەری کۆتایی نییە.",
+  what:"کاتێک ترشی گەدە دەگەڕێتەوە بۆ بۆری خواردن، هەست بە سووتان لە سنگدا دەکەیت. زۆرجار پەیوەندی بە کات و ئەندازەی خواردن و کێشەوە هەیە.",
+  sym:["سووتان لە سنگدا، بەتایبەت دوای خواردن یان لە کاتی ڕاکشاندا","ترشی لە دەمدا","کۆکەی وشکی شەوانە","ئازار لە ناوەڕاستی سنگدا"],
+  flags:["قورسی لە قووتدان یان هەستکردن بە گیرانی خواردن","ڕشانەوەی خوێن یان چوونە دەرەوەی ڕەشی قیرین","لاوازبوونی بێهۆکار","سووتانی نوێ لە تەمەنی سەرووی ٥٠ ساڵ"],
+  do:["٣ کاتژمێر پێش خەوتن هیچ مەخۆ — کاریگەرترین گۆڕانکارییە","سەری جێگاکەت بەرزتر بکەرەوە","خواردنی چەور، تیژ و قاوەی زۆر کەم بکەرەوە","جگەرە بۆ ماوەی درێژ سووتان خراپتر دەکات"],
+  ask:["ئایا پێویستم بە دووربینی گەدە هەیە؟","چەند ماوە ئەم دەرمانە بخۆم؟","ئایا پشکنینی H. pylori پێویستە؟"]},
+ en:{name:"Heartburn and reflux",sum:"Common and usually treatable — but medication is rarely the whole answer.",
+  what:"When stomach acid flows back into the food pipe you feel burning in the chest. It is often linked to meal timing, portion size and weight.",
+  sym:["Burning in the chest, especially after meals or when lying down","An acid taste in the mouth","Dry night-time cough","Pain in the centre of the chest"],
+  flags:["Difficulty swallowing or food sticking","Vomiting blood, or black tarry stools","Unexplained weight loss","New heartburn starting after age 50"],
+  do:["Eat nothing for 3 hours before bed — the single most effective change","Raise the head of the bed","Cut back on fatty food, very spicy food and heavy coffee","Long-term smoking makes reflux worse"],
+  ask:["Do I need an endoscopy?","How long should I take this medicine?","Should I be tested for H. pylori?"]}},
+
+{id:"RH-FPO-001",cat:"gut",tier:4,rev:"2026-06",next:"2027-06",by:"Dr. A. Jalal, Gastroenterology",
+ ku:{name:"ژەهراوی خواردن",sum:"لە هاوینی گەرمدا زیاد دەکات — کاتی هێشتنەوەی خواردن لە دەرەوەی سارکەرەوە هۆکاری سەرەکییە.",
+  what:"خواردن کە لە گەرمادا بۆ کاتژمێرەکان دەمێنێتەوە، بەکتریای تێدا زۆر دەبێت. زۆربەی حاڵەتەکان لە یەک تا دوو ڕۆژدا دەڕۆن، بەڵام ئاوبڕانەوە مەترسیدارە.",
+  sym:["دڵتێکهاتن و ڕشانەوە","سکچوون","ئازار و گرژی زگ","تای سووک"],
+  flags:["نەتوانیت هیچ شلەیەک ڕابگریت بۆ زیاتر لە ٦ کاتژمێر","خوێن لە چوونە دەرەوەدا","تای بەرز لەگەڵ لەرزە","نیشانەی ئاوبڕانەوە: زۆر کەم پیسکردن، سەرگێژە لە هەستاندا","کێشەی بینین یان لاوازی — یەکسەر بڕۆ"],
+  do:["شلە کەم کەم و بەردەوام بخۆرەوە","ORS باشترە لە ئاوی سادە بەتەنها","خواردنی سووک بخۆ کاتێک دەتوانیت","خواردنی ماوەی ژەمی پێشوو لە گەرمادا فڕێبدە — گومانت هەبوو، مەیخۆ"],
+  ask:["ئایا پێویستم بە پشکنین هەیە؟","کەی دەتوانم بگەڕێمەوە بۆ خواردنی ئاسایی؟","ئایا کەسانی تری ماڵەکە پێویستە بپشکنرێن؟"]},
+ en:{name:"Food poisoning",sum:"Rises in the summer heat — food left out of refrigeration is the main cause.",
+  what:"Food left in the heat for hours grows bacteria. Most cases settle within a day or two, but dehydration is the real danger.",
+  sym:["Nausea and vomiting","Diarrhoea","Cramping abdominal pain","Mild fever"],
+  flags:["Unable to keep any fluid down for more than 6 hours","Blood in the stool","High fever with shaking chills","Signs of dehydration: very little urine, dizziness on standing","Vision problems or weakness — go immediately"],
+  do:["Sip fluids continuously in small amounts","ORS is better than plain water alone","Eat light food once you can","Throw away leftovers left in the heat — if in doubt, do not eat it"],
+  ask:["Do I need a stool test?","When can I return to normal food?","Should others in the household be checked?"]}},
+
+{id:"RH-UTI-001",cat:"kidney",tier:5,rev:"2026-05",next:"2027-05",by:"Dr. Z. Mahmood, Urology",
+ ku:{name:"هەوکردنی میزەڕۆ",sum:"باوترە لەلای ژنان. ئازاری پشت لەگەڵ تا واتە جددی‌تر.",
+  what:"بەکتریا دەچێتە ناو میزەڕۆوە و هەوکردن دروست دەکات. زۆرجار لە میزەڵدان دەمێنێتەوە، بەڵام دەتوانێت بۆ گورچیلە بەرزببێتەوە کە زۆر جددی‌ترە.",
+  sym:["سووتان لە کاتی میزکردندا","زۆر جار هەستکردن بە پێویستی میزکردن","میزی تەم یان بۆنی بەهێز","ئازار لە خوارەوەی زگدا"],
+  flags:["ئازاری لای پشت یان لاتەنیشت لەگەڵ تا و لەرزە","ڕشانەوە لەگەڵ تا","خوێن لە میزدا","هەر نیشانەیەک لە دووگیانیدا","شێواوی لەلای بەساڵاچووان"],
+  do:["ئاوی زۆر بخۆرەوە","میزت ڕامەگرە","کۆرسی ئانتی‌بایۆتیک تەواو بکە ئەگەر پزیشک نووسیویەتی","دەرمانی ماوەی کەسانی تر بەکارمەهێنە"],
+  ask:["ئایا پشکنینی میز کرا پێش دەستپێکردنی ئانتی‌بایۆتیک؟","بۆچی دووبارە دەبێتەوە لای من؟","کەی پێویستە بگەڕێمەوە ئەگەر باش نەبووم؟"]},
+ en:{name:"Urinary tract infection",sum:"More common in women. Back pain with fever means something more serious.",
+  what:"Bacteria enter the urinary tract and cause infection. It usually stays in the bladder, but it can travel up to the kidney, which is far more serious.",
+  sym:["Burning when passing urine","Needing to pass urine frequently","Cloudy or strong-smelling urine","Pain in the lower abdomen"],
+  flags:["Pain in the back or flank with fever and chills","Vomiting with fever","Blood in the urine","Any symptoms during pregnancy","Confusion in an older person"],
+  do:["Drink plenty of water","Do not hold your urine","Finish the antibiotic course if one has been prescribed","Do not use someone else's leftover medicine"],
+  ask:["Was a urine test done before the antibiotic was started?","Why does this keep coming back for me?","When should I return if I am not better?"]}},
+
+{id:"RH-KST-001",cat:"kidney",tier:4,rev:"2026-06",next:"2027-06",by:"Dr. Z. Mahmood, Urology",
+ ku:{name:"بەردی گورچیلە",sum:"لە هەوای گەرمدا زیاد دەکات — کەم ئاوخواردنەوە هۆکاری سەرەکییە.",
+  what:"بەرد لە گورچیلەدا پێکدێت کاتێک میز چڕ دەبێت. لە ناوچە گەرمەکاندا باوترە، چونکە ئارەقە زۆرە و ئاوخواردنەوە کەمە.",
+  sym:["ئازاری توند و لێدەر لە لاتەنیشت یان پشتەوە","بڵاوبوونەوەی ئازار بۆ خوارەوەی زگ","خوێن لە میزدا","دڵتێکهاتن لەگەڵ ئازارەکە"],
+  flags:["ئازار لەگەڵ تا و لەرزە — دەکرێت هەوکردن بێت","نەتوانیت هیچ میز بکەیت","ڕشانەوەی بەردەوام کە ڕێگری لە خواردنی دەرمان دەکات","ئازارێک کە هیچ ئازارشکێنێک کاری نەکرد"],
+  do:["ئاوی زۆر بخۆرەوە — گرنگترین ڕێگری","لە هاویندا زیاتر ئاو بخۆرەوە، بەتایبەت ئەگەر لە دەرەوە کار دەکەیت","خوێ کەم بکەرەوە","ئەگەر بەردەکەت هات، هەڵیبگرە بۆ پشکنین"],
+  ask:["بەردەکە لە چی دروستبووە؟","چۆن ڕێگری لە بەردی داهاتوو بکەم؟","ئایا پێویستم بە نەشتەرگەری یان شکاندنی بەرد هەیە؟"]},
+ en:{name:"Kidney stones",sum:"Rise in hot weather — not drinking enough is the main cause.",
+  what:"Stones form when urine becomes concentrated. They are more common in hot regions because people sweat heavily and drink too little.",
+  sym:["Severe throbbing pain in the flank or back","Pain spreading to the lower abdomen","Blood in the urine","Nausea with the pain"],
+  flags:["Pain with fever and chills — there may be infection","Being unable to pass urine at all","Persistent vomiting that prevents taking medicine","Pain that no painkiller touches"],
+  do:["Drink plenty of water — the single most important preventive step","Drink more in summer, especially if you work outdoors","Reduce salt","If you pass the stone, keep it for analysis"],
+  ask:["What was the stone made of?","How do I prevent the next one?","Do I need surgery or lithotripsy?"]}},
+
+{id:"RH-ANA-001",cat:"blood",tier:5,rev:"2026-05",next:"2027-05",by:"Dr. B. Tahir, Haematology",
+ ku:{name:"کەمخوێنی حەدید",sum:"باوترین هۆکاری ماندووبوون لەلای ژنان — بەڵام هەمیشە پرسیارێک لە پشتەوەیە: بۆچی؟",
+  what:"حەدید پێویستە بۆ دروستکردنی خانە سوورەکانی خوێن کە ئۆکسجین دەگوازنەوە. کاتێک حەدید کەم دەبێت، جەستە ئۆکسجینی پێویستی پێ ناگات.",
+  sym:["ماندووبوون و بێوزەیی","لەڕەنگکەوتن","تەنگەنەفەس لە کاتی چالاکیدا","سەرگێژە","کەوتنی قژ و شکانی ناخن"],
+  flags:["تەنگەنەفەسی لە کاتی پشوودان","ئازاری سنگ یان لێدانی خێرای دڵ","چوونە دەرەوەی ڕەشی قیرین یان خوێن لە چوونە دەرەوەدا","خوێنبەربوونی زۆری مانگانە کە جلوبەرگ تەڕ دەکات"],
+  do:["حەبی حەدید لەگەڵ ڤیتامین C یان ئاوی پرتەقاڵ بخۆ — هەڵمژین باشتر دەکات","لەگەڵ چایی و شیر مەیخۆ — ڕێگری لە هەڵمژین دەکەن","چاوەڕێی چەند مانگ بە بۆ باشبوونەوە","تەنها ئەگەر پزیشک وتوویەتی بەکاریبێنە — حەدیدی زۆر زیانبەخشە"],
+  ask:["بۆچی حەدیدم کەمە — هۆکارەکەی چییە؟","چەند ماوە حەب بخۆم؟","ئایا پێویستم بە پشکنینی ڕیخۆڵە هەیە؟"]},
+ en:{name:"Iron-deficiency anaemia",sum:"The commonest cause of tiredness in women — but there is always a question behind it: why?",
+  what:"Iron is needed to make the red blood cells that carry oxygen. When iron is low, the body does not get the oxygen it needs.",
+  sym:["Tiredness and low energy","Pale skin","Breathlessness on exertion","Dizziness","Hair loss and brittle nails"],
+  flags:["Breathlessness at rest","Chest pain or a racing heart","Black tarry stools or blood in the stool","Very heavy periods soaking through clothing"],
+  do:["Take iron tablets with vitamin C or orange juice — it improves absorption","Do not take them with tea or milk — these block absorption","Expect several months before levels recover","Take iron only if a doctor has advised it — excess iron is harmful"],
+  ask:["Why is my iron low — what is the cause?","How long should I take the tablets?","Do I need my bowel investigated?"]}},
+
+{id:"RH-THA-001",cat:"blood",tier:5,rev:"2026-07",next:"2027-07",by:"Dr. B. Tahir, Haematology",
+ ku:{name:"تالاسیمیا و هەڵگری تالاسیمیا",sum:"دەکرێت پێش هاوسەرگیری بزانرێت — پشکنینێکی سادەی خوێنە.",
+  what:"تالاسیمیا نەخۆشییەکی بۆماوەیی خوێنە. کەسێک دەتوانێت «هەڵگر» بێت بەبێ ئەوەی هیچ نیشانەیەکی هەبێت. کاتێک هەردوو دایک و باوک هەڵگر بن، لە هەر دووگیانییەکدا ئەگەری هەیە منداڵەکە بە شێوەی توند تووش بێت.",
+  sym:["هەڵگر: زۆرجار هیچ نیشانەیەک نییە","جۆری توند: لەڕەنگکەوتن و ماندووبوونی زۆر لە ساڵی یەکەمدا","گەشەنەکردنی منداڵ","گەورەبوونی سپڵ"],
+  flags:["لەڕەنگکەوتنی زۆر لەگەڵ تەنگەنەفەسی","تا لەلای منداڵێک کە سپڵی دەرکراوە","زەردی چاو و پێست"],
+  do:["پێش هاوسەرگیری هەردوو لا پشکنین بکەن — بەتایبەت ئەگەر خزمایەتی هەیە","ئەگەر هەڵگریت، ئەمە نەخۆشی نییە — بەڵام زانیاری گرنگە بۆ بڕیاری داهاتوو","حەبی حەدید بەخۆت مەخۆ ئەگەر کەمخوێنیت هەیە — لێرەدا لەوانەیە هۆکارەکە جیاواز بێت"],
+  ask:["ئایا من هەڵگرم؟","ئەگەر هەردووکمان هەڵگر بین، هەڵبژاردەکانمان چین؟","کوێ دەتوانین پشکنین بکەین؟"]},
+ en:{name:"Thalassaemia and carrier status",sum:"It can be known before marriage — it is a simple blood test.",
+  what:"Thalassaemia is an inherited blood disorder. A person can be a carrier with no symptoms at all. When both parents are carriers, each pregnancy carries a chance that the child is severely affected.",
+  sym:["Carrier: usually no symptoms at all","Severe form: marked pallor and tiredness in the first year of life","Poor growth in a child","Enlarged spleen"],
+  flags:["Marked pallor with breathlessness","Fever in a child who has had the spleen removed","Yellowing of the eyes or skin"],
+  do:["Both partners should be tested before marriage — particularly where there is family relation","If you are a carrier, this is not an illness — but it is important information for future decisions","Do not take iron tablets on your own for anaemia here — the cause may be different"],
+  ask:["Am I a carrier?","If we are both carriers, what are our options?","Where can we be tested?"]}},
+
+{id:"RH-LBP-001",cat:"bone",tier:5,rev:"2026-04",next:"2027-04",by:"Dr. K. Rasul, Orthopaedics",
+ ku:{name:"ئازاری پشت",sum:"لە زۆربەی حاڵەتەکاندا، جووڵە باشترە لە پشوودانی درێژ.",
+  what:"زۆربەی ئازاری پشت لە ماسولکە و لیگامێنتەکانەوەیە، نەک لە شتێکی مەترسیدار. لە چەند هەفتەیەکدا باش دەبێت — و بەردەوامی جووڵە خێراتری دەکات.",
+  sym:["ئازار لە خوارەوەی پشتدا","گرژی ماسولکە","ئازار کە بە جووڵە خراپتر دەبێت لە ڕۆژانی یەکەمدا"],
+  flags:["لاوازی یان بێهەستی لە قاچەکاندا","لەدەستدانی کۆنترۆڵی میز یان چوونە دەرەوە","بێهەستی لە ناوچەی نێوان ڕانەکاندا","ئازاری پشت لەگەڵ تا یان لاوازبوونی بێهۆکار","ئازار دوای کەوتن یان ڕووداو"],
+  do:["بجووڵێ — پشوودانی درێژ لە جێگادا ئازارەکە خراپتر دەکات","کارە ڕۆژانەکانت بەردەوام بکە بە ئەندازەی توانا","لە کاتی هەڵگرتنی شتی قورسدا لە ئەژنۆکانەوە خۆت شۆڕ بکەرەوە","بەهێزکردنی ماسولکەی ناوقەد باشترین ڕێگرییە"],
+  ask:["ئایا پێویستم بە وێنە هەیە — بۆچی یان بۆچی نا؟","چ جووڵەیەک بۆ من گونجاوە؟","کەی دەبێت نیگەران بم؟"]},
+ en:{name:"Low back pain",sum:"In most cases, movement is better than prolonged rest.",
+  what:"Most back pain comes from muscles and ligaments, not from anything dangerous. It settles within a few weeks — and staying active makes that happen faster.",
+  sym:["Pain in the lower back","Muscle spasm","Pain that worsens with movement in the first days"],
+  flags:["Weakness or numbness in the legs","Loss of bladder or bowel control","Numbness in the area between the thighs","Back pain with fever or unexplained weight loss","Pain following a fall or accident"],
+  do:["Keep moving — prolonged bed rest makes it worse","Continue daily activities within your limits","Bend from the knees when lifting","Strengthening the core muscles is the best prevention"],
+  ask:["Do I need imaging — and why, or why not?","What exercises suit me?","When should I be worried?"]}},
+
+{id:"RH-DEP-001",cat:"mind",tier:5,rev:"2026-07",next:"2027-07",by:"Dr. F. Aziz, Psychiatry",
+ ku:{name:"خەمۆکی",sum:"نەخۆشییەکی چارەسەرکراوە — نەک لاوازی ویست یان کەمی باوەڕ.",
+  what:"خەمۆکی زیاتر لە خەفەتێکی کاتییە. کاریگەری لەسەر خەو، وزە، خواردن و توانای بیرکردنەوە هەیە، و دەتوانێت هەفتە و مانگ بمێنێتەوە. چارەسەری کاریگەر هەیە — قسەکردن، پشتیوانی، و لە هەندێک حاڵەتدا دەرمان.",
+  sym:["خەمۆکی یان بێهەستی بۆ ماوەیەکی درێژ","لەدەستدانی حەز بەو شتانەی جاران خۆشت دەویست","تێکچوونی خەو — زۆر یان کەم","ماندووبوونی بەردەوام","کێشە لە خۆکۆکردنەوە و بڕیاردان"],
+  flags:["بیرکردنەوە لە زیانگەیاندن بە خۆت — هەر ئەمڕۆ قسە لەگەڵ کەسێک بکە","نەتوانین بەڕێوەبردنی کارە بنەڕەتییەکانی ژیان","نەخواردن و نەخواردنەوە بۆ ماوەی چەند ڕۆژ","بیستن یان بینینی شتی نەبوو"],
+  do:["قسە لەگەڵ کەسێک بکە کە متمانەت پێیەتی — دەستپێکردن گرنگترین هەنگاوە","لە پزیشکی خۆت بپرسە؛ پێویست ناکات ڕاستەوخۆ بۆ لای پسپۆڕ بچیت","خەوی ڕێکوپێک و ڕۆژانە دەرچوون لە ماڵەوە یارمەتیدەرن","بڕیاری گەورە لە کاتی خراپترین قۆناغدا مەدە"],
+  ask:["ئایا ئەمە خەمۆکییە؟","چ هەڵبژاردەیەکی چارەسەرم هەیە جگە لە دەرمان؟","چەند ماوە پێویستە بۆ ئەوەی هەست بە جیاوازی بکەم؟"]},
+ en:{name:"Depression",sum:"A treatable illness — not weak will or lack of faith.",
+  what:"Depression is more than passing sadness. It affects sleep, energy, appetite and the ability to think, and it can last weeks or months. Effective treatment exists — talking, support, and in some cases medication.",
+  sym:["Low mood or numbness lasting a long time","Loss of interest in things you used to enjoy","Disturbed sleep — too much or too little","Persistent tiredness","Difficulty concentrating and making decisions"],
+  flags:["Thoughts of harming yourself — talk to someone today","Being unable to manage basic daily tasks","Not eating or drinking for several days","Hearing or seeing things that are not there"],
+  do:["Talk to someone you trust — starting is the most important step","Ask your own doctor; you do not have to go straight to a specialist","Regular sleep and getting out of the house daily both help","Do not make major decisions at the worst point"],
+  ask:["Is this depression?","What treatment options do I have besides medication?","How long before I should feel a difference?"]}},
+
+{id:"RH-HEA-001",cat:"env",tier:5,rev:"2026-06",next:"2027-06",by:"Dr. H. Omar, Emergency",
+ ku:{name:"لێدانی گەرما",sum:"لە هاوینی ئێمەدا مەترسییەکی ڕاستەقینەیە — بەتایبەت بۆ کرێکارانی دەرەوە و بەساڵاچووان.",
+  what:"کاتێک جەستە نەتوانێت گەرمی خۆی دابەزێنێت، پلەی ناوەکی بەرز دەبێت. لە قۆناغی سووکدا (ماندووبوونی گەرما) دەکرێت چارەسەر بکرێت. لە قۆناغی توندا (لێدانی گەرما) مەترسی لەسەر ژیانە.",
+  sym:["ئارەقەی زۆر، سەرگێژە، لاوازی","سەرئێشە و دڵتێکهاتن","گرژی ماسولکە","خێرایی لێدانی دڵ"],
+  flags:["وشکبوونەوەی پێست و ڕاگرتنی ئارەقە لەگەڵ پێستی گەرم","شێواوی، قسەی نامانادار، یان لەهۆشخۆچوون","کۆنووسان","پلەی گەرمی جەستە زۆر بەرز — یەکسەر فریاگوزاری بانگ بکە"],
+  do:["یەکسەر بیبە بۆ شوێنی سێبەر یان ژووری فێنک","جلەکانی سووک بکە و بە ئاوی شل جەستەی تەڕ بکە","ئەگەر بەئاگایە، شلە بدەرێ","لە هەوای گەرمدا کاری قورس لە نێوان نیوەڕۆ و ئێوارەدا مەکە"],
+  ask:["ئایا دەرمانەکانم مەترسیم لە گەرمادا زیاد دەکەن؟","چەند ئاو پێویستە بخۆمەوە لە کاتی کاری دەرەوەدا؟","کێ لە ماڵەکەم زۆرترین مەترسی هەیە؟"]},
+ en:{name:"Heat exhaustion and heatstroke",sum:"A genuine danger in our summers — particularly for outdoor workers and older people.",
+  what:"When the body cannot shed its heat, its core temperature rises. The milder stage (heat exhaustion) can be treated. The severe stage (heatstroke) is life-threatening.",
+  sym:["Heavy sweating, dizziness, weakness","Headache and nausea","Muscle cramps","Fast heartbeat"],
+  flags:["Dry skin and sweating stops, with hot skin","Confusion, incoherent speech, or fainting","Seizures","A very high body temperature — call emergency immediately"],
+  do:["Move the person into shade or a cool room immediately","Loosen clothing and wet the skin with cool water","If conscious, give fluids","Avoid heavy work in the hottest hours of the day"],
+  ask:["Do my medicines increase my risk in the heat?","How much water should I drink when working outdoors?","Who in my household is most at risk?"]}},
+
+{id:"RH-DUS-001",cat:"env",tier:3,rev:"2026-05",next:"2027-05",by:"Dr. H. Omar, Respiratory",
+ ku:{name:"تۆزەوەر و هەناسەدان",sum:"بۆ زۆربەی خەڵک بێزارکەرە. بۆ کەسانی ڕەبۆ و کەسانی بەتەمەن جددییە.",
+  what:"لە کاتی تۆزەوەردا، وردەخاڵە بچووکەکان دەگەنە قووڵایی سییەکان و هەوکردن دروست دەکەن. ئەمە دەتوانێت هێرشی ڕەبۆ و کێشەی دڵ و سی زیاد بکات.",
+  sym:["ئازاری گەروو و لووت","کۆکەی وشک","تەنگی سنگ","سووربوون و ئاوچوونی چاو"],
+  flags:["تەنگەنەفەسی توند یان فیکەی سنگ","ئازاری سنگ","نەتوانینی قسەکردن بە هەناسەیەک","لێوی شین"],
+  do:["پەنجەرە و دەرگا دابخە","دەرچوونی بێهوودە کەم بکەرەوە، بەتایبەت بۆ منداڵ و بەساڵاچوو","ماسکێکی گونجاو بەکاربێنە — ماسکی جلی ئاسایی وردەخاڵە بچووکەکان ناگرێت","ئەگەر ڕەبۆت هەیە، دەرمانەکانت لەبەردەستدا بێت"],
+  ask:["ئایا پێویستە دەرمانی ڕەبۆم لە وەرزی تۆزدا زیاد بکەم؟","کام ماسک بەسوودە؟","نیشانەکانی خراپبوون چین کە پێویستە بێمەوە؟"]},
+ en:{name:"Dust storms and breathing",sum:"An irritation for most people. Serious for people with asthma and for the elderly.",
+  what:"During dust storms, fine particles reach deep into the lungs and cause inflammation. This can trigger asthma attacks and worsen existing heart and lung conditions.",
+  sym:["Sore throat and nose","Dry cough","Chest tightness","Red, watering eyes"],
+  flags:["Severe breathlessness or wheezing","Chest pain","Unable to speak in a full breath","Blue lips"],
+  do:["Close windows and doors","Reduce unnecessary trips outside, especially for children and older people","Use a properly fitted mask — an ordinary cloth mask does not stop fine particles","If you have asthma, keep your inhalers to hand"],
+  ask:["Should I increase my asthma medication during dust season?","Which mask actually helps?","What signs mean I should come back?"]}}];
+
+const DRUGS=[
+{id:"RH-ABX-001",tier:5,rev:"2026-06",next:"2027-06",by:"M. Sardar, B.Pharm",
+ ku:{name:"ئانتی‌بایۆتیک",sum:"لە دژی ڤایرۆس هیچ کاریگەرییەکی نییە.",
+  does:["بەکتریا دەکوژێت یان ڕێگری لە زۆربوونی دەکات","لە هەندێک هەوکردنی سییەکان، میزەڕۆ و پێستدا ژیان ڕزگار دەکات"],
+  not:["هەڵامەت، ئەنفلۆنزا و زۆربەی ئازاری گەروو چارەسەر ناکات — ئەمانە ڤایرۆسن","تا زووتر دانامرکێنێتەوە کاتێک هۆکارەکە ڤایرۆس بێت"],
+  care:["کۆرسەکە تەواو بکە بەو شێوەیەی پزیشک وتوویەتی","دەرمانی ماوە بۆ جارێکی تر هەڵمەگرە","بەکارهێنانی زۆر وا دەکات کە لە داهاتوودا کاری نەکات — بۆ خۆت و بۆ خەڵکی دەوروبەرت"]},
+ en:{name:"Antibiotics",sum:"They do nothing against viruses.",
+  does:["Kill bacteria or stop them multiplying","Save lives in some chest, urine and skin infections"],
+  not:["Do not treat colds, flu or most sore throats — these are viral","Do not bring a fever down faster when the cause is a virus"],
+  care:["Finish the course exactly as prescribed","Do not keep leftovers for next time","Overuse makes them stop working — for you and for everyone around you"]}},
+
+{id:"RH-PAR-001",tier:5,rev:"2026-06",next:"2027-06",by:"M. Sardar, B.Pharm",
+ ku:{name:"پاراسیتامۆل",sum:"سەلامەتترین ئازارشکێنە — بەمەرجێک ئەندازەکەی ڕەچاو بکرێت.",
+  does:["تا دادەبەزێنێت","ئازاری سووک و ناوەند کەم دەکاتەوە","بۆ منداڵ و دووگیان زۆرجار سەلامەتترین هەڵبژاردەیە"],
+  not:["هەوکردن کەم ناکاتەوە بەو شێوەیەی ئایبوپرۆفین","نەخۆشییەکە خۆی چارەسەر ناکات — تەنها نیشانەکان کەم دەکاتەوە"],
+  care:["ئەندازەی زۆر زیان بە جگەر دەگەیەنێت — ئەمە مەترسییەکی ڕاستەقینەیە","سەیری ناوی مادەکە بکە: زۆر لە دەرمانی هەڵامەت و کۆکە پاراسیتامۆلیان تێدایە، بۆیە دوو جار وەریدەگریت بەبێ ئەوەی بزانیت","بۆ منداڵ بە پێی کێش بدرێت، نەک بە پێی تەمەن"]},
+ en:{name:"Paracetamol",sum:"The safest painkiller — provided the dose is respected.",
+  does:["Brings fever down","Reduces mild and moderate pain","Often the safest choice for children and in pregnancy"],
+  not:["Does not reduce inflammation the way ibuprofen does","Does not treat the illness itself — only the symptoms"],
+  care:["Excess doses damage the liver — this is a real risk, not a theoretical one","Read the ingredient name: many cold and cough remedies contain paracetamol, so you take it twice without realising","For children, dose by weight, not by age"]}},
+
+{id:"RH-NSA-001",tier:5,rev:"2026-05",next:"2027-05",by:"M. Sardar, B.Pharm",
+ ku:{name:"ئایبوپرۆفین و ئازارشکێنی هاوشێوە",sum:"کاریگەرە بۆ هەوکردن — بەڵام بۆ هەموو کەسێک نییە.",
+  does:["ئازار و هەوکردن کەم دەکاتەوە","بۆ ئازاری جومگە، ماسولکە و مانگانە بەسوودە","تا دادەبەزێنێت"],
+  not:["بۆ کەسانی خاوەن برینی گەدە گونجاو نییە","جێگای دەرمانی نەخۆشییە درێژخایەنەکان ناگرێتەوە"],
+  care:["لەگەڵ خواردن بیخۆ — بەتاڵی گەدە زیان دەگەیەنێت","ئەگەر کێشەی گورچیلە، دڵ یان پەستانی خوێنی بەرزت هەیە، پێش بەکارهێنان بپرسە","لە سێیەمین سێمانگی دووگیانیدا بەکار مەهێنە","لەگەڵ دەرمانی خوێن ڕەقکردنەوە مەیخۆ بەبێ ڕاوێژ"]},
+ en:{name:"Ibuprofen and similar painkillers",sum:"Effective for inflammation — but not for everyone.",
+  does:["Reduces pain and inflammation","Useful for joint, muscle and period pain","Brings fever down"],
+  not:["Not suitable for people with stomach ulcers","Does not replace treatment for the underlying long-term condition"],
+  care:["Take it with food — on an empty stomach it causes harm","If you have kidney disease, heart disease or high blood pressure, ask before using","Do not use in the third trimester of pregnancy","Do not combine with blood thinners without advice"]}},
+
+{id:"RH-COR-001",tier:5,rev:"2026-07",next:"2027-07",by:"M. Sardar, B.Pharm",
+ ku:{name:"کۆرتیزۆن",sum:"دەرمانێکی بەهێزە کە بەکارهێنانی خۆسەرانەی زۆر باوە لێرە — و زیانەکانی کۆدەبنەوە.",
+  does:["هەوکردنی توند کەم دەکاتەوە","لە هەندێک نەخۆشیدا پێویستە و ژیان ڕزگار دەکات","بە خێرایی هەست بە باشبوونەوە دەدات"],
+  not:["ئازارشکێنێکی ئاسایی نییە","هۆکاری نەخۆشییەکە چارەسەر ناکات — تەنها هەوکردنەکە دادەپۆشێت"],
+  care:["کێشەی گەورە ئەوەیە کە بە خێرایی باشت دەکاتەوە، بۆیە خەڵک دووبارە بەکاری دەهێنن","بەکارهێنانی درێژخایەن: شەکری خوێن بەرز، پەستانی خوێن بەرز، لاوازی ئێسک، ئاوسان","هەرگیز بەخۆت ڕایمەگرە دوای بەکارهێنانی درێژخایەن — پێویستە کەم کەم دابەزێنرێت","کرێمی کۆرتیزۆنی بەهێز بۆ ڕوو بەکارمەهێنە بەبێ ڕێنمایی"]},
+ en:{name:"Cortisone (steroids)",sum:"A powerful medicine that is widely self-prescribed here — and the harms accumulate.",
+  does:["Reduces severe inflammation","Is necessary and life-saving in some conditions","Produces a rapid sense of improvement"],
+  not:["Is not an ordinary painkiller","Does not treat the cause — it masks the inflammation"],
+  care:["The core problem is that it works fast, so people take it again and again","Long-term use: raised blood sugar, raised blood pressure, weakened bones, swelling","Never stop it suddenly after long-term use — it must be reduced gradually","Do not use strong steroid creams on the face without guidance"]}},
+
+{id:"RH-PPI-001",tier:4,rev:"2026-04",next:"2027-04",by:"M. Sardar, B.Pharm",
+ ku:{name:"ئۆمیپرازۆل و هاوشێوەکانی",sum:"بۆ ماوەی دیاریکراو نووسراوە — نەک بۆ ساڵانی درێژ.",
+  does:["ترشی گەدە کەم دەکاتەوە","برینی گەدە خاو دەکاتەوە","بۆ تروشەی گەدە کاریگەرە"],
+  not:["ئازاری زگی هەموو جۆرەکان چارەسەر ناکات","خواردنی چەور و کاتی خواردن ڕێک ناخات — ئەوە کاری خۆتە"],
+  care:["بەکارهێنانی چەند ساڵە بەبێ پێداچوونەوە باوە و پێویست نییە","دەکرێت هەڵمژینی B12، ماگنیسیۆم و کالسیۆم کەم بکاتەوە","٣٠ خولەک پێش خواردن بیخۆ — زۆر کەس دوای خواردن دەیخۆن و کاریگەرییەکەی کەم دەبێتەوە","دوای چەند مانگ لە پزیشک بپرسە: ئایا هێشتا پێویستە؟"]},
+ en:{name:"Omeprazole and similar",sum:"Prescribed for a defined period — not for years on end.",
+  does:["Reduces stomach acid","Heals stomach ulcers","Effective for reflux"],
+  not:["Does not treat every kind of abdominal pain","Does not fix fatty food or late meals — that part is yours"],
+  care:["Taking it for years without review is common and usually unnecessary","It can reduce absorption of B12, magnesium and calcium","Take it 30 minutes before food — many people take it after, which reduces the effect","After a few months, ask your doctor: is this still needed?"]}},
+
+{id:"RH-VTD-001",tier:4,rev:"2026-05",next:"2027-05",by:"M. Sardar, B.Pharm",
+ ku:{name:"ڤیتامین D",sum:"سوودی هەیە بۆ ئەوانەی کەمیانە. بۆ هەموو کەسێک چارەسەر نییە.",
+  does:["یارمەتی جەستە دەدات کە کالسیۆم هەڵبمژێت","کەمی ڤیتامین D لە ناوچەکەماندا باوە، بەتایبەت لەلای ژنان"],
+  not:["ماندووبوونی گشتی چارەسەر ناکات ئەگەر ئاستەکەت ئاسایی بێت","بەرگری لە ڤایرۆس ناکات بەو شێوەیەی بەشێک لە بازاڕ دەڵێت"],
+  care:["ئەندازەی زۆر زۆر بۆ ماوەی درێژ زیانبەخشە","پێش دەستپێکردن ئاستەکەت بپشکنە","دەرزی مانگانەی گەورە هەمیشە پێویست نییە"]},
+ en:{name:"Vitamin D",sum:"Useful for people who are deficient. Not a treatment for everyone.",
+  does:["Helps the body absorb calcium","Deficiency is genuinely common here, particularly among women"],
+  not:["Does not treat general tiredness if your level is normal","Does not protect against viruses in the way some sellers claim"],
+  care:["Very high doses over long periods are harmful","Have your level checked before starting","Large monthly injections are not always necessary"]}},
+
+{id:"RH-IRN-001",tier:4,rev:"2026-05",next:"2027-05",by:"M. Sardar, B.Pharm",
+ ku:{name:"حەبی حەدید",sum:"تەنها بەکاریبێنە کاتێک پشکنین دەریخستووە کە حەدیدت کەمە.",
+  does:["کەمخوێنی حەدید چارەسەر دەکات","لە دووگیانیدا زۆرجار پێویستە"],
+  not:["ماندووبوون چارەسەر ناکات ئەگەر حەدیدت ئاسایی بێت","هۆکاری کەمی حەدید ناڕەوێنێتەوە — ئەو هۆکارە دەبێت بدۆزرێتەوە"],
+  care:["لەگەڵ چایی و شیر مەیخۆ — هەڵمژین کەم دەکەنەوە","لەگەڵ ئاوی پرتەقاڵ باشتر هەڵدەمژرێت","چوونە دەرەوەت ڕەش دەکات — ئەمە ئاساییە","بۆ منداڵان زۆر مەترسیدارە ئەگەر بە هەڵە بیخۆن — دوور بیخەرەوە"]},
+ en:{name:"Iron tablets",sum:"Take them only when a test has shown your iron is low.",
+  does:["Treat iron-deficiency anaemia","Are often needed in pregnancy"],
+  not:["Do not treat tiredness if your iron is normal","Do not remove the cause of the deficiency — that still has to be found"],
+  care:["Do not take with tea or milk — they reduce absorption","Absorbed better with orange juice","They turn the stool black — this is normal","Very dangerous to children if swallowed accidentally — keep out of reach"]}},
+
+{id:"RH-CGH-001",tier:4,rev:"2026-06",next:"2027-06",by:"M. Sardar, B.Pharm",
+ ku:{name:"شەربەتی کۆکە بۆ منداڵان",sum:"سوودەکەی کەمە و بۆ منداڵی بچووک مەترسی هەیە.",
+  does:["هەندێک جار هەستێکی خۆشی کاتی دەدات","شەربەتی سادە گەروو نەرم دەکات"],
+  not:["ماوەی نەخۆشییەکە کورت ناکاتەوە","کۆکەی ڤایرۆسی چارەسەر ناکات — کۆکە خۆی بەرگرییەکە بۆ پاککردنەوەی ڕێڕەوی هەوا"],
+  care:["بۆ منداڵی کەمتر لە ٦ ساڵ پێشنیار ناکرێت بەبێ ڕاوێژی پزیشک","زۆرێک لەم شەربەتانە پاراسیتامۆل یان ئەنتی‌هیستامینیان تێدایە — دووبارە وەرگرتن ڕوودەدات","هەنگوین بۆ منداڵی سەرووی ساڵێک باشترە — بەڵام هەرگیز بۆ کەمتر لە ساڵێک","ناوی مادەکان بخوێنەرەوە پێش ئەوەی بیدەیتێ"]},
+ en:{name:"Children's cough syrups",sum:"The benefit is small and there is real risk for young children.",
+  does:["Sometimes provide brief comfort","A plain syrup soothes the throat"],
+  not:["Do not shorten the illness","Do not treat a viral cough — the cough is itself the defence that clears the airway"],
+  care:["Not recommended under 6 years without a doctor's advice","Many of these syrups contain paracetamol or antihistamines — double dosing happens","Honey is better for children over one year — but never under one year","Read the ingredients before you give it"]}},
+
+{id:"RH-WGT-001",tier:2,rev:"2026-08",next:"2027-02",by:"M. Sardar, B.Pharm",
+ ku:{name:"بەرهەمی گیایی بۆ لەڕبوونەوە",sum:"«سروشتی» واتای «سەلامەت» نییە. هەندێکیان مادەی نەنووسراویان تێدایە.",
+  does:["زۆربەیان هیچ کاریگەرییەکی سەلمێنراویان نییە","هەندێکیان تەنها ئاو لە جەستە کەم دەکەنەوە — نەک چەوری"],
+  not:["چەوری بە شێوەی بەردەوام کەم ناکەنەوە","جێگای گۆڕانی خواردن و جووڵە ناگرنەوە"],
+  care:["لە چەند وڵاتدا بەرهەمی هاوشێوە دۆزراونەتەوە کە دەرمانی نەنووسراویان تێدابووە","ئەگەر بەرهەمێک بەڵێنی خێرایی زۆر بدات، ئەوە خۆی ئاگادارکردنەوەیەکە","لەگەڵ دەرمانی دڵ، پەستانی خوێن و ئەنتی‌دیپرێسانت دەتوانن تێکەڵ ببن","پێش کڕین ناوی بەرهەمەکە لە دەزگای کۆنترۆڵی دەرمان بپرسە"]},
+ en:{name:"Herbal weight-loss products",sum:"\"Natural\" does not mean \"safe\". Some contain undeclared substances.",
+  does:["Most have no proven effect","Some only reduce body water — not fat"],
+  not:["Do not produce sustained fat loss","Do not replace changes in food and activity"],
+  care:["In several countries, similar products have been found to contain undeclared pharmaceutical drugs","If a product promises very rapid results, that is itself the warning","They can interact with heart, blood pressure and antidepressant medicines","Check the product name with the medicines regulator before buying"]}}];
+
+const CLAIMS=[
+{v:"false",id:"RH-CL-021",tier:5,rev:"2026-08",
+ ku:{claim:"ئانتی‌بایۆتیک هەڵامەت چارەسەر دەکات",body:"هەڵامەت لە ڤایرۆسەوەیە و ئانتی‌بایۆتیک تەنها لەسەر بەکتریا کاردەکات. بەکارهێنانی لێرەدا سوودی نییە، کاریگەری لاوەکی هەیە، و بەکتریای بەرگری‌دار زیاد دەکات."},
+ en:{claim:"Antibiotics cure a cold",body:"Colds are viral and antibiotics act only on bacteria. Using them here gives no benefit, carries side effects, and increases resistant bacteria."}},
+{v:"false",id:"RH-CL-014",tier:4,rev:"2026-08",
+ ku:{claim:"دارچین شەکرە چارەسەر دەکات",body:"لێکۆڵینەوەکان کاریگەرییەکی بچووک و ناجێگیریان بینیوە لەسەر شەکری خوێن، زۆر لەوە کەمترە کە دەرمان دەیکات. کەسێک کە دەرمانەکەی بۆ دارچین بەجێبهێڵێت، خۆی دەخاتە مەترسییەوە."},
+ en:{claim:"Cinnamon cures diabetes",body:"Studies show a small and inconsistent effect on blood sugar, far below what medication achieves. Anyone who replaces their medicine with cinnamon is putting themselves at risk."}},
+{v:"false",id:"RH-CL-019",tier:5,rev:"2026-07",
+ ku:{claim:"شەکری قاوەیی بۆ شەکرەداران باشترە لە شەکری سپی",body:"هەردووکیان بە هەمان شێوە شەکری خوێن بەرز دەکەنەوە. جیاوازییەکەی لە ڕەنگ و تامدایە، نەک لە کاریگەری لەسەر شەکری خوێن. ئەندازەکە گرنگە، نەک جۆرەکە."},
+ en:{claim:"Brown sugar is better than white sugar for diabetics",body:"Both raise blood sugar the same way. The difference is colour and flavour, not the effect on blood sugar. The amount matters, not the type."}},
+{v:"false",id:"RH-CL-023",tier:4,rev:"2026-08",
+ ku:{claim:"کۆرتیزۆن باشە چونکە خێرا چاکت دەکاتەوە",body:"خێرایی کاریگەرییەکەی هەر ئەوەیە کە مەترسیدارە: خەڵک دووبارە بەکاری دەهێنن. بەکارهێنانی درێژخایەن بەبێ چاودێری دەبێتە هۆی شەکری بەرز، لاوازی ئێسک و پەستانی خوێنی بەرز."},
+ en:{claim:"Cortisone is good because it works fast",body:"The speed is exactly what makes it risky: people take it again and again. Unsupervised long-term use causes raised blood sugar, weakened bones and high blood pressure."}},
+{v:"false",id:"RH-CL-016",tier:4,rev:"2026-06",
+ ku:{claim:"سەرمای زستان دەبێتە هۆی هەڵامەت",body:"هەڵامەت لە ڤایرۆسەوەیە، نەک لە سەرما. لە زستاندا زیاتر ڕوودەدات چونکە خەڵک زیاتر لە ژووری داخراودا کۆدەبنەوە، نەک چونکە هەوا ساردە."},
+ en:{claim:"Cold weather causes colds",body:"Colds are caused by viruses, not by cold air. They rise in winter because people gather in closed rooms, not because of the temperature."}},
+{v:"false",id:"RH-CL-018",tier:4,rev:"2026-05",
+ ku:{claim:"لە کاتی ئازاری پشتدا پشوودانی تەواو باشترین چارەسەرە",body:"بەڵگە بە پێچەوانەوەیە. پشوودانی درێژ لە جێگادا باشبوونەوە دوا دەخات. جووڵەی سووک و بەردەوامی کارە ڕۆژانەکان خێراتر باشت دەکاتەوە."},
+ en:{claim:"Complete rest is the best treatment for back pain",body:"The evidence points the other way. Prolonged bed rest delays recovery. Gentle movement and continuing daily activity get you better faster."}},
+{v:"true",id:"RH-CL-011",tier:5,rev:"2026-07",
+ ku:{claim:"پیاسەکردن پەستانی خوێن دادەبەزێنێت",body:"پیاسەی ڕێکوپێک بە ڕوونی پەستانی خوێن دادەبەزێنێت. کاریگەرییەکە بچووکە بەڵام ڕاستەقینەیە، و لەگەڵ دەرمان کاردەکات نەک لە جیاتی."},
+ en:{claim:"Walking lowers blood pressure",body:"Regular walking clearly lowers blood pressure. The effect is modest but real, and it works alongside medication rather than instead of it."}},
+{v:"true",id:"RH-CL-020",tier:5,rev:"2026-07",
+ ku:{claim:"پشکنینی پێش هاوسەرگیری دەتوانێت تالاسیمیا بدۆزێتەوە",body:"پشکنینێکی سادەی خوێن دەتوانێت هەڵگری تالاسیمیا دیاری بکات. کاتێک هەردوو لا هەڵگر بن، ئەگەری لەدایکبوونی منداڵێکی تووشبوو هەیە — و زانینی پێشوەخت بڕیاری ئاگادارانە ڕەخساوتر دەکات."},
+ en:{claim:"Pre-marital testing can detect thalassaemia",body:"A simple blood test identifies thalassaemia carriers. When both partners are carriers there is a chance of an affected child — and knowing in advance makes an informed decision possible."}},
+{v:"part",id:"RH-CL-009",tier:3,rev:"2026-06",
+ ku:{claim:"هەنگوین بۆ کۆکە باشە",body:"بۆ منداڵی سەرووی ساڵێک، هەنگوین کۆکەی شەوانە کەم دەکاتەوە — بەڵگەی باش هەیە. بەڵام هۆکاری کۆکەکە چارەسەر ناکات، و هەرگیز نەدرێت بە منداڵی کەمتر لە ساڵێک."},
+ en:{claim:"Honey is good for a cough",body:"In children over one year, honey does reduce night-time coughing — the evidence is reasonable. But it does not treat the cause, and it must never be given under one year old."}},
+{v:"part",id:"RH-CL-022",tier:4,rev:"2026-06",
+ ku:{claim:"خۆرەتاو سەرچاوەی ڤیتامین D ـیە",body:"ڕاستە کە پێست بە خۆرەتاو ڤیتامین D دروست دەکات. بەڵام لە ناوچەکەماندا کەمی ڤیتامین D هێشتا زۆر باوە — لەبەر جلوبەرگ، مانەوە لە ژوورەوە، و دووری لە خۆر لە هاوینی گەرمدا. خۆرەتاوی زۆر خۆی مەترسی شێرپەنجەی پێست زیاد دەکات."},
+ en:{claim:"Sunlight is a source of vitamin D",body:"It is true that skin makes vitamin D from sunlight. But deficiency remains very common here — because of clothing, indoor living, and avoiding the sun in extreme summer heat. Excess sun exposure itself raises skin cancer risk."}},
+{v:"unk",id:"RH-CL-017",tier:2,rev:"2026-08",
+ ku:{claim:"پێداویستی کۆلاجین پێست نوێ دەکاتەوە",body:"لێکۆڵینەوە بچووکەکان ئەنجامی جیاواز دەدەن، و زۆربەیان لەلایەن بەرهەمهێنەرەکانەوە پارە دراون. هێشتا نازانین. ئێمە بڕیارمان نەداوە چونکە بەڵگە بەس نییە — نەک چونکە بەڵگە دژییەتی."},
+ en:{claim:"Collagen supplements rebuild skin",body:"Small studies give conflicting results, and most were funded by manufacturers. We do not yet know. We have not given a verdict because the evidence is insufficient — not because it is negative."}},
+{v:"unk",id:"RH-CL-024",tier:2,rev:"2026-08",
+ ku:{claim:"تۆزەوەری ساڵانە ڕێژەی ڕەبۆ لە ناوچەکەماندا زیاد دەکات",body:"پەیوەندییەکی گونجاو هەیە و لێکۆڵینەوەی نێودەوڵەتی پشتگیری لە کاریگەری تۆزی وردەخاڵ دەکات. بەڵام داتای دووری‌مەودای ناوخۆیی بەس نییە بۆ ئەوەی بە دڵنیاییەوە بۆ ناوچەکەی خۆمان بیڵێین. ئێمە داوای ئەم داتایە دەکەین."},
+ en:{claim:"Annual dust storms are increasing asthma rates in our region",body:"The link is plausible and international research supports an effect from fine particulates. But local long-term data is not sufficient to say this with confidence for our region. We are requesting that data."}}];
+
+const PLACES=[
+{ku:{n:"فریاگوزاری — جەڵتەی مێشک و دڵ",m:"٢٤ کاتژمێر · فریاگوزاری، جەڵتە، برین",note:"بۆ گومانی جەڵتەی مێشک یان دڵ ڕاستەوخۆ بۆ ئێرە بڕۆ. چاوەڕێی نۆرە مەکە."},
+ en:{n:"Emergency — stroke and cardiac",m:"24 hours · Emergency, stroke, trauma",note:"For suspected stroke or heart attack, come directly here. Do not wait for an appointment."}},
+{ku:{n:"ناوەندی تالاسیمیا و پشکنینی پێش هاوسەرگیری",m:"شەممە – چوارشەممە · ٩:٠٠ – ١٤:٠٠",note:"پشکنینی هەڵگری تالاسیمیا. ئەنجامەکان لە چەند ڕۆژێکدا ئامادەن."},
+ en:{n:"Thalassaemia and pre-marital screening centre",m:"Sat – Wed · 09:00 – 14:00",note:"Carrier testing for thalassaemia. Results within a few days."}},
+{ku:{n:"ناوەندی پشکنینی مەمک",m:"شەممە – چوارشەممە · ٩:٠٠ – ١٤:٠٠",note:"پێویست بە ڕەوانەکردن ناکات بۆ ژنانی سەرووی ٤٠ ساڵ."},
+ en:{n:"Breast screening centre",m:"Sat – Wed · 09:00 – 14:00",note:"No referral needed for women over 40."}},
+{ku:{n:"ناوەندی شەکرە",m:"شەممە – پێنجشەممە · ٨:٠٠ – ١٣:٠٠",note:"پشکنینی پێ و چاو لە هەمان شوێن. HbA1c بەبێ نۆرە."},
+ en:{n:"Diabetes centre",m:"Sat – Thu · 08:00 – 13:00",note:"Foot and eye checks at the same site. HbA1c without appointment."}},
+{ku:{n:"ناوەندی دیالیزی گورچیلە",m:"٦ ڕۆژی هەفتە · نۆرەی بەیانی و ئێوارە",note:"پێویست بە ڕەوانەکردنی پسپۆڕی گورچیلە هەیە."},
+ en:{n:"Dialysis centre",m:"6 days a week · morning and evening shifts",note:"Requires a nephrology referral."}},
+{ku:{n:"ناوەندی کوتانی منداڵان",m:"شەممە – پێنجشەممە · ٨:٠٠ – ١٢:٠٠",note:"کارتی کوتانی منداڵەکەت لەگەڵ خۆت بهێنە."},
+ en:{n:"Childhood immunisation centre",m:"Sat – Thu · 08:00 – 12:00",note:"Bring your child's vaccination card."}},
+{ku:{n:"بانکی خوێن",m:"٢٤ کاتژمێر · بەخشین و داواکاری",note:"بەخشەر پێویستە لە تەمەنی ١٨ – ٦٠ بێت و کێشی گونجاوی هەبێت."},
+ en:{n:"Blood bank",m:"24 hours · donation and requests",note:"Donors must be aged 18–60 and meet the weight requirement."}},
+{ku:{n:"ناوەندی تەندروستی دەروونی",m:"شەممە – چوارشەممە · ٩:٠٠ – ١٥:٠٠",note:"دەکرێت ڕاستەوخۆ سەردان بکرێت، بەبێ ڕەوانەکردن."},
+ en:{n:"Mental health centre",m:"Sat – Wed · 09:00 – 15:00",note:"Can be attended directly, without a referral."}}];
+
+const CORRECTIONS=[
+{d:"2026-08-03",id:"RH-CR-006",
+ ku:{was:"لە بابەتی کۆرتیزۆندا وتمان «دەکرێت بۆ چەند هەفتەیەک بەکاربهێنرێت».",now:"ماوەی بەکارهێنان بە پێی حاڵەت جیاوازە و دەبێت پزیشک دیاری بکات. ڕستەکە لابرا، چونکە دەکرا وەک ڕێنمایی گشتی لێکبدرێتەوە."},
+ en:{was:"In the cortisone entry we wrote that it \"can be used for a few weeks\".",now:"Duration varies by condition and must be set by a doctor. The sentence was removed, because it could be read as general guidance."}},
+{d:"2026-07-14",id:"RH-CR-005",
+ ku:{was:"لە بابەتی تای منداڵاندا وتمان ئەندازەی پاراسیتامۆل بە پێی تەمەن دیاری دەکرێت.",now:"ئەندازە بە پێی کێشی منداڵەکە دیاری دەکرێت. بابەتەکە ڕاستکراوەتەوە و لە بەشی «چی دەکەیت»دا ڕوون کراوەتەوە."},
+ en:{was:"In the fever-in-children entry we said paracetamol dose is set by age.",now:"Dose is set by the child's weight. The entry has been corrected and the point clarified in \"What you can do\"."}},
+{d:"2026-06-20",id:"RH-CR-004",
+ ku:{was:"ژمارەیەکمان لەسەر ڕێژەی کەمی ڤیتامین D لە ناوچەکەدا بەکارهێنا بەبێ ناوهێنانی سەرچاوە.",now:"سەرچاوەکە نەدەکرا پشتڕاست بکرێتەوە، بۆیە ژمارەکە لابرا. ئێستا تەنها دەڵێین «باوە» تا داتای متمانەپێکراومان دەست بکەوێت."},
+ en:{was:"We used a figure for the rate of vitamin D deficiency in the region without naming a source.",now:"The source could not be verified, so the figure was removed. We now say only that it is \"common\" until we have reliable data."}},
+{d:"2026-05-02",id:"RH-CR-003",
+ ku:{was:"بڕیارمان دا کە بانگەشەیەکی تەندروستی «هەڵە»یە.",now:"بەڵگە بۆ بڕیاری تەواو بەس نەبوو. بڕیارەکە گۆڕدرا بۆ «نازانرێت» و هۆکارەکەی نووسراوە."},
+ en:{was:"We gave a health claim a verdict of \"false\".",now:"The evidence was not sufficient for a definite verdict. Changed to \"not yet known\", with the reason published."}}];
+
+const ANSWERED=[
+{d:"2026-08-18",seg:"دوو خولەک، یەک پرسیار",segEn:"Two Minutes, One Question",
+ ku:{q:"باوکم کۆرتیزۆنی بۆ ئێشی جومگە دەخوات و ئێستا شەکرەکەی بەرز بووە. پەیوەندییان هەیە؟",
+     a:"بەڵێ. کۆرتیزۆن شەکری خوێن بەرز دەکاتەوە، بەتایبەت لە بەکارهێنانی درێژخایەندا. ئەمە واتای ئەوە نییە کە یەکسەر ڕایبگرێت — ڕاگرتنی لەناکاو مەترسیدارە. پێویستە پزیشکەکەی ئاگادار بکرێتەوە."},
+ en:{q:"My father takes cortisone for joint pain and now his sugar has risen. Are they connected?",
+     a:"Yes. Cortisone raises blood sugar, particularly with long-term use. This does not mean stopping it immediately — stopping suddenly is dangerous. His doctor needs to be told."}},
+{d:"2026-08-11",seg:"ڕاست یان هەڵە",segEn:"True or False?",
+ ku:{q:"لە فەیسبووک دەڵێن ئاوی لیمۆی گەرم بە بەتاڵی گەدە چەوری دەتوێنێتەوە. ڕاستە؟",
+     a:"نەخێر. هیچ خواردنەوەیەک چەوری ناتوێنێتەوە. ئاوی لیمۆ زیانی نییە، بەڵام ئەو بانگەشەیە بنەمای زانستی نییە."},
+ en:{q:"On Facebook they say warm lemon water on an empty stomach dissolves fat. Is it true?",
+     a:"No. No drink dissolves fat. Lemon water is harmless, but the claim has no scientific basis."}},
+{d:"2026-08-04",seg:"کۆنتەری دەرمانخانە",segEn:"The Pharmacy Counter",
+ ku:{q:"منداڵەکەم ٤ ساڵە و شەربەتی کۆکەی پێدەدەم هەموو شەوێک. ئاسایییە؟",
+     a:"بۆ منداڵی کەمتر لە ٦ ساڵ پێشنیار ناکرێت بەبێ ڕاوێژی پزیشک. زۆرێک لەم شەربەتانە پاراسیتامۆلیان تێدایە، بۆیە لەوانەیە بەبێ ئەوەی بزانیت دوو جار وەریبگرێت."},
+ en:{q:"My child is 4 and I give cough syrup every night. Is that all right?",
+     a:"Not recommended under 6 without a doctor's advice. Many of these syrups contain paracetamol, so the child may be getting a double dose without you realising."}},
+{d:"2026-07-28",seg:"دوو خولەک، یەک پرسیار",segEn:"Two Minutes, One Question",
+ ku:{q:"پزیشک وتی پەستانی خوێنم بەرزە بەڵام هیچ هەست ناکەم. پێویستە دەرمان بخۆم؟",
+     a:"بەڵێ. پەستانی خوێنی بەرز زۆرجار هیچ نیشانەیەکی نییە — زیانەکەی بێدەنگە و بە ساڵان کۆدەبێتەوە. هەستنەکردن واتای باشبوون نییە."},
+ en:{q:"The doctor says my blood pressure is high but I feel nothing. Do I need medication?",
+     a:"Yes. High blood pressure usually causes no symptoms — the damage is silent and accumulates over years. Feeling well does not mean it is under control."}}];
+
+const TOPICS=[{k:"gen",ku:"گشتی",en:"General"},{k:"drug",ku:"دەرمان",en:"Medicines"},
+ {k:"child",ku:"منداڵان",en:"Children"},{k:"claim",ku:"بانگەشەیەکم بیستووە",en:"A claim I heard"},
+ {k:"cond",ku:"نەخۆشییەک",en:"A condition"}];
+
+const ASKED={ku:["پەستانی خوێنی بەرز","تای منداڵان","ئانتی‌بایۆتیک","کۆرتیزۆن","تالاسیمیا","لێدانی گەرما"],
+ en:["High blood pressure","Fever in children","Antibiotics","Cortisone","Thalassaemia","Heatstroke"]};
+
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const evBar=n=>`<span class="ev" aria-label="Evidence ${n} of 5">${[1,2,3,4,5].map(i=>`<i class="${i<=n?'f':''}"></i>`).join('')}</span>`;
+const li=a=>a.map(x=>`<li>${esc(x)}</li>`).join('');
+
+function stamp(o){return `<aside class="stamp">
+  <div class="stamp-h">${t('stampH')}</div>
+  <div class="srow"><span class="slab">${t('sEv')}</span><span class="sval">${evBar(o.tier)}</span></div>
+  <div class="tier-name">${esc(TIER[o.tier][L])}</div><hr>
+  <div class="srow"><span class="slab">${t('sRev')}</span><span class="sval">${o.rev}</span></div>
+  <div class="srow"><span class="slab">${t('sBy')}</span><span class="sval">${esc(o.by)}</span></div>
+  <div class="srow"><span class="slab">${t('sNext')}</span><span class="sval">${o.next}</span></div><hr>
+  <div class="srow"><span class="slab">${t('sId')}</span><span class="sval">${o.id}</span></div></aside>`;}
+
+let tab='conditions';
+let activeCat='all';
+function setCat(k){activeCat=k;render();}
+let qSubmitted=null, qCount=1247;
+
+function submitQ(){
+  const box=document.getElementById('qtext');
+  const txt=(box.value||'').trim();
+  const err=document.getElementById('qerr');
+  if(txt.length<5){err.textContent=t('qErr');box.focus();return;}
+  qCount++;
+  qSubmitted='RH-Q-'+String(qCount).padStart(5,'0');
+  renderAsk();
+  window.scrollTo({top:220,behavior:'smooth'});
+}
+function askAgain(){qSubmitted=null;renderAsk();}
+
+function renderAsk(){
+  const el=document.getElementById('p-ask');
+  const form = qSubmitted ? `<div class="qok">
+      <div class="qok-h">${t('qOkH')}</div>
+      <p>${t('qOkP1')}</p><p>${t('qOkP2')}</p>
+      <div class="qref">${t('qRef')}: ${qSubmitted}</div>
+      <p style="margin-top:14px"><button class="qsubmit" onclick="askAgain()">${t('qAgain')}</button></p>
+    </div>`
+   : `<div class="qform">
+      <label class="qlabel" for="qtext">${t('qLabel')}</label>
+      <div class="qhint">${t('qHint')}</div>
+      <textarea id="qtext"></textarea>
+      <div class="qrow">
+        <div><label class="qlabel" for="qtopic">${t('qTopic')}</label>
+          <select id="qtopic">${TOPICS.map(x=>`<option value="${x.k}">${esc(x[L])}</option>`).join('')}</select></div>
+        <div><label class="qlabel" for="qcity">${t('qCity')}</label><input id="qcity" type="text"></div>
+      </div>
+      <label class="qcheck"><input type="checkbox" id="qcons" checked><span>${t('qConsent')}</span></label>
+      <button class="qsubmit" onclick="submitQ()">${t('qSend')}</button>
+      <div class="qerr" id="qerr"></div>
+    </div>`;
+
+  el.innerHTML = `<h2 class="sect-h">${t('hAsk')}</h2><p class="sect-d">${t('dAsk')}</p>
+   <div class="flags"><div class="flags-h"><span aria-hidden="true">⚠</span> ${t('emH')}</div>
+     <ul>${t('emL').map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+   <div class="ask-grid">
+     <div>${form}</div>
+     <div>
+       <div class="triage">
+         <h4>${t('trH1')}</h4><ul>${t('trY').map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+         <h4>${t('trH2')}</h4><ul>${t('trN').map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+       </div>
+       <div class="wa"><div class="wa-h">${t('waH')}</div>
+         <div class="wa-n">+964 750 811 00 01</div>
+         <div class="wa-s">${t('waS')}</div></div>
+     </div>
+   </div>
+   <h3 class="sect-h" style="margin-top:34px">${t('hAns')}</h3>
+   ${ANSWERED.map(a=>`<div class="ans">
+      <div class="ans-q">${esc(a[L].q)}</div>
+      <div class="ans-a">${esc(a[L].a)}</div>
+      <div class="ans-f">${t('ansOn')} · ${esc(L==='ku'?a.seg:a.segEn)} · ${a.d}</div></div>`).join('')}`;
+}
+function go(name){tab=name;
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.getElementById('p-'+name).classList.add('on');
+  document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.getAttribute('onclick').includes(`'${name}'`)?'true':'false'));
+  if(name!=='article')render();
+  window.scrollTo({top:0,behavior:'smooth'});}
+function chip(x){document.getElementById('q').value=x;render();go(tab==='article'?'conditions':tab);}
+
+function openCondition(i){const c=CONDITIONS[i],d=c[L];
+ document.getElementById('p-article').innerHTML=`
+  <button class="back" onclick="go('conditions')">${t('back')}</button>
+  <div class="art-head"><div class="art-kicker">${t('hCond')}</div>
+   <h2>${esc(d.name)}</h2><p class="lede">${esc(d.sum)}</p></div>
+  <div class="art-grid"><div class="art-body">
+   <h3>${t('secWhat')}</h3><p>${esc(d.what)}</p>
+   <h3>${t('secSym')}</h3><ul>${li(d.sym)}</ul>
+   <div class="flags"><div class="flags-h"><span aria-hidden="true">⚠</span> ${t('secFlag')}</div><ul>${li(d.flags)}</ul></div>
+   <h3>${t('secDo')}</h3><ul>${li(d.do)}</ul>
+   <div class="ask"><div class="ask-h">${t('secAsk')}</div><ul>${li(d.ask)}</ul></div>
+  </div>${stamp(c)}</div>`;
+ go('article');}
+
+function openDrug(i){const c=DRUGS[i],d=c[L];
+ document.getElementById('p-article').innerHTML=`
+  <button class="back" onclick="go('drugs')">${t('back')}</button>
+  <div class="art-head"><div class="art-kicker">${t('hDrug')}</div>
+   <h2>${esc(d.name)}</h2><p class="lede">${esc(d.sum)}</p></div>
+  <div class="art-grid"><div class="art-body">
+   <h3>${t('drugDoes')}</h3><ul>${li(d.does)}</ul>
+   <h3>${t('drugNot')}</h3><ul>${li(d.not)}</ul>
+   <div class="flags"><div class="flags-h"><span aria-hidden="true">⚠</span> ${t('drugCare')}</div><ul>${li(d.care)}</ul></div>
+  </div>${stamp(c)}</div>`;
+ go('article');}
+
+function render(){
+ const q=(document.getElementById('q').value||'').trim().toLowerCase();
+ const hit=s=>!q||String(s).toLowerCase().includes(q);
+ document.getElementById('chips').innerHTML=ASKED[L].map(a=>`<button class="chip" onclick="chip('${a.replace(/'/g,"\\'")}')">${esc(a)}</button>`).join('');
+
+ const cs=CONDITIONS.map((c,i)=>({c,i}))
+   .filter(({c})=>activeCat==='all'||c.cat===activeCat)
+   .filter(({c})=>hit(c[L].name)||hit(c[L].sum)||c[L].sym.some(hit));
+ const catPills=`<div class="cats">${CATS.filter(k=>k.k==='all'||CONDITIONS.some(c=>c.cat===k.k))
+   .map(k=>`<button class="cat" aria-pressed="${activeCat===k.k}" onclick="setCat('${k.k}')">${esc(k[L])}</button>`).join('')}</div>`;
+ document.getElementById('p-conditions').innerHTML=
+  `<h2 class="sect-h">${t('hCond')}</h2><p class="sect-d">${t('dCond')}</p>`+catPills+
+  `<div class="count">${cs.length} / ${CONDITIONS.length}</div>`+
+  (cs.length?`<div class="list">${cs.map(({c,i})=>`<button class="entry" onclick="openCondition(${i})">
+    <span class="entry-main"><span class="entry-t">${esc(c[L].name)}</span><span class="entry-s">${esc(c[L].sum)}</span></span>
+    <span class="entry-meta">${evBar(c.tier)} &nbsp;${c.rev}</span></button>`).join('')}</div>`:`<div class="empty">${t('noRes')}</div>`);
+
+ const ds=DRUGS.map((c,i)=>({c,i})).filter(({c})=>hit(c[L].name)||hit(c[L].sum));
+ document.getElementById('p-drugs').innerHTML=
+  `<h2 class="sect-h">${t('hDrug')}</h2><p class="sect-d">${t('dDrug')}</p><div class="count">${ds.length} / ${DRUGS.length}</div>`+
+  (ds.length?`<div class="list">${ds.map(({c,i})=>`<button class="entry" onclick="openDrug(${i})">
+    <span class="entry-main"><span class="entry-t">${esc(c[L].name)}</span><span class="entry-s">${esc(c[L].sum)}</span></span>
+    <span class="entry-meta">${evBar(c.tier)} &nbsp;${c.rev}</span></button>`).join('')}</div>`:`<div class="empty">${t('noRes')}</div>`);
+
+ const vl={true:['v-true',t('vTrue')],false:['v-false',t('vFalse')],part:['v-part',t('vPart')],unk:['v-unk',t('vUnk')]};
+ const cl=CLAIMS.filter(c=>hit(c[L].claim)||hit(c[L].body));
+ document.getElementById('p-claims').innerHTML=
+  `<h2 class="sect-h">${t('hClaim')}</h2><p class="sect-d">${t('dClaim')}</p><div class="count">${cl.length} / ${CLAIMS.length}</div>`+
+  (cl.length?`<div class="verdicts">${cl.map(c=>`<article class="vc">
+    <div class="vc-top"><span class="vbadge ${vl[c.v][0]}">${vl[c.v][1]}</span><span class="vc-claim">${esc(c[L].claim)}</span></div>
+    <div class="vc-body">${esc(c[L].body)}</div>
+    <div class="vc-foot"><span>${c.id} · ${c.rev}</span><span>${evBar(c.tier)}</span></div></article>`).join('')}</div>`:`<div class="empty">${t('noRes')}</div>`);
+
+ const pl=PLACES.filter(p=>hit(p[L].n)||hit(p[L].note));
+ document.getElementById('p-places').innerHTML=
+  `<h2 class="sect-h">${t('hPlace')}</h2><p class="sect-d">${t('dPlace')}</p>`+
+  (pl.length?pl.map(p=>`<div class="dir"><div class="dir-t">${esc(p[L].n)}</div>
+   <div class="dir-m">${esc(p[L].m)}</div><div class="dir-n">${esc(p[L].note)}</div></div>`).join(''):`<div class="empty">${t('noRes')}</div>`);
+
+ renderAsk();
+ document.getElementById('p-corrections').innerHTML=
+  `<h2 class="sect-h">${t('hCorr')}</h2><p class="sect-d">${t('dCorr')}</p>`+
+  CORRECTIONS.map(c=>`<div class="corr"><div class="corr-d">${c.d} · ${c.id}</div>
+   <p class="corr-w"><b>${t('corrWas')}</b> ${esc(c[L].was)}</p>
+   <p class="corr-f"><b>${t('corrNow')}</b> ${esc(c[L].now)}</p></div>`).join('');
+}
+
+function flip(){
+ L = L==='ku'?'en':'ku';
+ document.body.dir = L==='ku'?'rtl':'ltr';
+ document.documentElement.lang = L==='ku'?'ckb':'en';
+ document.getElementById('langBtn').textContent = L==='ku'?'EN':'کوردی';
+ document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));
+ document.getElementById('q').placeholder=t('ph');
+ render();
+ if(tab==='article')go('conditions');
+}
+render();
+</script>
+</body>
+</html>
