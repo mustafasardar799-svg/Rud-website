@@ -28,12 +28,15 @@ const ICON = {
   blood:  I('<path d="M12 3.2s6 6.5 6 10.5A6 6 0 0 1 6 13.7C6 9.7 12 3.2 12 3.2Z"/>'),
   bone:   I('<path d="M6.7 17.3a2.2 2.2 0 1 1 2.2-3.5l4.9-4.9a2.2 2.2 0 1 1 3.5-2.2 2.2 2.2 0 1 1-2.2 3.5l-4.9 4.9a2.2 2.2 0 1 1-3.5 2.2Z"/>'),
   mind:   I('<path d="M12 3.6a7.6 7.6 0 0 0-5.7 12.6v4l2.9-1.7A7.6 7.6 0 1 0 12 3.6Z"/><path d="M9.2 11.8h.02M12 11.8h.02M14.8 11.8h.02" stroke-width="2.2"/>'),
+  women:  I('<circle cx="12" cy="8.4" r="4.6"/><path d="M12 13v7.4M9.2 17.6h5.6"/>'),
+  skin:   I('<path d="M5.6 8.4a6.4 6.4 0 0 1 12.8 0c0 4-1.4 6.2-1.4 8.6a2.6 2.6 0 0 1-2.6 2.6H9.6A2.6 2.6 0 0 1 7 17c0-2.4-1.4-4.6-1.4-8.6Z"/><path d="M10 9.6h.02M14 11.4h.02M11.4 14.4h.02" stroke-width="2.1"/>'),
   env:    I('<circle cx="12" cy="9.2" r="3.3"/><path d="M12 3.1v1.5M5.6 9.2H4.1M19.9 9.2h-1.5M7.5 4.7 6.4 3.6M17.6 3.6l-1.1 1.1"/><path d="M4.2 16.9h9.2M7.4 20.1h11.4"/>')
 };
 
 const CAT_ICON = {
   heart: 'heart', brain: 'brain', meta: 'meta', child: 'child', lung: 'lung',
-  gut: 'gut', kidney: 'kidney', blood: 'blood', bone: 'bone', mind: 'mind', env: 'env'
+  gut: 'gut', kidney: 'kidney', blood: 'blood', bone: 'bone', mind: 'mind', env: 'env',
+  women: 'women', skin: 'skin'
 };
 
 /* Alphabets for the A–Z index, one per language */
@@ -84,7 +87,7 @@ const SECONDARY = ['RH-DUS-001', 'RH-THA-001', 'RH-T2D-001'];
 
 /* Build stamp — rendered in the footer so the running version is
    identifiable at a glance. Bump on every deploy. */
-const BUILD = '2026-08-29 · r12';
+const BUILD = '2026-08-29 · r13';
 
 /* ---------- translations ------------------------------- */
 /* The Sorani and English records are the source of truth; Kurmancî and
@@ -105,6 +108,12 @@ function attachTranslations(code, TR) {
     if (t) { a[code] = { q: t.q, a: t.a }; a['seg_' + code] = t.seg; }
   });
 }
+
+/* Additional entries live in their own file with all four languages
+   inline; merge them before anything reads the arrays. */
+if (typeof EXTRA_CATS !== 'undefined') EXTRA_CATS.forEach(c => CATS.push(c));
+if (typeof EXTRA_CONDITIONS !== 'undefined') EXTRA_CONDITIONS.forEach(c => CONDITIONS.push(c));
+if (typeof EXTRA_DRUGS !== 'undefined') EXTRA_DRUGS.forEach(d => DRUGS.push(d));
 
 /* Normalise the broadcast segment names the base data stores as
    `seg` / `segEn` into the same per-language shape as the rest. */
@@ -363,7 +372,7 @@ function viewCondition(p) {
 
   const sections = [
     { id: 'what', h: T('secWhat'), body: `<p>${esc(d.what)}</p>` },
-    { id: 'sym', h: T('secSym'), body: `<ul>${li(d.sym)}</ul>` },
+    { id: 'sym', h: d.symLabel || T('secSym'), body: `<ul>${li(d.sym)}</ul>` },
     { id: 'do', h: T('secDo'), body: `<ul>${li(d.do)}</ul>` }
   ];
 
