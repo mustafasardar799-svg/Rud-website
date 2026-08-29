@@ -57,9 +57,20 @@
   --slate:      #445C6B;
   --slate-sm:   #EDF1F3;
 
-  /* type */
-  --display: "Noto Kufi Arabic", "Segoe UI", Tahoma, system-ui, sans-serif;
-  --body:    "IBM Plex Sans Arabic", "Segoe UI", Tahoma, system-ui, sans-serif;
+  /* type
+     One stack serves all four languages. A font-family list is resolved
+     per glyph, so Arabic-script text (Sorani, Arabic) renders in Noto
+     Sans Arabic and Latin text (Kurmancî, English) in IBM Plex Sans,
+     with no mixing inside a word.
+
+     Noto Sans Arabic is used rather than a Kufi face for two reasons:
+     Kufi is a display style and tires the eye over paragraphs, and Noto
+     covers the whole Arabic block — including the Kurdish letters
+     ڕ ڵ ۆ ێ ڤ, which many Arabic fonts omit. When a font lacks those,
+     the browser substitutes another face for just those letters and the
+     text breaks up mid-word. */
+  --display: "Noto Sans Arabic", "IBM Plex Sans", "Segoe UI", Tahoma, system-ui, sans-serif;
+  --body:    "Noto Sans Arabic", "IBM Plex Sans", "Segoe UI", Tahoma, system-ui, sans-serif;
   --mono:    "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
   /* measure */
@@ -123,6 +134,16 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 0; }
 body[dir="rtl"] { font-size: 17.5px; line-height: 1.9; }
 body[dir="rtl"] .prose p,
 body[dir="rtl"] .prose li { line-height: 2.05; }
+
+/* Negative tracking is a Latin display technique. In Arabic script it
+   crushes the joins between letters and is a large part of what makes
+   Kurdish text look wrong, so every heading resets to zero in RTL. */
+body[dir="rtl"] h1, body[dir="rtl"] h2, body[dir="rtl"] h3, body[dir="rtl"] h4,
+body[dir="rtl"] .lead-t, body[dir="rtl"] .sec-t, body[dir="rtl"] .brand-t,
+body[dir="rtl"] .art-head h1, body[dir="rtl"] .page-h h1,
+body[dir="rtl"] .entry-t, body[dir="rtl"] .vc-claim, body[dir="rtl"] .bcast-q {
+  letter-spacing: 0;
+}
 
 /* mono is Latin-only — never let Kurdish fall into it */
 .data { font-family: var(--mono); font-variant-numeric: tabular-nums; letter-spacing: .02em; }

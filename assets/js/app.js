@@ -46,7 +46,7 @@ const SECONDARY = ['RH-DUS-001', 'RH-THA-001', 'RH-T2D-001'];
 
 /* Build stamp — rendered in the footer so the running version is
    identifiable at a glance. Bump on every deploy. */
-const BUILD = '2026-08-29 · r2';
+const BUILD = '2026-08-29 · r3';
 
 /* ---------- state -------------------------------------- */
 let L = 'ku';
