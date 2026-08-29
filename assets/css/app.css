@@ -436,17 +436,64 @@ body[dir="ltr"] .hero-tint {
 .rail-f { padding: 14px 18px; background: var(--paper-2); border-top: 1px solid var(--line); font-size: 14px; color: var(--ink-3); }
 
 /* category tiles */
-.cats { display: grid; grid-template-columns: repeat(auto-fill, minmax(178px, 1fr)); gap: 12px; }
-.cat-tile {
-  display: flex; align-items: center; gap: 13px;
-  padding: 16px 17px; text-decoration: none; color: var(--ink);
-  background: var(--paper); border: 1px solid var(--line); border-radius: 4px;
+/* Category index — one ruled block, not a scatter of cards. Rules are
+   drawn as cell borders rather than as gaps in a coloured backdrop, so a
+   last row that does not fill its columns just ends in paper instead of
+   leaving a stray band of rule colour. */
+.cats {
+  display: grid;
+  grid-template-columns: 1fr;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  overflow: hidden;
 }
-.cat-tile:hover { border-color: var(--brand); background: var(--brand-xs); color: var(--brand-dd); box-shadow: var(--lift-1); }
-.cat-tile svg { width: 27px; height: 27px; flex: none; color: var(--brand); }
-.cat-tile b { font-family: var(--display); font-weight: 700; font-size: 15.5px; line-height: 1.35; display: block; }
-.cat-tile span { font-size: 13px; color: var(--ink-3); display: block; margin-top: 1px; }
-.cat-tile:hover span { color: var(--brand-d); }
+.cat-tile {
+  display: grid;
+  grid-template-columns: 26px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  min-height: 62px;
+  padding: 13px 18px;
+  text-decoration: none;
+  color: var(--ink);
+  border-top: 1px solid var(--line);
+}
+.cat-tile:first-child { border-top: 0; }
+.cat-tile:hover { background: var(--brand-xs); color: var(--brand-dd); }
+.cat-tile > svg { width: 24px; height: 24px; flex: none; color: var(--brand); }
+.cat-tile b {
+  font-family: var(--display); font-weight: 700;
+  font-size: 15.5px; line-height: 1.4;
+}
+
+/* The figure carries what a repeated "3 entries" label cannot; the full
+   phrase stays on aria-label for anyone listening rather than looking. */
+.cat-n { display: flex; align-items: center; gap: 10px; }
+.cat-n i {
+  font-style: normal; font-variant-numeric: tabular-nums;
+  font-size: 14px; font-weight: 600;
+  min-width: 18px; text-align: end;
+  color: var(--ink-3);
+}
+.cat-n svg { width: 15px; height: 15px; color: var(--line-2); }
+body[dir="rtl"] .cat-n svg { transform: scaleX(-1); }
+.cat-tile:hover .cat-n i,
+.cat-tile:hover .cat-n svg { color: var(--brand-d); }
+
+/* Two columns once the names stop wrapping, three when there is real room. */
+@media (min-width: 620px) {
+  .cats { grid-template-columns: repeat(2, 1fr); }
+  .cat-tile:nth-child(-n+2) { border-top: 0; }
+  .cat-tile:nth-child(2n+1) { border-inline-end: 1px solid var(--line); }
+}
+@media (min-width: 1000px) {
+  .cats { grid-template-columns: repeat(3, 1fr); }
+  .cat-tile:nth-child(-n+3) { border-top: 0; }
+  .cat-tile { border-inline-end: 0; }
+  .cat-tile:nth-child(3n+1),
+  .cat-tile:nth-child(3n+2) { border-inline-end: 1px solid var(--line); }
+}
 
 /* broadcast items */
 .bcast { border: 1px solid var(--line); border-radius: 4px; padding: 20px 22px; background: var(--paper); }
@@ -631,7 +678,7 @@ body[dir="rtl"] .stamp-h { letter-spacing: 0; text-transform: none; font-size: 1
 /* ---------- 11  Verdicts, corrections, services --------- */
 /* A shallow lift so cards read as objects sitting on the page
    rather than as outlined boxes drawn on it. */
-.vc, .bcast, .svc, .corr, .qform, .triage, .cat-tile { box-shadow: var(--lift-1); }
+.vc, .bcast, .svc, .corr, .qform, .triage, .cats { box-shadow: var(--lift-1); }
 
 .vc { border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: var(--paper); display: flex; flex-direction: column; }
 .vc-top { padding: 17px 19px 0; }
@@ -941,7 +988,8 @@ html.motion .rv.seen { opacity: 1; transform: none; }
   transition: background-color .18s ease, border-color .18s ease,
               box-shadow .22s ease, transform .22s cubic-bezier(.22,.68,.3,1), color .18s ease;
 }
-html.motion .cat-tile:hover,
+/* The category tiles share their edges, so lifting one tears the block;
+   they get the background shift only. */
 html.motion .tool-card:hover { transform: translateY(-2px); }
 html.motion .vc:hover { box-shadow: var(--lift-2); }
 
@@ -952,5 +1000,5 @@ html.motion .vc:hover { box-shadow: var(--lift-2); }
   html.motion .rv { opacity: 1 !important; transform: none !important; transition: none !important; }
   html.motion .pulse-run { animation: none; stroke-opacity: 0; }
   html.motion .hero-burst { animation: none; }
-  html.motion .cat-tile:hover, html.motion .tool-card:hover { transform: none; }
+  html.motion .tool-card:hover { transform: none; }
 }

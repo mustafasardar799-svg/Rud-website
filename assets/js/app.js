@@ -8,6 +8,8 @@ const I = (d, w) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
 
 const ICON = {
   search: I('<circle cx="11" cy="11" r="7"/><path d="m16.6 16.6 4 4"/>'),
+  /* Points along the reading direction; flipped for RTL in the stylesheet. */
+  chev:   I('<path d="m9.5 5.5 7 6.5-7 6.5"/>'),
   phone:  I('<path d="M6.6 3.6h3l1.5 4-2 1.4a12.4 12.4 0 0 0 5.9 5.9l1.4-2 4 1.5v3a1.6 1.6 0 0 1-1.8 1.6A16.6 16.6 0 0 1 5 5.4 1.6 1.6 0 0 1 6.6 3.6Z"/>'),
   alert:  I('<path d="M12 3.4 2.8 19.8h18.4L12 3.4Z"/><path d="M12 10v4"/><circle cx="12" cy="17.1" r=".95" fill="currentColor" stroke="none"/>'),
   shield: I('<path d="M12 3.2 5 6v5.4c0 4.2 2.9 7.7 7 8.9 4.1-1.2 7-4.7 7-8.9V6l-7-2.8Z"/><path d="m9.1 12.2 2.1 2.1 3.7-4"/>'),
@@ -87,14 +89,19 @@ const SECONDARY = ['RH-DUS-001', 'RH-THA-001', 'RH-T2D-001'];
 
 /* Build stamp — rendered in the footer so the running version is
    identifiable at a glance. Bump on every deploy. */
-const BUILD = '2026-08-29 · r14';
+const BUILD = '2026-08-29 · r15';
 
 /* ---------- translations ------------------------------- */
 /* The Sorani and English records are the source of truth; Kurmancî and
    Arabic are attached onto them by id so the base data is never edited. */
 function attachTranslations(code, TR) {
   if (!TR) return;
-  CATS.forEach(c => { c[code] = c.k === 'all' ? UI[code].allCats : TR.cats[c.k]; });
+  /* Categories added by a later data file carry their own translations
+     inline, so only overwrite when this file actually has one. */
+  CATS.forEach(c => {
+    if (c.k === 'all') { c[code] = UI[code].allCats; return; }
+    if (TR.cats[c.k]) c[code] = TR.cats[c.k];
+  });
   Object.keys(TIER).forEach(n => { TIER[n][code] = TR.tier[n]; });
   TOPICS.forEach(t => { if (TR.topics[t.k]) t[code] = TR.topics[t.k]; });
   ASKED[code] = TR.asked;
@@ -280,7 +287,10 @@ function viewHome() {
         ${CATS.filter(c => c.k !== 'all').map(c => `
           <a class="cat-tile" href="#/conditions?cat=${c.k}">
             ${ICON[CAT_ICON[c.k]] || ICON.heart}
-            <span><b>${esc(c[L])}</b><span>${T('countN')(counts[c.k] || 0)}</span></span>
+            <b>${esc(c[L])}</b>
+            <span class="cat-n" aria-label="${esc(T('countN')(counts[c.k] || 0))}">
+              <i>${counts[c.k] || 0}</i>${ICON.chev}
+            </span>
           </a>`).join('')}
       </div>
     </div>
