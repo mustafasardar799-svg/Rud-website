@@ -91,6 +91,22 @@ const SECONDARY = ['RH-DUS-001', 'RH-THA-001', 'RH-T2D-001'];
    identifiable at a glance. Bump on every deploy. */
 const BUILD = '2026-08-29 · r15';
 
+/* Every asset in index.html is loaded with ?v=<tag> to defeat the browser
+   cache: Railway serves these files with a long max-age, so an unchanged
+   filename keeps a stale copy alive in the reader's browser and a deploy
+   goes out that nobody receives. That has already happened once. If the
+   tag drifts from BUILD, say so rather than letting it fail silently. */
+(function checkCacheTag() {
+  const me = document.currentScript ||
+    [].slice.call(document.scripts).filter(s => /app\.js/.test(s.src)).pop();
+  const got = me ? (me.src.split('?v=')[1] || '(none)') : '(unknown)';
+  const want = (BUILD.match(/r\d+$/) || ['(none)'])[0];
+  if (got !== want) {
+    console.warn('Rudaw Health — asset cache tag is "' + got + '" but BUILD is "' +
+      want + '". Bump ?v= on every asset in index.html, or readers keep the old files.');
+  }
+})();
+
 /* ---------- translations ------------------------------- */
 /* The Sorani and English records are the source of truth; Kurmancî and
    Arabic are attached onto them by id so the base data is never edited. */
