@@ -44,6 +44,10 @@ const ALPHA_EN = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const LEAD = 'RH-HEA-001';
 const SECONDARY = ['RH-DUS-001', 'RH-THA-001', 'RH-T2D-001'];
 
+/* Build stamp — rendered in the footer so the running version is
+   identifiable at a glance. Bump on every deploy. */
+const BUILD = '2026-08-29 · r2';
+
 /* ---------- state -------------------------------------- */
 let L = 'ku';
 let route = { name: 'home', params: {} };
@@ -657,6 +661,7 @@ function renderChrome() {
       </div>
       <div class="foot-c data">
         <span>+964 750 811 00 01</span><span>PORTAL@RUDAW.NET</span><span>WWW.RUDAW.NET</span>
+        <span class="foot-build">BUILD ${BUILD}</span>
       </div>
       <p class="foot-note">${esc(T('footNote'))}</p>
     </div>`;

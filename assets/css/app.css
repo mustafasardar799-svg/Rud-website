@@ -600,6 +600,8 @@ footer { background: var(--brand-dd); color: #A8D6CE; padding-block: 40px 30px; 
 .foot-nav a:hover { color: #fff; text-decoration: underline; }
 .foot-c { display: flex; gap: 10px 26px; flex-wrap: wrap; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.2); font-size: 13px; }
 .foot-note { font-size: 13.5px; color: #8FBFB6; margin: 16px 0 0; max-width: 70ch; line-height: 1.75; }
+/* which build is live — answers "am I looking at the new version?" */
+.foot-build { margin-inline-start: auto; color: #6FA79D; }
 
 /* ---------- 15  Motion & print -------------------------- */
 .view { animation: rise .22s ease both; }
