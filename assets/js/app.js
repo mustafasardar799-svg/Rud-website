@@ -87,7 +87,7 @@ const SECONDARY = ['RH-DUS-001', 'RH-THA-001', 'RH-T2D-001'];
 
 /* Build stamp — rendered in the footer so the running version is
    identifiable at a glance. Bump on every deploy. */
-const BUILD = '2026-08-29 · r13';
+const BUILD = '2026-08-29 · r14';
 
 /* ---------- translations ------------------------------- */
 /* The Sorani and English records are the source of truth; Kurmancî and
@@ -114,6 +114,8 @@ function attachTranslations(code, TR) {
 if (typeof EXTRA_CATS !== 'undefined') EXTRA_CATS.forEach(c => CATS.push(c));
 if (typeof EXTRA_CONDITIONS !== 'undefined') EXTRA_CONDITIONS.forEach(c => CONDITIONS.push(c));
 if (typeof EXTRA_DRUGS !== 'undefined') EXTRA_DRUGS.forEach(d => DRUGS.push(d));
+if (typeof EXTRA2_CONDITIONS !== 'undefined') EXTRA2_CONDITIONS.forEach(c => CONDITIONS.push(c));
+if (typeof EXTRA2_DRUGS !== 'undefined') EXTRA2_DRUGS.forEach(d => DRUGS.push(d));
 
 /* Normalise the broadcast segment names the base data stores as
    `seg` / `segEn` into the same per-language shape as the rest. */
