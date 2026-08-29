@@ -853,6 +853,18 @@ body[dir="rtl"] .tool-res-h { font-family: var(--body); font-size: 13px; letter-
 body[dir="rtl"] .tool-row dd { text-align: start; }
 
 /* ---------- 17  Photography ------------------------------
+   One photograph, in the hero. Section imagery was tried and cut:
+   without a picture that earns its place, a card is stronger
+   without one than with a decorative one.
+   -------------------------------------------------------- */
+
+/* A number followed by a Latin unit ("210 mg") is a single LTR run.
+   Without isolation the bidi algorithm reorders it to "mg 210" inside
+   Arabic-script text, so these values are isolated explicitly. */
+.tool-row dd { direction: ltr; unicode-bidi: isolate; }
+body[dir="rtl"] .tool-row dd { text-align: start; }
+
+/* ---------- 17  Photography ------------------------------
    Three photographs, each placed where it carries meaning:
    care in the hero, a clinician beside the review standards,
    a newborn on the children's feature.
@@ -884,4 +896,57 @@ body[dir="rtl"] .tool-row dd { text-align: start; }
 .feature-l span {
   font-size: 13.5px; font-weight: 600; color: var(--brand-d);
   background: var(--brand-xs); border: 1px solid var(--line); border-radius: 100px; padding: 4px 12px;
+}
+
+/* ---------- 18  Motion ----------------------------------
+   Movement is rationed. The ECG trace beats because a heartbeat
+   is the one thing on this site that should look alive; the
+   sunburst drifts because a static radial pattern reads as a
+   printed texture; content rises once on first sight so the page
+   feels handled rather than dumped.
+
+   All of it is opt-in: the class is only added by script when the
+   viewer has not asked for reduced motion, so a page with no JS,
+   or a viewer who has, gets the finished layout immediately.
+   -------------------------------------------------------- */
+
+/* the trace: a faint constant line with a bright pulse running it */
+.pulse-base { stroke: rgba(255,255,255,.28); }
+.pulse-run  { stroke: #8FDDD0; stroke-opacity: 0; }
+html.motion .pulse-run {
+  stroke-opacity: .95;
+  stroke-dasharray: var(--seg, 110) var(--gap, 1600);
+  animation: trace var(--dur, 5.5s) linear infinite;
+}
+@keyframes trace { from { stroke-dashoffset: var(--len, 1710); } to { stroke-dashoffset: 0; } }
+
+html.motion .hero-burst { animation: drift 150s linear infinite; transform-origin: 50% 50%; }
+@keyframes drift { to { transform: rotate(360deg); } }
+
+/* reveal on first sight — never on the way back up */
+.rv { opacity: 1; }
+html.motion .rv {
+  opacity: 0; transform: translateY(15px);
+  transition: opacity .6s ease, transform .6s cubic-bezier(.22,.68,.3,1);
+  transition-delay: var(--d, 0ms);
+}
+html.motion .rv.seen { opacity: 1; transform: none; }
+
+/* hover: give the interactive surfaces somewhere to go */
+.cat-tile, .tool-card, .vc, .bcast, .svc, .entry, .sec-item, .feature, .btn, .chip, .rail-l button {
+  transition: background-color .18s ease, border-color .18s ease,
+              box-shadow .22s ease, transform .22s cubic-bezier(.22,.68,.3,1), color .18s ease;
+}
+html.motion .cat-tile:hover,
+html.motion .tool-card:hover { transform: translateY(-2px); }
+html.motion .vc:hover { box-shadow: var(--lift-2); }
+
+/* the stat figures count up when the standards band arrives */
+.stat-i b { font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  html.motion .rv { opacity: 1 !important; transform: none !important; transition: none !important; }
+  html.motion .pulse-run { animation: none; stroke-opacity: 0; }
+  html.motion .hero-burst { animation: none; }
+  html.motion .cat-tile:hover, html.motion .tool-card:hover { transform: none; }
 }

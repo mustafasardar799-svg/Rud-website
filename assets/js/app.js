@@ -72,9 +72,10 @@ function burstSVG(n = 48) {
   return `<svg class="hero-burst" viewBox="-270 -270 540 540" fill="none" aria-hidden="true">${out}</svg>`;
 }
 
+const PULSE_D = "M0 34 H150 l14 -24 l11 38 l13 -34 l12 20 H420 l16 -28 l10 42 l14 -37 l11 23 H700 l15 -24 l11 37 l12 -33 l13 19 H980 l14 -22 l10 34 l13 -29 l11 18 H1200";
 const PULSE = `<svg class="pulse" viewBox="0 0 1200 52" preserveAspectRatio="none" aria-hidden="true">
-  <path d="M0 34 H150 l14 -24 l11 38 l13 -34 l12 20 H420 l16 -28 l10 42 l14 -37 l11 23 H700 l15 -24 l11 37 l12 -33 l13 19 H980 l14 -22 l10 34 l13 -29 l11 18 H1200"
-    fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
+  <path class="pulse-base" d="${PULSE_D}" fill="none" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <path class="pulse-run"  d="${PULSE_D}" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
 
 /* Editorially selected front-page entries — region-specific,
    seasonal, and the screening story we keep returning to. */
@@ -83,7 +84,7 @@ const SECONDARY = ['RH-DUS-001', 'RH-THA-001', 'RH-T2D-001'];
 
 /* Build stamp — rendered in the footer so the running version is
    identifiable at a glance. Bump on every deploy. */
-const BUILD = '2026-08-29 · r10';
+const BUILD = '2026-08-29 · r11';
 
 /* ---------- translations ------------------------------- */
 /* The Sorani and English records are the source of truth; Kurmancî and
@@ -283,23 +284,6 @@ function viewHome() {
     </div>
   </section>
 
-  <section class="band band--tight">
-    <div class="wrap">
-      <a class="feature" href="#/conditions?cat=child">
-        <span class="feature-img"><img src="assets/img/feature-children.jpg" alt="" loading="lazy" width="612" height="408"></span>
-        <span class="feature-b">
-          <span class="kicker">${esc(catName('child'))}</span>
-          <span class="feature-t">${esc(T('featH'))}</span>
-          <span class="feature-d">${esc(T('featB'))}</span>
-          <span class="feature-l">
-            <span>${esc(TL[L].t.paracetamol.name)}</span>
-            <span>${esc(TL[L].t.ors.name)}</span>
-          </span>
-        </span>
-      </a>
-    </div>
-  </section>
-
   <section class="band">
     <div class="wrap">
       ${sectionHead(T('claimsH'), T('claimsSub'), '#/checks', T('claimsMore'))}
@@ -326,9 +310,6 @@ function viewHome() {
   <section class="band band--deep">
     <div class="wrap">
       ${sectionHead(T('stdH'), null, '#/standards', T('stdMore'))}
-      <div class="std-grid">
-      <div class="std-photo"><img src="assets/img/reviewers.jpg" alt="" loading="lazy" width="600" height="800"></div>
-      <div>
       <div class="pillars">
         <div class="pillar"><h3>${ICON.sig}${esc(T('p1H'))}</h3><p>${T('p1B')}</p></div>
         <div class="pillar"><h3>${ICON.scale}${esc(T('p2H'))}</h3><p>${T('p2B')}</p></div>
@@ -338,8 +319,6 @@ function viewHome() {
         <div class="stat-i"><b>${CONDITIONS.length + DRUGS.length + CLAIMS.length}</b><span>${esc(T('statEntries'))}</span></div>
         <div class="stat-i"><b>${nReviewers}</b><span>${esc(T('statReviewers'))}</span></div>
         <div class="stat-i"><b>${CORRECTIONS.length}</b><span>${esc(T('statCorr'))}</span></div>
-      </div>
-      </div>
       </div>
     </div>
   </section>`;
@@ -772,6 +751,91 @@ function renderChrome() {
     </div>`;
 }
 
+
+/* ---------- motion ------------------------------------- */
+const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (!REDUCED) document.documentElement.classList.add('motion');
+
+let seer = null;
+function setupMotion() {
+  if (REDUCED) return;
+
+  /* The travelling pulse has to know the real path length, or the
+     dash cycle will not close and the loop will visibly jump. */
+  const run = document.querySelector('.pulse-run');
+  if (run && run.getTotalLength) {
+    const len = run.getTotalLength();
+    run.style.setProperty('--len', len.toFixed(1));
+    run.style.setProperty('--seg', Math.max(70, len * 0.07).toFixed(1));
+    run.style.setProperty('--gap', (len - Math.max(70, len * 0.07)).toFixed(1));
+  }
+
+  /* Reveal each block once, the first time it is seen.
+
+     Intersection alone is not enough to be safe: a jump to an anchor,
+     the End key, or a fast flick can carry an element past the viewport
+     inside one frame, and it would then stay hidden for good. So the
+     observer also reveals anything already scrolled past, and a scroll
+     sweep backs it up. Content never staying hidden matters more than
+     the animation. */
+  if (seer) seer.disconnect();
+  seer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting || e.boundingClientRect.top < 0) reveal(e.target);
+    });
+  }, { rootMargin: '0px 0px 6% 0px', threshold: 0.02 });
+
+  const sel = '.rule-h, .cat-tile, .vc, .bcast, .svc, .corr, .sec-item, .pillar, .stat-i, .tool-card, .triage, .qform, .tiers, .entries';
+  document.querySelectorAll(sel).forEach((el, i) => {
+    el.classList.add('rv');
+    /* stagger only within a row, so a long list never crawls in */
+    el.style.setProperty('--d', (i % 6) * 55 + 'ms');
+    seer.observe(el);
+  });
+
+  document.querySelectorAll('.stat-i b').forEach(b => {
+    const n = parseInt(b.textContent, 10);
+    if (!isNaN(n)) { b.dataset.count = n; b.textContent = '0'; seer.observe(b); }
+  });
+
+  sweep();
+}
+
+function reveal(el) {
+  if (el.classList.contains('seen')) return;
+  el.classList.add('seen');
+  if (seer) seer.unobserve(el);
+  if (el.dataset.count) countUp(el);
+}
+
+/* Backstop: anything at or above the fold that the observer missed. */
+let sweeping = false;
+function sweep() {
+  sweeping = false;
+  const h = window.innerHeight;
+  document.querySelectorAll('.rv:not(.seen), [data-count]:not(.seen)').forEach(el => {
+    if (el.getBoundingClientRect().top < h) reveal(el);
+  });
+}
+if (!REDUCED) {
+  addEventListener('scroll', () => {
+    if (sweeping) return;
+    sweeping = true;
+    requestAnimationFrame(sweep);
+  }, { passive: true });
+  addEventListener('resize', sweep, { passive: true });
+}
+
+function countUp(el) {
+  const target = +el.dataset.count, dur = 900, t0 = performance.now();
+  const step = now => {
+    const p = Math.min(1, (now - t0) / dur);
+    el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
 /* ---------- router ------------------------------------- */
 function parseHash() {
   const h = location.hash.replace(/^#/, '') || '/';
@@ -812,6 +876,7 @@ function render(keepScroll) {
 
   if (!keepScroll) window.scrollTo({ top: 0, behavior: 'instant' });
   document.title = pageTitle();
+  setupMotion();
 }
 
 function pageTitle() {
