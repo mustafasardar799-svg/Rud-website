@@ -89,7 +89,7 @@ const SECONDARY = ['RH-DUS-001', 'RH-THA-001', 'RH-T2D-001'];
 
 /* Build stamp — rendered in the footer so the running version is
    identifiable at a glance. Bump on every deploy. */
-const BUILD = '2026-08-29 · r15';
+const BUILD = '2026-08-29 · r17';
 
 /* Every asset in index.html is loaded with ?v=<tag> to defeat the browser
    cache: Railway serves these files with a long max-age, so an unchanged
@@ -872,6 +872,45 @@ function render(keepScroll) {
   if (!keepScroll) window.scrollTo({ top: 0, behavior: 'instant' });
   document.title = pageTitle();
   setupMotion();
+  setupNavStrip();
+}
+
+/* The section strip scrolls sideways on a phone, where it can only show
+   three of eight. Two things follow from that: the page you are on has
+   to be brought into view rather than left off the end, and the strip
+   has to look scrollable — otherwise it reads as a nav with three items
+   and the rest is never found. RTL makes scrollLeft negative in some
+   engines and positive in others, so the ends are measured by distance
+   rather than by sign. */
+function setupNavStrip() {
+  const nav = document.querySelector('.nav');
+  const strip = nav && nav.querySelector('.wrap');
+  if (!strip) return;
+
+  const mark = () => {
+    const slack = strip.scrollWidth - strip.clientWidth;
+    if (slack < 4) { nav.removeAttribute('data-more-end'); nav.removeAttribute('data-more-start'); return; }
+    const from = Math.abs(strip.scrollLeft);
+    nav.setAttribute('data-more-start', from > 4 ? '1' : '0');
+    nav.setAttribute('data-more-end', from < slack - 4 ? '1' : '0');
+  };
+
+  strip.addEventListener('scroll', mark, { passive: true });
+  addEventListener('resize', mark, { passive: true });
+
+  const here = strip.querySelector('[aria-current="page"]');
+  if (here) {
+    const b = here.getBoundingClientRect(), s = strip.getBoundingClientRect();
+    if (b.left < s.left || b.right > s.right) {
+      const prev = strip.style.scrollBehavior;
+      const pageY = window.scrollY, pageX = window.scrollX;
+      strip.style.scrollBehavior = 'auto';   // on load this should not animate
+      here.scrollIntoView({ block: 'nearest', inline: 'center' });
+      window.scrollTo(pageX, pageY);         // scrollIntoView can move the page too
+      strip.style.scrollBehavior = prev;
+    }
+  }
+  mark();
 }
 
 function pageTitle() {

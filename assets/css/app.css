@@ -112,6 +112,15 @@ html[lang="kmr"] {
   --body:    "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
 }
 
+/* The same substitution has to follow Kurmancî text that appears while
+   another language is being read — the language switcher shows
+   "Kurmancî" on every page, and in the brand face its circumflex lands
+   on top of the letter. Keyed to the lang attribute so it applies
+   wherever such text is marked, not only on Kurmancî pages. */
+[lang="kmr"]:not(html) {
+  font-family: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+}
+
 /* ---------- 02  Reset & base ---------------------------- */
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -292,6 +301,26 @@ body[dir="ltr"] .rule-h .more::after { content: " ›"; }
 }
 .nav a:hover { color: var(--brand-dd); background: var(--brand-xs); }
 .nav a[aria-current="page"] { color: var(--brand-dd); border-bottom-color: var(--brand); }
+
+/* Nav overflow affordance.
+   Eight sections do not fit a phone: at 390px the strip hides about
+   500px of itself. Scrolling is right, but a strip that gives no sign
+   it scrolls just looks like a nav with three items, so the scrollable
+   edge is shaded and the shade is dropped once that end is reached.
+   `.nav` is sticky, which positions these against it already. */
+.nav .wrap { scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+.nav::before, .nav::after {
+  content: ""; position: absolute; inset-block: 0; width: 34px;
+  pointer-events: none; opacity: 0; transition: opacity .18s ease; z-index: 1;
+}
+.nav::after  { inset-inline-end: 0;
+  background: linear-gradient(to var(--fade-end), var(--paper), rgba(255,255,255,0)); }
+.nav::before { inset-inline-start: 0;
+  background: linear-gradient(to var(--fade-start), var(--paper), rgba(255,255,255,0)); }
+:root { --fade-end: left; --fade-start: right; }
+body[dir="ltr"] { --fade-end: right; --fade-start: left; }
+.nav[data-more-end="1"]::after   { opacity: 1; }
+.nav[data-more-start="1"]::before { opacity: 1; }
 
 /* ---------- 06  Emergency band -------------------------- */
 .emerg { background: var(--alarm-sm); border-bottom: 1px solid #F2CFCB; }
@@ -1001,4 +1030,37 @@ html.motion .vc:hover { box-shadow: var(--lift-2); }
   html.motion .pulse-run { animation: none; stroke-opacity: 0; }
   html.motion .hero-burst { animation: none; }
   html.motion .tool-card:hover { transform: none; }
+}
+
+
+/* ---------- 19  Touch sizing -----------------------------
+   Sized for a finger rather than a cursor. 44px is the comfortable
+   target; these controls measured 27-31px, which is why the language
+   switch and the footer links were fiddly on a phone.
+
+   Applied on a coarse pointer or a narrow window, not on coarse alone:
+   some Android browsers report a fine pointer, and a desktop window
+   dragged narrow is being used the same way a phone is. A wide window
+   with a mouse keeps the tighter rhythm. */
+@media (pointer: coarse), (max-width: 760px) {
+  .lang { padding: 11px 14px; font-size: 14px; }
+  .langs { gap: 6px; }
+  .foot-nav { gap: 2px 22px; }
+  .foot-nav a { display: inline-flex; align-items: center; min-height: 44px; }
+  .rule-h .more { display: inline-flex; align-items: center; min-height: 44px; }
+  .crumbs a { display: inline-flex; align-items: center; min-height: 40px; }
+  .foot-c a { display: inline-flex; align-items: center; min-height: 40px; }
+  .emerg-l a { display: inline-flex; align-items: center; min-height: 40px; }
+  .alpha button { min-width: 40px; min-height: 40px; }
+  .chip { min-height: 40px; }
+}
+
+/* The consent box rendered at the browser default 13px, which is a hard
+   thing to hit on a phone and the one control standing between a reader
+   and sending their question. The label already sits beside it, so the
+   whole row is the target. */
+.qcheck { cursor: pointer; padding-block: 4px; }
+.qcheck input { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--brand-d); }
+@media (pointer: coarse), (max-width: 760px) {
+  .qcheck input { width: 24px; height: 24px; }
 }
